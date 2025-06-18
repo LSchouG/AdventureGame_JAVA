@@ -1,11 +1,11 @@
-package main;
+package dev.adventuregame;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-import objects.OBJ_Key;
+import dev.adventuregame.objects.OBJ_Key;
 
 public class UI {
 

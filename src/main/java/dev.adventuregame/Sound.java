@@ -1,4 +1,4 @@
-package main;
+package dev.adventuregame;
 
 import java.net.URL;
 import javax.sound.sampled.AudioInputStream;

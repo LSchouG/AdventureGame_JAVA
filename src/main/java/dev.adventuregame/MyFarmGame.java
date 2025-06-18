@@ -1,4 +1,4 @@
-package main;
+package dev.adventuregame;
 import javax.swing.JFrame;
 public class MyFarmGame {
     public static void main(String[] args) {

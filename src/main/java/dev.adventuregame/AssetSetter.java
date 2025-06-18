@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main;
+package dev.adventuregame;
 
-import objects.OBJ_Boots;
-import objects.OBJ_Chest;
-import objects.OBJ_Door;
-import objects.OBJ_Key;
+import dev.adventuregame.objects.OBJ_Boots;
+import dev.adventuregame.objects.OBJ_Chest;
+import dev.adventuregame.objects.OBJ_Door;
+import dev.adventuregame.objects.OBJ_Key;
 
 public class AssetSetter {
 

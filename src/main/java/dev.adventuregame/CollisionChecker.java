@@ -1,6 +1,6 @@
-package main;
+package dev.adventuregame;
 
-import entity.Entity;
+import dev.adventuregame.entity.Entity;
 
 public class CollisionChecker {
 

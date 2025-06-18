@@ -2,16 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main;
+package dev.adventuregame;
 
-import entity.Player;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
-import tiles.TileManager;
-import objects.SuperObject;
+
+import dev.adventuregame.entity.Player;
+import dev.adventuregame.tiles.TileManager;
+import dev.adventuregame.objects.SuperObject;
 
 public class GamePanel extends JPanel implements Runnable {
 
