@@ -2,6 +2,7 @@ package dev.adventuregame.entity;
 
 import dev.adventuregame.GamePanel;
 import dev.adventuregame.KeyHandler;
+import dev.adventuregame.UtilityTool;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -47,22 +48,35 @@ public class Player extends Entity {
     }
 
     public void getPlayerImages() {
+        downStill  = setup("down_still_boy");
+        down1      = setup("down_1_boy");
+        down2      = setup("down_2_boy");
+        upStill    = setup("up_still_boy");
+        up1        = setup("up_1_boy");
+        up2        = setup("up_2_boy");
+        leftStill  = setup("left_still_boy");
+        left1      = setup("left_1_boy");
+        left2      = setup("left_2_boy");
+        rightStill = setup("right_still_boy");
+        right1     = setup("right_1_boy");
+        right2     = setup("right_2_boy");
+    }
+
+    public BufferedImage setup(String imageName)
+    {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        BufferedImage scaledimage = null;
+
         try {
-            downStill = ImageIO.read(getClass().getResourceAsStream("/images/player/down_still_boy.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/images/player/down_1_boy.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/images/player/down_2_boy.png"));
-            upStill = ImageIO.read(getClass().getResourceAsStream("/images/player/up_still_boy.png"));
-            up1 = ImageIO.read(getClass().getResourceAsStream("/images/player/up_1_boy.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/images/player/up_2_boy.png"));
-            leftStill = ImageIO.read(getClass().getResourceAsStream("/images/player/left_still_boy.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/images/player/left_1_boy.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/images/player/left_2_boy.png"));
-            rightStill = ImageIO.read(getClass().getResourceAsStream("/images/player/right_still_boy.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/images/player/right_1_boy.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/images/player/right_2_boy.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
+            image = ImageIO.read(getClass().getResourceAsStream("/images/player/" + imageName + ".png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            scaledimage = image;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+        return scaledimage;
     }
 
     public void update() {
@@ -221,7 +235,7 @@ public class Player extends Entity {
             }
 
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, null);
 
     }
 }

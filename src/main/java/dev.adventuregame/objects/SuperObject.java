@@ -5,6 +5,7 @@
 package dev.adventuregame.objects;
 
 import dev.adventuregame.GamePanel;
+import dev.adventuregame.UtilityTool;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -17,9 +18,9 @@ public class SuperObject {
     public boolean collision = false;
     public int worldX, worldY;
     public Rectangle solidArea = new Rectangle(0,0,48,48);
-    public int solidAreaDefultX = 0;
-    public int solidAreaDefultY = 0;
-    
+    public int solidAreaDefaultX = 0;
+    public int solidAreaDefaultY = 0;
+    UtilityTool uTool = new UtilityTool();
     
 
     public void draw(Graphics2D g2, GamePanel gp) {

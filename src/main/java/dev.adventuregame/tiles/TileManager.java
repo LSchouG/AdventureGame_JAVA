@@ -5,11 +5,14 @@
 package dev.adventuregame.tiles;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import dev.adventuregame.GamePanel;
+import dev.adventuregame.UtilityTool;
+
 import java.io.BufferedReader;
 
 public final class TileManager {
@@ -20,38 +23,83 @@ public final class TileManager {
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[10];
+        tile = new Tile[50];
         mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/images/tiles/worlmap2.csv");
     }
 
     public void getTileImage() {
+
+        //GRASS
+        setup(0, "grass", false);
+        //WALL
+        setup(1, "wall", true);
+        //FLOOR
+        setup(2, "Floor", false);
+        //TREE AND BUSH
+        setup(3, "bush", true);
+        setup(4, "tree", true);
+        setup(5, "rock", true);
+        //WATER
+        setup(6, "water", true);
+        setup(7, "waterToGrassDown", true);
+        setup(8, "waterToGrassLeft", true);
+        setup(9, "waterToGrassRight", true);
+        setup(10, "waterToGrassTop", true);
+        setup(11, "waterToGrassDownLeftIn", true);
+        setup(12, "waterToGrassDownLeftOut", true);
+        setup(13, "waterToGrassDownRightIn", true);
+        setup(14, "waterToGrassDownRightOut", true);
+        setup(15, "waterToGrassTopLeftIn", true);
+        setup(16, "waterToGrassTopLeftOut", true);
+        setup(17, "waterToGrassTopRightIn", true);
+        setup(18, "waterToGrassTopRightOut", true);
+        //SAND
+        setup(19, "sand", false);
+        setup(20, "sandToGrassDown", false);
+        setup(21, "sandToGrassDownLeft", false);
+        setup(22, "sandToGrassDownOutLeft", false);
+        setup(23, "sandToGrassDownOutRight", false);
+        setup(24, "sandToGrassDownRight", false);
+        setup(25, "sandToGrassTop", false);
+        setup(26, "sandToGrassTopLeft", false);
+        setup(27, "sandToGrassTopOutLeft", false);
+        setup(28, "sandToGrassTopOutRight", false);
+        setup(29, "sandToGrassTopRight", false);
+        setup(30, "sandToWaterDown1", true);
+        setup(31, "sandToWaterDown2", false);
+        setup(32, "sandToWaterDownLeft1", true);
+        setup(33, "sandToWaterDownLeft2", false);
+        setup(34, "sandToWaterDownRight1", true);
+        setup(35, "sandToWaterDownRight2", false);
+        setup(36, "sandToWaterLeft1", true);
+        setup(37, "sandToWaterLeft2", false);
+        setup(38, "sandToWaterRight1", true);
+        setup(39, "sandToWaterRight2", false);
+        setup(40, "sandToWaterTop1", true);
+        setup(41, "sandToWaterTop2", false);
+        setup(42, "sandToWaterTopLeft1", true);
+        setup(43, "sandToWaterTopLeft2", false);
+        setup(44, "sandToWaterTopRight1", true);
+        setup(45, "sandToWaterTopRight2", false);
+
+    }
+
+    public void setup(int index, String imageName, boolean collision){
+
+        UtilityTool uTool = new UtilityTool();
+
         try {
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/grass.png"));
-
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/wall.png"));
-            tile[1].collision = true;
-
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/water.png"));
-            tile[2].collision = true;
-
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/earth.png"));
-
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/tree.png"));
-            tile[4].collision = true;
-
-            tile[5] = new Tile();
-            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/sand.png"));
-        } catch (IOException e) {
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/" + imageName + ".png"));
+            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            tile[index].collision = collision;
+        } catch(IOException e){
             e.printStackTrace();
         }
     }
+
 
     public void loadMap(String filePath) {
         try {
@@ -72,7 +120,7 @@ public final class TileManager {
                         String rawCol = numbers[col];
 
                         if (rawCol == null || rawCol.trim().isEmpty()) {
-                            mapTileNumber[col][row] = 0; // default for null or empty
+                            mapTileNumber[col][row] = 0; // default Grass if null or empty
                         } else {
                             String cleaned = rawCol.trim().replaceAll("[^0-9]", "");
                             mapTileNumber[col][row] = cleaned.isEmpty() ? 0 : Integer.parseInt(cleaned);
@@ -108,7 +156,7 @@ public final class TileManager {
                     && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX
                     && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                     && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[tileNumber].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[tileNumber].image, screenX, screenY, null);
             }
 
             worldCol++;

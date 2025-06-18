@@ -20,6 +20,6 @@ tasks.test {
 
 tasks.jar{
     manifest{
-        attributes["Main-Class"] = "dev.adventuregame.adventuregame"
+        attributes["Main-Class"] = "dev.adventuregame.AdventureGame"
     }
 }
