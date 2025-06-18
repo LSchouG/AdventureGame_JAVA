@@ -1,6 +1,6 @@
 package dev.adventuregame;
 import javax.swing.JFrame;
-public class MyFarmGame {
+public class AdventureGame {
     public static void main(String[] args) {
 
         JFrame window = new JFrame();  // use lowercase "window" as the variable name
