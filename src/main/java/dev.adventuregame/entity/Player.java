@@ -3,7 +3,6 @@ package dev.adventuregame.entity;
 import dev.adventuregame.GamePanel;
 import dev.adventuregame.KeyHandler;
 import dev.adventuregame.UtilityTool;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -18,7 +17,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    public int hasKey = 0;
+//  public int hasKey = 0;
     int standCounter = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -142,48 +141,6 @@ public class Player extends Entity {
 
         if (i != 999) {
 
-            String objectName = gp.obj[i].name;
-
-            switch (objectName) {
-                case "Key":
-                    gp.playSE(2);
-                    hasKey++;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("Found a Key");
-                    break;
-                case "Door":
-                    if (hasKey > 0) {
-                        gp.playSE(3);
-                        gp.obj[i] = null;
-                        hasKey--;
-                        gp.ui.showMessage("Opend a door");
-                    } else {
-                        gp.ui.showMessage("Door is locked, find a key");
-                    }
-                    break;
-                case "Chest":
-                    if (hasKey > 0) {
-                        gp.obj[i] = null;
-                        hasKey--;
-                        gp.ui.showMessage("Opened a Chest");
-                    } else {
-                        gp.ui.showMessage("Chest is locked, find a key");
-                    }
-                    if (gp.obj[5] == null) {
-                        gp.ui.gameFinished = true;
-                        gp.stopMusic();
-                        gp.playSE(4);
-                    }
-                    break;
-                case "Boots":
-                    if (gp.obj[4] == null) {
-                        gp.playSE(1);
-                        gp.obj[i] = null;
-                        speed += 2;
-                        gp.ui.showMessage("Equipped better Boots");
-                    }
-                    break;
-            }
         }
     }
 
