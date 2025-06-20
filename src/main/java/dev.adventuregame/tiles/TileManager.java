@@ -67,6 +67,10 @@ public final class TileManager {
         setup(27, "sandToGrassTopOutLeft", false);
         setup(28, "sandToGrassTopOutRight", false);
         setup(29, "sandToGrassTopRight", false);
+        setup(46, "sandToGrassRight", false);
+        setup(47, "sandToGrassLeft", false);
+
+
         setup(30, "sandToWaterDown1", true);
         setup(31, "sandToWaterDown2", false);
         setup(32, "sandToWaterDownLeft1", true);

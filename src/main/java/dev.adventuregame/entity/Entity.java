@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dev.adventuregame.entity;
+import dev.adventuregame.GamePanel;
+import dev.adventuregame.UtilityTool;
 
+import javax.imageio.ImageIO;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-/**
- *
- * @author lars.s.g
- */
 public class Entity {
-
+    GamePanel gp;
     public int worldX, worldY;
     public int screenX, screenY;
     public int speed;
@@ -20,7 +14,31 @@ public class Entity {
     public String direction;
     public int spriteCounter = 0;
     public int spriteNumber = 1;
-    public Rectangle solidArea;
+    public Rectangle solidArea = new Rectangle(0,0,48,48);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+
+    public Entity(GamePanel gp) {
+        this.gp = gp;
+
+    }
+
+    public BufferedImage setup(String imagePath) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        BufferedImage scaledimage = null;
+
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            scaledimage = image;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return scaledimage;
+    }
+
+
+
 }

@@ -12,16 +12,15 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
     public final int screenY;
-//  public int hasKey = 0;
     int standCounter = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+
+        super(gp);
         this.keyH = keyH;
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -35,7 +34,7 @@ public class Player extends Entity {
         solidArea.height = 15;
 
         setDefaultValues();
-        getPlayerImages();
+        getImages();
         // System.out.println("DEBUG: Player constructed at worldX: " + worldX + ", worldY: " + worldY);
     }
 
@@ -46,36 +45,19 @@ public class Player extends Entity {
         direction = "down";
     }
 
-    public void getPlayerImages() {
-        downStill  = setup("down_still_boy");
-        down1      = setup("down_1_boy");
-        down2      = setup("down_2_boy");
-        upStill    = setup("up_still_boy");
-        up1        = setup("up_1_boy");
-        up2        = setup("up_2_boy");
-        leftStill  = setup("left_still_boy");
-        left1      = setup("left_1_boy");
-        left2      = setup("left_2_boy");
-        rightStill = setup("right_still_boy");
-        right1     = setup("right_1_boy");
-        right2     = setup("right_2_boy");
-    }
-
-    public BufferedImage setup(String imageName)
-    {
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
-        BufferedImage scaledimage = null;
-
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/images/player/" + imageName + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-            scaledimage = image;
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return scaledimage;
+    public void getImages() {
+        downStill  = setup("/images/player/down_still_boy.png");
+        down1      = setup("/images/player/down_1_boy.png");
+        down2      = setup("/images/player/down_2_boy.png");
+        upStill    = setup("/images/player/up_still_boy.png");
+        up1        = setup("/images/player/up_1_boy.png");
+        up2        = setup("/images/player/up_2_boy.png");
+        leftStill  = setup("/images/player/left_still_boy.png");
+        left1      = setup("/images/player/left_1_boy.png");
+        left2      = setup("/images/player/left_2_boy.png");
+        rightStill = setup("/images/player/right_still_boy.png");
+        right1     = setup("/images/player/right_1_boy.png");
+        right2     = setup("/images/player/right_2_boy.png");
     }
 
     public void update() {
