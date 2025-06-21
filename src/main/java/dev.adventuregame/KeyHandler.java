@@ -19,7 +19,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     // Movement keys
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+    public boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false, enterPressed = false;
     // Debugging
     public boolean checkDrawTime = false;
     GamePanel gp;
@@ -117,12 +117,9 @@ public class KeyHandler implements KeyListener {
                 // ADD LATER
 
             }
-
-
-
         }
 
-        // PLAT STATE
+        // PLAY STATE
         if (gp.gameState == gp.playState) {
             // Movement Controls (WASD)
             if (code == KeyEvent.VK_W) {
@@ -189,6 +186,9 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_D) {
             rightPressed = false;
+        }
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            enterPressed = false;
         }
     }
 }

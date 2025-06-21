@@ -33,10 +33,13 @@ public final class TileManager {
 
         //GRASS
         setup(0, "grass", false);
+        setup(48, "grassPit", false);
+
         //WALL
         setup(1, "wall", true);
         //FLOOR
         setup(2, "Floor", false);
+        setup(49, "bed", false);
         //TREE AND BUSH
         setup(3, "bush", true);
         setup(4, "tree", true);
