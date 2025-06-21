@@ -1,29 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ******************************************************************************
+ * FileName: OBJ_Boots.java
+ * Purpose: Represents the "Boots" object in the game world.
+ * Author: Lars S Gregersen
+ * Date: 21-5-2025
+ * Version: 1.0
+ * NOTES:
+ * - Extends SuperObject
+ * - Loads and scales the boots image used for rendering
+ *******************************************************************************/
+
 package dev.adventuregame.objects;
 
 import dev.adventuregame.GamePanel;
-
-import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.io.IOException;
 
-/**
- *
- * @author lars.s.g
- */
 public class OBJ_Boots extends SuperObject {
-    GamePanel gp;
-     public OBJ_Boots (GamePanel gp) {
 
+    GamePanel gp;
+
+    /**************************************************************************
+     * Constructor: OBJ_Boots(GamePanel gp)
+     * Purpose: Initializes the Boots object, sets name and loads sprite.
+     ***************************************************************************/
+    public OBJ_Boots(GamePanel gp) {
+        this.gp = gp;
         name = "Boots";
 
         try {
+            // Load the boots image
             image = ImageIO.read(getClass().getResourceAsStream("/images/objects/boots.png"));
-            uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+
+            // Scale the image to tile size
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Output error to console for debugging
         }
     }
 }

@@ -1,28 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ******************************************************************************
+ * FileName: OBJ_Key.java
+ * Purpose: Represents a collectible key object in the game world.
+ * Author: Lars S Gregersen
+ * Date: 21-5-2025
+ * Version: 1.0
+ * NOTES:
+ * - Extends SuperObject
+ * - Loads key sprite and scales it to tile size
+ * - Typically used to unlock doors or trigger events
+ *******************************************************************************/
+
 package dev.adventuregame.objects;
 
 import dev.adventuregame.GamePanel;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class OBJ_Key extends SuperObject {
 
     GamePanel gp;
-    public OBJ_Key(GamePanel gp) {
 
+    /**************************************************************************
+     * Constructor: OBJ_Key(GamePanel gp)
+     * Purpose: Initializes key object and loads key image.
+     ***************************************************************************/
+    public OBJ_Key(GamePanel gp) {
+        this.gp = gp;
         name = "Key";
 
         try {
+            // Load the key image from resources
             image = ImageIO.read(getClass().getResourceAsStream("/images/objects/key.png"));
-            uTool.scaleImage(image, gp.tileSize, gp.tileSize);
 
+            // Scale the image to match tile size
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Output error to console if loading fails
         }
     }
 }

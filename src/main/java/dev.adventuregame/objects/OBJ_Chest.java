@@ -1,32 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ******************************************************************************
+ * FileName: OBJ_Chest.java
+ * Purpose: Represents a chest object in the game world.
+ * Author: IT Student
+ * Date: 21-5-2025
+ * Version: 1.0
+ * NOTES:
+ * - Extends SuperObject
+ * - Sets image and enables collision detection
+ *******************************************************************************/
+
 package dev.adventuregame.objects;
 
 import dev.adventuregame.GamePanel;
-
-import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.io.IOException;
 
-/**
- *
- * @author IT Student
- */
 public class OBJ_Chest extends SuperObject {
 
     GamePanel gp;
 
+    /**************************************************************************
+     * Constructor: OBJ_Chest(GamePanel gp)
+     * Purpose: Initializes the chest object, loads image, enables collision.
+     ***************************************************************************/
     public OBJ_Chest(GamePanel gp) {
-
+        this.gp = gp;
         name = "Chest";
 
         try {
+            // Load chest image
             image = ImageIO.read(getClass().getResourceAsStream("/images/objects/chest.png"));
-            uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+
+            // Scale to tile size
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Output error to console
         }
+
+        // Enable collision for this object (player cannot walk through it)
         collision = true;
     }
 }

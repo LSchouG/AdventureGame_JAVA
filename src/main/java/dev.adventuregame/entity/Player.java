@@ -1,3 +1,15 @@
+/** ******************************************************************************
+ * FileName: Player.java
+ * Purpose: Represents the player character with movement, collision, and animation.
+ * Author: Lars S Gregersen
+ * Date: 21-5-2025
+ * Version: 1.0
+ * NOTES:
+ * - Inherits from Entity
+ * - Handles keyboard input and character sprite animation
+ * - Uses collision detection and supports object interactions
+ *******************************************************************************/
+
 package dev.adventuregame.entity;
 
 import dev.adventuregame.GamePanel;
@@ -7,7 +19,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Player extends Entity {
@@ -16,15 +27,22 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+
     int standCounter = 0;
 
+    /**************************************************************************
+     * Constructor: Player(GamePanel gp, KeyHandler keyH)
+     * Purpose: Initializes the player with key handler and position.
+     ***************************************************************************/
     public Player(GamePanel gp, KeyHandler keyH) {
-
         super(gp);
         this.keyH = keyH;
+
+        // Place player in center of screen
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
+        // Define the player's collision box
         solidArea = new Rectangle();
         solidArea.x = 12;
         solidArea.y = 30;
@@ -35,9 +53,12 @@ public class Player extends Entity {
 
         setDefaultValues();
         getImages();
-        // System.out.println("DEBUG: Player constructed at worldX: " + worldX + ", worldY: " + worldY);
     }
 
+    /**************************************************************************
+     * Method: setDefaultValues()
+     * Purpose: Set default player position, speed, and direction.
+     ***************************************************************************/
     public void setDefaultValues() {
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 22;
@@ -45,6 +66,10 @@ public class Player extends Entity {
         direction = "down";
     }
 
+    /**************************************************************************
+     * Method: getImages()
+     * Purpose: Load and assign all directional sprite images.
+     ***************************************************************************/
     public void getImages() {
         downStill  = setup("/images/player/down_still_boy.png");
         down1      = setup("/images/player/down_1_boy.png");
@@ -60,121 +85,127 @@ public class Player extends Entity {
         right2     = setup("/images/player/right_2_boy.png");
     }
 
+    /**************************************************************************
+     * Method: update()
+     * Purpose: Handle player input, movement, collisions, and animation.
+     ***************************************************************************/
     public void update() {
-        boolean moving = false;
-        if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
-            if (keyH.upPressed == true) {
-                direction = "up";
-                spriteNumber = 1;
-            } else if (keyH.downPressed == true) {
-                direction = "down";
-                spriteNumber = 1;
-            } else if (keyH.leftPressed == true) {
-                direction = "left";
-                spriteNumber = 1;
-            } else if (keyH.rightPressed == true) {
-                direction = "right";
-                spriteNumber = 1;
-            }
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
 
-            // CHECK TILE COLLISION
+            // 1. Update direction
+            if (keyH.upPressed) {
+                direction = "up";
+            } else if (keyH.downPressed) {
+                direction = "down";
+            } else if (keyH.leftPressed) {
+                direction = "left";
+            } else if (keyH.rightPressed) {
+                direction = "right";
+            }
+            spriteNumber = 1; // start walking animation
+
+            // 2. Check tile collisions
             collisionOn = false;
             gp.collisionChecker.checkTile(this);
-
-            // CHECK OBJECT COLLISION
             int objIndex = gp.collisionChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
-            // IF COLLISION IF FALSE PLAYER CAN MOVE
-            if (collisionOn == false) {
+            // 2.1. Check player to entity collisions
+            int ncpIndex = gp.collisionChecker.checkPlayer(this, gp.npc);
+            interactNPC(ncpIndex);
+
+            // 3. Move player if no collision
+            if (!collisionOn) {
                 switch (direction) {
-                    case "up" ->
-                        worldY -= speed;
-                    case "down" ->
-                        worldY += speed;
-                    case "right" ->
-                        worldX += speed;
-                    case "left" ->
-                        worldX -= speed;
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
                 }
             }
+
+            // 4. Handle sprite animation timing
             spriteCounter++;
             if (spriteCounter > 12) {
-                if (spriteNumber == 1) {
-                    spriteNumber = 2;
-                } else {
-                    spriteNumber = 1;
-                }
+                spriteNumber = (spriteNumber == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
 
         } else {
+            // Player standing still
             standCounter++;
-                    
-            if (standCounter > 20){
-            
-            spriteNumber = 0;
-            standCounter = 0;
+            if (standCounter > 20) {
+                spriteNumber = 0; // idle frame
+                standCounter = 0;
             }
         }
     }
 
+    /**************************************************************************
+     * Method: pickUpObject(int i)
+     * Purpose: Handle object pickup when player collides with one.
+     * Inputs: i - index of the object collided with
+     ***************************************************************************/
     public void pickUpObject(int i) {
-
         if (i != 999) {
-
+            // future: implement object interaction logic here
         }
     }
 
-    public void draw(Graphics2D g2) {
-        // g2.setColor(Color.white);
-        //g2.fillRect(x, y, gp.tileSize, gp.tileSize); 
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     ***************************************************************************/
+    public void interactNPC(int i){
+        if (i != 999){
+            //System.out.println("Interacting with NPC");
+        }
+    }
 
+    /**************************************************************************
+     * Method: draw(Graphics2D g2)
+     * Purpose: Draw the player's current sprite on screen.
+     * Inputs: g2 - the graphics context
+     ***************************************************************************/
+    public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
         switch (direction) {
             case "down" -> {
-                if (spriteNumber == 0) {
-                    image = downStill;
-                } else if (spriteNumber == 1) {
-                    image = down1;
-                } else if (spriteNumber == 2) {
-                    image = down2;
-                }
-                break;
+                image = switch (spriteNumber) {
+                    case 0 -> downStill;
+                    case 1 -> down1;
+                    case 2 -> down2;
+                    default -> null;
+                };
             }
             case "up" -> {
-                if (spriteNumber == 0) {
-                    image = upStill;
-                } else if (spriteNumber == 1) {
-                    image = up1;
-                } else if (spriteNumber == 2) {
-                    image = up2;
-                }
-                break;
+                image = switch (spriteNumber) {
+                    case 0 -> upStill;
+                    case 1 -> up1;
+                    case 2 -> up2;
+                    default -> null;
+                };
             }
             case "right" -> {
-                if (spriteNumber == 0) {
-                    image = rightStill;
-                } else if (spriteNumber == 1) {
-                    image = right1;
-                } else if (spriteNumber == 2) {
-                    image = right2;
-                }
-                break;
+                image = switch (spriteNumber) {
+                    case 0 -> rightStill;
+                    case 1 -> right1;
+                    case 2 -> right2;
+                    default -> null;
+                };
             }
             case "left" -> {
-                if (spriteNumber == 0) {
-                    image = leftStill;
-                } else if (spriteNumber == 1) {
-                    image = left1;
-                } else if (spriteNumber == 2) {
-                    image = left2;
-                }
+                image = switch (spriteNumber) {
+                    case 0 -> leftStill;
+                    case 1 -> left1;
+                    case 2 -> left2;
+                    default -> null;
+                };
             }
-
         }
-        g2.drawImage(image, screenX, screenY, null);
 
+        g2.drawImage(image, screenX, screenY, null); // draw sprite
     }
 }

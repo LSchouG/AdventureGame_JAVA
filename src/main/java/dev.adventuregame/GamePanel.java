@@ -1,9 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package dev.adventuregame;
+/** ******************************************************************************
+ * FileName: GamePanel.java
+ * Purpose: Main game panel that handles rendering, game loop, and game state management.
+ * Author: Lars S Gregersen
+ * Date: 21-5-2025
+ * Version: 1.0
+ * NOTES:
+ * - Uses delta time method to control frame rate
+ * - Draws tiles, entities, objects, and UI
+ * - Manages input, collision, and sound
+ *******************************************************************************/
 
+package dev.adventuregame;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,30 +19,31 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import dev.adventuregame.entity.Entity;
+import dev.adventuregame.entity.NPC_OldMan;
 import dev.adventuregame.entity.Player;
 import dev.adventuregame.tiles.TileManager;
 import dev.adventuregame.objects.SuperObject;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    //Screen Settings
-    final int originalTileSize = 16; // 16 X16 tile
+    /***************************** SCREEN SETTINGS ****************************/
+    final int originalTileSize = 16; // original 16x16 tiles
     final int scale = 3;
 
-    public final int tileSize = originalTileSize * scale; // 48*48 tile
+    public final int tileSize = originalTileSize * scale; // final tile size = 48x48
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
-    public final int screenHeight = tileSize * maxScreenRow; // 578 pixels
+    public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
-    // WORLD SETTINGS
+    /****************************** WORLD SETTINGS ****************************/
     public final int maxWorldCol = 150;
     public final int maxWorldRow = 100;
 
-    // FPS
+    /********************************* FPS ************************************/
     int FPS = 60;
 
-    // SYSTEM
+    /******************************* SYSTEM ***********************************/
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     public Sound music = new Sound();
@@ -45,44 +53,58 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     Thread gameThread;
 
-    // ENTITY AND OBJECT
+    /************************* ENTITY AND OBJECTS *****************************/
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
     public Entity npc[] = new Entity[10];
 
-    // GAME  STATE
+    /**************************** GAME STATE **********************************/
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
 
-
+    /**************************************************************************
+     * Constructor: GamePanel()
+     * Purpose: Initializes the game panel size, background, buffering, and input focus.
+     ***************************************************************************/
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
-        this.setDoubleBuffered(true);
+        this.setDoubleBuffered(true); // improves rendering performance
         this.addKeyListener(keyH);
-        this.setFocusable(true);
+        this.setFocusable(true); // allows the panel to receive keyboard input
     }
 
+    /**************************************************************************
+     * Method: setupGame()
+     * Purpose: Prepares the game before starting by setting objects, NPCs, and music.
+     ***************************************************************************/
     public void setupGame() {
-
         aSetter.setObject();
         aSetter.setNPC();
-        playMusic(0);
-        stopMusic();
+        playMusic(0); // play background music track 0
+        stopMusic();  // optionally stop it immediately
         gameState = playState;
     }
 
+    /**************************************************************************
+     * Method: startGameThread()
+     * Purpose: Starts the main game loop in a new thread.
+     ***************************************************************************/
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    /**************************************************************************
+     * Method: run()
+     * Purpose: Main game loop. Uses delta time for consistent frame rate.
+     ***************************************************************************/
     @Override
     public void run() {
-        double drawInterval = 1_000_000_000 / FPS; // in nanoseconds
-        double delta = 0; // in nanoseconds
-        long lastTime = System.nanoTime(); // in nanoseconds
+        double drawInterval = 1_000_000_000 / FPS; // 60 FPS in nanoseconds
+        double delta = 0;
+        long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
         int drawCount = 0;
@@ -94,89 +116,115 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             while (delta >= 1) {
-                update();
-                repaint();
+                update(); // update game logic
+                repaint(); // render the screen
                 delta--;
                 drawCount++;
             }
 
-            // Print FPS once per second
+            // Uncomment for FPS debug
+            /*
             if (timer >= 1000000000) {
-                //System.out.println("FPS: " + drawCount);
+                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
+            */
         }
-    }// END run()
-
-    public void update() {
-        if (gameState == playState) {
-            player.update();
-        } else if  (gameState == pauseState){
-
-        }
-
     }
 
+    /**************************************************************************
+     * Method: update()
+     * Purpose: Update the game state, player movement, and other logic.
+     ***************************************************************************/
+    public void update() {
+        if (gameState == playState) {
+            // Player updates only if game is running
+            player.update();
+            // npc updates only if game is running
+            for (int i =0; i < npc.length; i++)
+            {
+                if (npc[i] != null){
+                    npc[i].update();
+                }
+            }
+        } else if (gameState == pauseState) {
+            // pause logic here if needed
+        }
+    }
+
+    /**************************************************************************
+     * Method: paintComponent(Graphics g)
+     * Purpose: Handles all rendering (tiles, objects, entities, UI).
+     * Inputs: g - the graphics context
+     ***************************************************************************/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // DEBUG AND TEST
-        if (keyH.checkDrawTime == true) {
-            long drawStart = 0;
+        // DEBUG - Start draw time measurement
+        long drawStart = 0;
+        if (keyH.checkDrawTime) {
             drawStart = System.nanoTime();
         }
-        long drawStart = 0;
-        drawStart = System.nanoTime();
 
-        // TILe
+        // 1. Draw tiles
         tileM.draw(g2);
 
-        //OBJECT
+        // 2. Draw objects
         for (int i = 0; i < obj.length; i++) {
             if (obj[i] != null) {
                 obj[i].draw(g2, this);
             }
         }
 
-        // NPC
+        // 3. Draw NPCs
         for (int i = 0; i < npc.length; i++) {
             if (npc[i] != null) {
-                npc[i].draw(g2, this);
+                npc[i].draw(g2);
             }
         }
 
-        // PLAYER
+        // 4. Draw player
         player.draw(g2);
 
-        // UI
+        // 5. Draw UI
         ui.draw(g2);
 
-        // DEBUG AND TEST
-        if (keyH.checkDrawTime == true) {
-
+        // DEBUG - End draw time measurement
+        if (keyH.checkDrawTime) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.WHITE);
-            g2.drawString("timed passed " + passed, 10, 400);
-            System.out.println("timed passed " + passed);
+            g2.drawString("Draw Time: " + passed, 10, 400);
+            System.out.println("Draw Time: " + passed);
         }
 
-        g2.dispose();
-
+        g2.dispose(); // dispose of the graphics context
     }
 
+    /**************************************************************************
+     * Method: playMusic(int i)
+     * Purpose: Plays background music using given index.
+     ***************************************************************************/
     public void playMusic(int i) {
         music.setFile(i);
         music.play();
-        music.loop();
+        music.loop(); // loop the background music
     }
 
+    /**************************************************************************
+     * Method: stopMusic()
+     * Purpose: Stops background music.
+     ***************************************************************************/
     public void stopMusic() {
         music.stop();
     }
 
+    /**************************************************************************
+     * Method: playSE(int i)
+     * Purpose: Plays a sound effect using given index.
+     ***************************************************************************/
     public void playSE(int i) {
         se.setFile(i);
         se.play();

@@ -1,7 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ******************************************************************************
+ * FileName: AssetSetter.java
+ * Purpose: Handles the placement and initialization of game objects and NPCs.
+ * Author: Lars S Gregersen
+ * Date: 21-5-2025
+ * Version: 1.0
+ * NOTES:
+ * - Used by GamePanel during setup to populate the world with assets
+ * - Includes both static objects and non-player characters (NPCs)
+ *******************************************************************************/
+
 package dev.adventuregame;
 
 import dev.adventuregame.entity.NPC_OldMan;
@@ -14,17 +21,34 @@ public class AssetSetter {
 
     GamePanel gp;
 
+    /**************************************************************************
+     * Constructor: AssetSetter(GamePanel gp)
+     * Purpose: Assigns GamePanel reference to allow asset placement in world.
+     ***************************************************************************/
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
 
+    /**************************************************************************
+     * Method: setObject()
+     * Purpose: Instantiates and places objects in the game world.
+     * Notes: Currently empty – expand to add objects like keys, chests, etc.
+     ***************************************************************************/
     public void setObject() {
+        // Example:
+        // gp.obj[0] = new OBJ_Key(gp);
+        // gp.obj[0].worldX = gp.tileSize * 10;
+        // gp.obj[0].worldY = gp.tileSize * 15;
     }
 
-    public void setNPC(){
-
+    /**************************************************************************
+     * Method: setNPC()
+     * Purpose: Instantiates and places NPCs in the game world.
+     * Notes: Currently places 1 old man NPC at tile (21, 21)
+     ***************************************************************************/
+    public void setNPC() {
         gp.npc[0] = new NPC_OldMan(gp);
-        gp.npc[0].worldX = gp.tileSize*21;
-        gp.npc[0].worldY = gp.tileSize*21;
+        gp.npc[0].worldX = gp.tileSize * 21;
+        gp.npc[0].worldY = gp.tileSize * 21;
     }
 }

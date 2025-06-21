@@ -1,32 +1,56 @@
+/** ******************************************************************************
+ * FileName: KeyHandler.java
+ * Purpose: Handles keyboard input for player movement and game state toggling.
+ * Author: Lars S Gregersen
+ * Date: 21-5-2025
+ * Version: 1.0
+ * NOTES:
+ * - Maps WASD keys to movement flags
+ * - Handles toggling between play and pause states
+ * - Supports debug toggle with T key
+ *******************************************************************************/
+
 package dev.adventuregame;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-/**
- *
- * @author lars.s.g
- */
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
-    // DEBUG
-    boolean checkDrawTime = false;
 
-    public KeyHandler(GamePanel gp){
+    // Movement keys
+    public boolean upPressed, downPressed, leftPressed, rightPressed;
+
+    // Debugging
+    public boolean checkDrawTime = false;
+
+    /**************************************************************************
+     * Constructor: KeyHandler(GamePanel gp)
+     * Purpose: Initializes the key handler with reference to the game panel.
+     ***************************************************************************/
+    public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
 
+    /**************************************************************************
+     * Method: keyTyped(KeyEvent e)
+     * Purpose: Required by KeyListener but not used here.
+     ***************************************************************************/
     @Override
     public void keyTyped(KeyEvent e) {
+        // Not used
     }
 
+    /**************************************************************************
+     * Method: keyPressed(KeyEvent e)
+     * Purpose: Responds to key press events for movement, pause, and debug.
+     ***************************************************************************/
     @Override
     public void keyPressed(KeyEvent e) {
-
         int code = e.getKeyCode();
 
+        // Movement Controls (WASD)
         if (code == KeyEvent.VK_W) {
             upPressed = true;
         }
@@ -39,24 +63,26 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_D) {
             rightPressed = true;
         }
+
+        // Toggle play/pause state with P key
         if (code == KeyEvent.VK_P) {
-            if (gp.gameState == gp.playState){
+            if (gp.gameState == gp.playState) {
                 gp.gameState = gp.pauseState;
-            } else if ( gp.gameState == gp.pauseState){
+            } else if (gp.gameState == gp.pauseState) {
                 gp.gameState = gp.playState;
             }
         }
 
-        //DEBUG
+        // Debug: Toggle draw time display with T key
         if (code == KeyEvent.VK_T) {
-            if (checkDrawTime == false) {
-                checkDrawTime = true;
-            } else if (checkDrawTime == true) {
-                checkDrawTime = false;
-            }
+            checkDrawTime = !checkDrawTime;
         }
     }
 
+    /**************************************************************************
+     * Method: keyReleased(KeyEvent e)
+     * Purpose: Responds to key release events to stop movement.
+     ***************************************************************************/
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
@@ -74,5 +100,4 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
     }
-
 }
