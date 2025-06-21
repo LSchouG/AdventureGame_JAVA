@@ -19,7 +19,6 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import dev.adventuregame.entity.Entity;
-import dev.adventuregame.entity.NPC_OldMan;
 import dev.adventuregame.entity.Player;
 import dev.adventuregame.tiles.TileManager;
 import dev.adventuregame.objects.SuperObject;
@@ -45,7 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     /******************************* SYSTEM ***********************************/
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler(this);
+    public KeyHandler keyH = new KeyHandler(this);
     public Sound music = new Sound();
     public Sound se = new Sound();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -60,8 +59,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     /**************************** GAME STATE **********************************/
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int dialogueState = 3;
+
+
 
     /**************************************************************************
      * Constructor: GamePanel()
@@ -82,9 +85,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         aSetter.setObject();
         aSetter.setNPC();
-        playMusic(0); // play background music track 0
-        stopMusic();  // optionally stop it immediately
-        gameState = playState;
+        // playMusic(0); // play background music track 0
+        //stopMusic();  // optionally stop it immediately
+        gameState = titleState;
     }
 
     /**************************************************************************
@@ -168,28 +171,36 @@ public class GamePanel extends JPanel implements Runnable {
             drawStart = System.nanoTime();
         }
 
-        // 1. Draw tiles
-        tileM.draw(g2);
+        // TITLE SCREEN
+        if (gameState == titleState){
+            ui.draw(g2);
+        }
+        // OTHERS
+        else{
+            // 1. Draw tiles
+            tileM.draw(g2);
 
-        // 2. Draw objects
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
+            // 2. Draw objects
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    obj[i].draw(g2, this);
+                }
             }
+
+            // 3. Draw NPCs
+            for (int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
+                    npc[i].draw(g2);
+                }
+            }
+
+            // 4. Draw player
+            player.draw(g2);
+
+            // 5. Draw UI
+            ui.draw(g2);
         }
 
-        // 3. Draw NPCs
-        for (int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
-                npc[i].draw(g2);
-            }
-        }
-
-        // 4. Draw player
-        player.draw(g2);
-
-        // 5. Draw UI
-        ui.draw(g2);
 
         // DEBUG - End draw time measurement
         if (keyH.checkDrawTime) {

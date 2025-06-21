@@ -29,10 +29,10 @@ public class OBJ_Boots extends SuperObject {
 
         try {
             // Load the boots image
-            image = ImageIO.read(getClass().getResourceAsStream("/images/objects/boots.png"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/boots.png"));
 
             // Scale the image to tile size
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace(); // Output error to console for debugging
         }

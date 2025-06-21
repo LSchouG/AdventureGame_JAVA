@@ -30,10 +30,10 @@ public class OBJ_Key extends SuperObject {
 
         try {
             // Load the key image from resources
-            image = ImageIO.read(getClass().getResourceAsStream("/images/objects/key.png"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/key.png"));
 
             // Scale the image to match tile size
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace(); // Output error to console if loading fails
         }

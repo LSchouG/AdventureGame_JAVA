@@ -9,9 +9,7 @@
  * - Loads door sprite and enables collision detection
  * - Can be used to block or unlock areas
  *******************************************************************************/
-
 package dev.adventuregame.objects;
-
 import dev.adventuregame.GamePanel;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -30,10 +28,10 @@ public class OBJ_Door extends SuperObject {
 
         try {
             // Load the door image from resources
-            image = ImageIO.read(getClass().getResourceAsStream("/images/objects/door.png"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/door.png"));
 
             // Scale the image to match tile size
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace(); // Output error to console for debugging
         }

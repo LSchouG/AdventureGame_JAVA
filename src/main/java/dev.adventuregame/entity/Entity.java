@@ -1,4 +1,5 @@
-/** ******************************************************************************
+/**
+ * *****************************************************************************
  * FileName: Entity.java
  * Purpose: Base class for all moving/drawable entities (e.g., player, NPCs).
  * Author: Lars S Gregersen
@@ -10,6 +11,7 @@
  *******************************************************************************/
 
 package dev.adventuregame.entity;
+
 import dev.adventuregame.GamePanel;
 import dev.adventuregame.UtilityTool;
 import javax.imageio.ImageIO;
@@ -25,10 +27,8 @@ public class Entity {
     public int actionLockCounter;
 
     /******************************* SPRITES **********************************/
-    public BufferedImage downStill, down1, down2;
-    public BufferedImage upStill, up1, up2;
-    public BufferedImage leftStill, left1, left2;
-    public BufferedImage rightStill, right1, right2;
+    public BufferedImage downStill, down1, down2, upStill, up1, up2, leftStill, left1, left2, rightStill, right1, right2;
+
 
     /****************************** STATE *************************************/
     public String direction;
@@ -40,6 +40,15 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     protected GamePanel gp;
+
+    /**************************** CHARACTER STATUS *******************************/
+    public int  maxLife;
+    public int  life;
+
+    /**************************** OTHER *******************************/
+    String dialogues[] = new String[20];
+    int dialogueIndex = 0;
+
 
     /**************************************************************************
      * Constructor: Entity(GamePanel gp)
@@ -54,7 +63,37 @@ public class Entity {
      * Purpose: Placeholder for subclasses to define specific behavior.
      * Notes: Empty in base class. Override in subclasses.
      ***************************************************************************/
-    public void setAction() {}
+    public void setAction() {
+    }
+
+    /**************************************************************************
+     * Method: speak()
+     * Purpose:
+     * Notes:
+     ***************************************************************************/
+    public void speak() {
+
+        if (dialogues[dialogueIndex] == null) {
+            dialogueIndex = 0;
+        }
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        dialogueIndex++;
+        switch (gp.player.direction) {
+            case "up":
+                direction = "down";
+                break;
+            case "down":
+                direction = "up";
+                break;
+            case "left":
+                direction = "right";
+                break;
+            case "right":
+                direction = "left";
+
+        }
+
+    }
 
     /**************************************************************************
      * Method: update()

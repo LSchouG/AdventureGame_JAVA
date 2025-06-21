@@ -29,10 +29,10 @@ public class OBJ_Chest extends SuperObject {
 
         try {
             // Load chest image
-            image = ImageIO.read(getClass().getResourceAsStream("/images/objects/chest.png"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/chest.png"));
 
             // Scale to tile size
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace(); // Output error to console
         }

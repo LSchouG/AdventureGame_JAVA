@@ -21,7 +21,7 @@ import java.awt.image.BufferedImage;
 public class SuperObject {
 
     /************************** OBJECT PROPERTIES *****************************/
-    public BufferedImage image;      // Object image/sprite
+    public BufferedImage image1, image2, image3;      // Object image/sprite
     public String name;              // Object name identifier
     public boolean collision = false;// True if player can't walk through
 
@@ -53,7 +53,7 @@ public class SuperObject {
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image1, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
 }

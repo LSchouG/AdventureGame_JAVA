@@ -1,4 +1,5 @@
-/** ******************************************************************************
+/**
+ * *****************************************************************************
  * FileName: NPC_OldMan.java
  * Purpose: Represents an NPC (non-player character) - Old Man.
  * Author: Lars S Gregersen
@@ -13,6 +14,7 @@
 package dev.adventuregame.entity;
 
 import dev.adventuregame.GamePanel;
+
 import java.util.Random;
 
 public class NPC_OldMan extends Entity {
@@ -26,6 +28,7 @@ public class NPC_OldMan extends Entity {
         direction = "down"; // default facing direction
         speed = 1;           // slower than player
         getImages();         // load sprite images
+        setDialogue();
     }
 
     /**************************************************************************
@@ -33,18 +36,27 @@ public class NPC_OldMan extends Entity {
      * Purpose: Loads all sprite images for this NPC (idle and walking).
      ***************************************************************************/
     public void getImages() {
-        downStill  = setup("/images/npc/oldManDownStill.png");
-        down1      = setup("/images/npc/oldManDown1.png");
-        down2      = setup("/images/npc/oldManDown2.png");
-        upStill    = setup("/images/npc/oldManUpStill.png");
-        up1        = setup("/images/npc/oldManUp1.png");
-        up2        = setup("/images/npc/oldManUp2.png");
-        leftStill  = setup("/images/npc/oldManLeftStill.png");
-        left1      = setup("/images/npc/oldManLeft1.png");
-        left2      = setup("/images/npc/oldManLeft2.png");
+        downStill = setup("/images/npc/oldManDownStill.png");
+        down1 = setup("/images/npc/oldManDown1.png");
+        down2 = setup("/images/npc/oldManDown2.png");
+        upStill = setup("/images/npc/oldManUpStill.png");
+        up1 = setup("/images/npc/oldManUp1.png");
+        up2 = setup("/images/npc/oldManUp2.png");
+        leftStill = setup("/images/npc/oldManLeftStill.png");
+        left1 = setup("/images/npc/oldManLeft1.png");
+        left2 = setup("/images/npc/oldManLeft2.png");
         rightStill = setup("/images/npc/oldManRightStill.png");
-        right1     = setup("/images/npc/oldManRight1.png");
-        right2     = setup("/images/npc/oldManRight2.png");
+        right1 = setup("/images/npc/oldManRight1.png");
+        right2 = setup("/images/npc/oldManRight2.png");
+    }
+
+    public void setDialogue() {
+
+        dialogues[0] = "Hallo,  lad. ";
+        dialogues[1] = "Uhh our villages is DOOMED \nA band of goblins have taken our children \nAnd all our treasures.";
+        dialogues[2] = "I used to be strong enough to defend us \nBut now...  \nI'm just a old man";
+        dialogues[3] = "If you save our children \nYou can keep the treasure.";
+        dialogues[4] = "Well...\nGood luck to you young man.";
     }
 
     /**************************************************************************
@@ -69,5 +81,11 @@ public class NPC_OldMan extends Entity {
             }
             actionLockCounter = 0;
         }
+    }
+
+    public void speak() {
+        // Do this charctar specific stuff here
+
+        super.speak();
     }
 }

@@ -27,7 +27,7 @@ public class AdventureGame {
         JFrame window = new JFrame();  // use lowercase "window" as the variable name
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close app on exit
         window.setResizable(false); // Disable resizing for consistent layout
-        window.setTitle("My Farm Game");  // Set the window title
+        window.setTitle("Adventure Game");  // Set the window title
 
         // 2. Create and add the main game panel to the window
         GamePanel gamePanel = new GamePanel();

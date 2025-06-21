@@ -1,4 +1,5 @@
-/** ******************************************************************************
+/**
+ * *****************************************************************************
  * FileName: UI.java
  * Purpose: Handles user interface rendering, such as messages and pause screen.
  * Author: Lars S Gregersen
@@ -11,25 +12,27 @@
 
 package dev.adventuregame;
 
+import dev.adventuregame.objects.OBJ_Heart;
+import dev.adventuregame.objects.SuperObject;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 
 public class UI {
 
-    GamePanel gp;
-    Graphics2D g2;
-    Font arial_30, arial860B;
-
     // UI States
     public boolean messageOn = false;
     public String message = "";
-    int massageCounter = 0;
     public boolean gameFinished = false;
-
-    // Timer
-    double playTime = 0;
-    DecimalFormat dFormat = new DecimalFormat("#0.00");
+    BufferedImage fullHeart, halfHeart, blankHeart;
+    public String currentDialogue = "";
+    public int commandNumber = 0;
+    public int titleScreenState = 0; // 0: first screen 1: is the second screen ect.
+    GamePanel gp;
+    Graphics2D g2;
+    Font titelFont, menuFontP, menuFontB, textFont;
+    int massageCounter = 0;
 
     /**************************************************************************
      * Constructor: UI(GamePanel gp)
@@ -37,12 +40,21 @@ public class UI {
      ***************************************************************************/
     public UI(GamePanel gp) {
         this.gp = gp;
-        arial_30 = new Font("Arial", Font.PLAIN, 30);
-        arial860B = new Font("Arial", Font.BOLD, 80);
+        //Title Font
+        titelFont = new Font("Arial", Font.BOLD, 70);
+        // Menu PLAIN Font
+        menuFontP = new Font("Arial", Font.PLAIN, 30);
+        // Menu BOLD Font
+        menuFontB = new Font("Arial", Font.BOLD, 30);
+        // Text Font
+        textFont = new Font("Arial", Font.PLAIN, 20);
 
-        // Example for displaying an image (commented out)
-        // OBJ_Key key = new OBJ_Key(gp);
-        // keyImage = key.image;
+        // CREATE HUD OBJECT
+        SuperObject heart = new OBJ_Heart(gp);
+        fullHeart = heart.image1;
+        halfHeart = heart.image2;
+        blankHeart = heart.image3;
+
     }
 
     /**************************************************************************
@@ -62,16 +74,218 @@ public class UI {
      ***************************************************************************/
     public void draw(Graphics2D g2) {
         this.g2 = g2;
-        g2.setFont(arial_30);
+        g2.setFont(textFont);
         g2.setColor(Color.WHITE);
 
-        if (gp.gameState == gp.playState) {
-            // In-game UI rendering will go here (e.g., timer, inventory, etc.)
+        //TITLE STATE
+        if (gp.gameState == gp.titleState) {
+            drawTitleScreen();
         }
 
+        // PLAY STATE
+        if (gp.gameState == gp.playState) {
+            // In-game UI rendering will go here (e.g., timer, inventory, etc.)
+            drawPlayerLife();
+        }
+
+        // PAUSE STATE
         if (gp.gameState == gp.pauseState) {
+            drawPlayerLife();
             drawPauseScreen();
         }
+
+
+        // DIALOGUE STATE
+        if (gp.gameState == gp.dialogueState) {
+            drawPlayerLife();
+            drawDialogueScreen();
+        }
+    }
+    /**************************************************************************
+     * Method: drawPlayerLife()
+     * Purpose:
+     ***************************************************************************/
+    public void drawPlayerLife(){
+
+
+        int x = gp.tileSize / 2;
+        int y = gp.tileSize / 2;
+        int i = 0;
+
+        while(i < gp.player.maxLife/2){
+            g2.drawImage(blankHeart,x,y,null);
+            i++;
+            x += gp.tileSize;
+        }
+
+        //RESET
+        x = gp.tileSize / 2;
+        y = gp.tileSize / 2;
+        i = 0;
+
+        while(i < gp.player.life){
+            g2.drawImage(halfHeart,x,y,null);
+            i++;
+            if (i < gp.player.life){
+                g2.drawImage(fullHeart,x,y,null);
+            }
+            i++;
+            x += gp.tileSize;
+        }
+    }
+    /**************************************************************************
+     * Method: drawTitleScreen()
+     * Purpose:
+     ***************************************************************************/
+    public void drawTitleScreen() {
+
+        // First screen
+        if (titleScreenState == 0) {
+            g2.setColor(new Color(0, 0, 0));
+            g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+            //TITLE NAME
+            g2.setFont(titelFont);
+            String text = "ADVENTURE GAME";
+            int x = getXForCenter(text);
+            int y = gp.tileSize * 3;
+            //SHADOW
+            g2.setColor(Color.GRAY);
+            g2.drawString(text, x + 3, y + 3);
+
+            // MAIN COLOR
+            g2.setColor(Color.WHITE);
+            g2.drawString(text, x, y);
+
+            // IMAGEs
+            x = (gp.screenWidth / 2) - gp.tileSize;
+            y += gp.tileSize * 2;
+            g2.drawImage(gp.player.downStill, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
+
+            //MENU
+            g2.setFont(menuFontP);
+            text = "NEW GAME";
+            x = getXForCenter(text);
+            y += gp.tileSize * 3;
+            g2.drawString(text, x, y);
+            if (commandNumber == 0) {
+                g2.setFont(menuFontB);
+                g2.drawString(">", x - (gp.tileSize / 2), y);
+            }
+
+            g2.setFont(menuFontP);
+            text = "LOAD GAME";
+            x = getXForCenter(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
+            if (commandNumber == 1) {
+                g2.setFont(menuFontB);
+                g2.drawString(">", x - (gp.tileSize / 2), y);
+            }
+
+            g2.setFont(menuFontP);
+            text = "QUITE";
+            x = getXForCenter(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
+            if (commandNumber == 2) {
+                g2.setFont(menuFontB);
+                g2.drawString(">", x - (gp.tileSize / 2), y);
+            }
+        }
+        else if (titleScreenState == 1) {
+            g2.setColor(Color.WHITE);
+            g2.setFont(titelFont);
+
+            String text = "Select your class!";
+            int x = getXForCenter(text);
+            int y = gp.tileSize * 3;
+            g2.drawString(text, x, y);
+
+
+            g2.setFont(menuFontP);
+            text = "fighter";
+            x = getXForCenter(text);
+            y += gp.tileSize * 3;
+            g2.drawString(text, x, y);
+            if (commandNumber == 0) {
+                g2.setFont(menuFontB);
+                g2.drawString(">", x - (gp.tileSize / 2), y);
+            }
+
+            g2.setFont(menuFontP);
+            text = "Theif";
+            x = getXForCenter(text);
+            y += gp.tileSize * 1;
+            g2.drawString(text, x, y);
+            if (commandNumber == 1) {
+                g2.setFont(menuFontB);
+                g2.drawString(">", x - (gp.tileSize / 2), y);
+            }
+
+            g2.setFont(menuFontP);
+            text = "Sorcerer";
+            x = getXForCenter(text);
+            y += gp.tileSize * 1;
+            g2.drawString(text, x, y);
+            if (commandNumber == 2) {
+                g2.setFont(menuFontB);
+                g2.drawString(">", x - (gp.tileSize / 2), y);
+            }
+
+            g2.setFont(menuFontP);
+            text = "Back";
+            x = getXForCenter(text);
+            y += gp.tileSize * 2;
+            g2.drawString(text, x, y);
+            if (commandNumber == 3) {
+                g2.setFont(menuFontB);
+                g2.drawString(">", x - (gp.tileSize / 2), y);
+            }
+        }
+
+    }
+
+    /**************************************************************************
+     * Method: drawSDialogueScreen()
+     * Purpose:
+     ***************************************************************************/
+    public void drawDialogueScreen() {
+        // window
+        int x = gp.tileSize * 2;
+        int y = gp.tileSize / 2;
+        int width = gp.screenWidth - (gp.tileSize * 4);
+        int height = gp.tileSize * 4;
+        drawSubWindow(x, y, width, height);
+
+        g2.setFont(textFont);
+        x += gp.tileSize;
+        y += gp.tileSize;
+
+        for (String line : currentDialogue.split("\n")) {
+            g2.drawString(line, x, y);
+            y += 30;
+
+        }
+
+    }
+
+    /**************************************************************************
+     * Method: drawSubWindow()
+     * Purpose:
+     ***************************************************************************/
+    public void drawSubWindow(int x, int y, int width, int height) {
+
+        Color c = new Color(0, 0, 0, 180);
+        g2.setColor(c);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
+
+        c = new Color(255, 255, 255);
+        g2.setColor(c);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
 
     /**************************************************************************
@@ -79,7 +293,8 @@ public class UI {
      * Purpose: Displays the "PAUSED" screen centered on screen.
      ***************************************************************************/
     public void drawPauseScreen() {
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+
+        g2.setFont(titelFont);
         String text = "PAUSED";
         int x = getXForCenter(text);
         int y = getYForCenter();
