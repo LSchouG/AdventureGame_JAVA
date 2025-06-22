@@ -12,32 +12,22 @@
 package dev.adventuregame.objects;
 
 import dev.adventuregame.GamePanel;
+import dev.adventuregame.entity.Entity;
+
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
-public class OBJ_Chest extends SuperObject {
-
-    GamePanel gp;
-
-    /**************************************************************************
-     * Constructor: OBJ_Chest(GamePanel gp)
-     * Purpose: Initializes the chest object, loads image, enables collision.
-     ***************************************************************************/
+public class OBJ_Chest extends Entity {
     public OBJ_Chest(GamePanel gp) {
-        this.gp = gp;
+        super(gp);
         name = "Chest";
-
-        try {
-            // Load chest image
-            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/chest.png"));
-
-            // Scale to tile size
-            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
-        } catch (IOException e) {
-            e.printStackTrace(); // Output error to console
-        }
-
-        // Enable collision for this object (player cannot walk through it)
+        down1 = setup("/images/objects/chest.png");
         collision = true;
+        solidArea.x = 0;
+        solidArea.y = 16;
+        solidArea.width = 48;
+        solidArea.height = 48;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 }

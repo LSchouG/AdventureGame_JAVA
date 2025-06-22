@@ -11,32 +11,20 @@
  *******************************************************************************/
 package dev.adventuregame.objects;
 import dev.adventuregame.GamePanel;
-import javax.imageio.ImageIO;
-import java.io.IOException;
+import dev.adventuregame.entity.Entity;
 
-public class OBJ_Door extends SuperObject {
-
-    GamePanel gp;
-
-    /**************************************************************************
-     * Constructor: OBJ_Door(GamePanel gp)
-     * Purpose: Initializes door object with image and collision.
-     ***************************************************************************/
+public class OBJ_Door extends Entity {
     public OBJ_Door(GamePanel gp) {
-        this.gp = gp;
+        super(gp);
         name = "Door";
-
-        try {
-            // Load the door image from resources
-            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/door.png"));
-
-            // Scale the image to match tile size
-            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
-        } catch (IOException e) {
-            e.printStackTrace(); // Output error to console for debugging
-        }
-
-        // Enable collision so the player cannot walk through it
+        down1 = setup("/images/objects/door.png");
         collision = true;
+
+        solidArea.x = 0;
+        solidArea.y = 16;
+        solidArea.width = 48;
+        solidArea.height = 48;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 }

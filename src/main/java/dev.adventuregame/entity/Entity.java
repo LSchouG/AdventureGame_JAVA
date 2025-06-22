@@ -31,7 +31,7 @@ public class Entity {
 
 
     /****************************** STATE *************************************/
-    public String direction;
+    public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNumber = 1;
 
@@ -48,6 +48,9 @@ public class Entity {
     /**************************** OTHER *******************************/
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
+    public BufferedImage image1, image2, image3;      // Object image/sprite
+    public String name;              // Object name identifier
+    public boolean collision = false;// True if player can't walk through
 
 
     /**************************************************************************

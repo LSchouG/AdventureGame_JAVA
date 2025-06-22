@@ -36,9 +36,13 @@ public class AssetSetter {
      ***************************************************************************/
     public void setObject() {
         // Example:
-        // gp.obj[0] = new OBJ_Key(gp);
-        // gp.obj[0].worldX = gp.tileSize * 10;
-        // gp.obj[0].worldY = gp.tileSize * 15;
+        gp.obj[0] = new OBJ_Key(gp);
+        gp.obj[0].worldX = gp.tileSize * 24;
+        gp.obj[0].worldY = gp.tileSize * 18;
+
+        gp.obj[1] = new OBJ_Door(gp);
+        gp.obj[1].worldX = gp.tileSize * 22;
+        gp.obj[1].worldY = gp.tileSize * 25;
     }
 
     /**************************************************************************
@@ -50,5 +54,15 @@ public class AssetSetter {
         gp.npc[0] = new NPC_OldMan(gp);
         gp.npc[0].worldX = gp.tileSize * 21;
         gp.npc[0].worldY = gp.tileSize * 21;
+
+        gp.npc[1] = new NPC_OldMan(gp);
+        gp.npc[1].worldX = gp.tileSize * 39;
+        gp.npc[1].worldY = gp.tileSize * 28;
+
+
+        gp.npc[1] = new NPC_OldMan(gp);
+        gp.npc[1].worldX = gp.tileSize * 40;
+        gp.npc[1].worldY = gp.tileSize * 29;
+
     }
 }

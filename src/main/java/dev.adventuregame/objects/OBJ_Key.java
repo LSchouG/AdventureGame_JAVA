@@ -9,33 +9,15 @@
  * - Loads key sprite and scales it to tile size
  * - Typically used to unlock doors or trigger events
  *******************************************************************************/
-
 package dev.adventuregame.objects;
 
 import dev.adventuregame.GamePanel;
-import javax.imageio.ImageIO;
-import java.io.IOException;
+import dev.adventuregame.entity.Entity;
 
-public class OBJ_Key extends SuperObject {
-
-    GamePanel gp;
-
-    /**************************************************************************
-     * Constructor: OBJ_Key(GamePanel gp)
-     * Purpose: Initializes key object and loads key image.
-     ***************************************************************************/
+public class OBJ_Key extends Entity {
     public OBJ_Key(GamePanel gp) {
-        this.gp = gp;
+        super(gp);
         name = "Key";
-
-        try {
-            // Load the key image from resources
-            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/key.png"));
-
-            // Scale the image to match tile size
-            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
-        } catch (IOException e) {
-            e.printStackTrace(); // Output error to console if loading fails
-        }
+        down1 = setup("/images/objects/key.png");
     }
 }

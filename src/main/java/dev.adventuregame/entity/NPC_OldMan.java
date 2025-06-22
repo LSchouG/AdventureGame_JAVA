@@ -27,8 +27,16 @@ public class NPC_OldMan extends Entity {
         super(gp);
         direction = "down"; // default facing direction
         speed = 1;           // slower than player
+        solidArea.x = 0;
+        solidArea.y = 16;
+        solidArea.width = 48;
+        solidArea.height = 48;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+
         getImages();         // load sprite images
         setDialogue();
+
     }
 
     /**************************************************************************

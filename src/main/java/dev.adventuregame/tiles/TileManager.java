@@ -23,7 +23,7 @@ public final class TileManager {
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[50];
+        tile = new Tile[100];
         mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/images/tiles/worlmap2.csv");
@@ -34,6 +34,8 @@ public final class TileManager {
         //GRASS
         setup(0, "grass", false);
         setup(48, "grassPit", false);
+        setup(50, "grassTeleport", false);
+
 
         //WALL
         setup(1, "wall", true);

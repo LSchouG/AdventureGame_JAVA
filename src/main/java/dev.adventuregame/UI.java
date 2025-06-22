@@ -12,12 +12,11 @@
 
 package dev.adventuregame;
 
+import dev.adventuregame.entity.Entity;
 import dev.adventuregame.objects.OBJ_Heart;
-import dev.adventuregame.objects.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
 
 public class UI {
 
@@ -50,7 +49,7 @@ public class UI {
         textFont = new Font("Arial", Font.PLAIN, 20);
 
         // CREATE HUD OBJECT
-        SuperObject heart = new OBJ_Heart(gp);
+        Entity heart = new OBJ_Heart(gp);
         fullHeart = heart.image1;
         halfHeart = heart.image2;
         blankHeart = heart.image3;

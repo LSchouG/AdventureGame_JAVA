@@ -117,6 +117,7 @@ public class Player extends Entity {
 
             // CHECK EVENT
             gp.eventHandler.checkEvent();
+            gp.keyH.enterPressed = false;
 
             // 3. Move player if no collision
             if (!collisionOn) {
@@ -168,8 +169,6 @@ public class Player extends Entity {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
             }
-            gp.keyH.enterPressed = false;
-
         }
     }
 

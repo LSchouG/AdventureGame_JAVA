@@ -12,29 +12,12 @@
 package dev.adventuregame.objects;
 
 import dev.adventuregame.GamePanel;
-import javax.imageio.ImageIO;
-import java.io.IOException;
+import dev.adventuregame.entity.Entity;
 
-public class OBJ_Boots extends SuperObject {
-
-    GamePanel gp;
-
-    /**************************************************************************
-     * Constructor: OBJ_Boots(GamePanel gp)
-     * Purpose: Initializes the Boots object, sets name and loads sprite.
-     ***************************************************************************/
+public class OBJ_Boots extends Entity {
     public OBJ_Boots(GamePanel gp) {
-        this.gp = gp;
+        super(gp);
         name = "Boots";
-
-        try {
-            // Load the boots image
-            image1 = ImageIO.read(getClass().getResourceAsStream("/images/objects/boots.png"));
-
-            // Scale the image to tile size
-            image1 = uTool.scaleImage(image1, gp.tileSize, gp.tileSize);
-        } catch (IOException e) {
-            e.printStackTrace(); // Output error to console for debugging
-        }
+        down1 = setup("/images/objects/boots.png");
     }
 }
