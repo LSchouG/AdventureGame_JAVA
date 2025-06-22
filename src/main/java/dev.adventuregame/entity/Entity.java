@@ -19,38 +19,36 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-
-    /****************************** POSITIONING *******************************/
-    public int worldX, worldY; // world coordinates
-    public int screenX, screenY; // on-screen position
-    public int speed;
-    public int actionLockCounter;
-
-    /******************************* SPRITES **********************************/
-    public BufferedImage downStill, down1, down2, upStill, up1, up2, leftStill, left1, left2, rightStill, right1, right2;
-
-
-    /****************************** STATE *************************************/
-    public String direction = "down";
-    public int spriteCounter = 0;
-    public int spriteNumber = 1;
-
-    /**************************** COLLISION BOX *******************************/
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // collision bounds
-    public int solidAreaDefaultX, solidAreaDefaultY;
-    public boolean collisionOn = false;
     protected GamePanel gp;
 
-    /**************************** CHARACTER STATUS *******************************/
+    public BufferedImage downStill, down1, down2, upStill, up1, up2, leftStill, left1, left2, rightStill, right1, right2;
+    public BufferedImage attachUp, attachDown, attachLeft, attachRight;
+    public BufferedImage image1, image2, image3;      // Object image/sprite
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // collision bounds
+    public int solidAreaDefaultX, solidAreaDefaultY;
+    public boolean collision = false;
+    String dialogues[] = new String[20];
+
+    /** STATE **/
+    public int worldX, worldY;
+    public String direction = "down";
+    public int spriteNumber = 1;
+    int dialogueIndex = 0;
+    public boolean collisionOn = false;
+    public boolean invincible = false;
+    boolean attaching = false;
+
+    /** COUNTER **/
+    public int spriteCounter = 0;
+    public int actionLockCounter;
+    public int invincibleCounter;
+
+    /** CHARACTER ATTRIBUTES **/
+    public String name; // Object name identifier
+    public int type;// 0 = player, 1 = npc, 2 = monster
+    public int speed;
     public int  maxLife;
     public int  life;
-
-    /**************************** OTHER *******************************/
-    String dialogues[] = new String[20];
-    int dialogueIndex = 0;
-    public BufferedImage image1, image2, image3;      // Object image/sprite
-    public String name;              // Object name identifier
-    public boolean collision = false;// True if player can't walk through
 
 
     /**************************************************************************
@@ -109,7 +107,15 @@ public class Entity {
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
         gp.collisionChecker.checkObject(this, false);
-        gp.collisionChecker.checkEntity(this);
+        gp.collisionChecker.checkEntity(this, gp.npc);
+        gp.collisionChecker.checkEntity(this, gp.monster);
+        boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
+
+        if (this.type == 2 && contactPlayer == true && gp.player.invincible == false){
+            gp.player.life--;
+            gp.player.invincible = true;
+            gp.player.invincibleCounter = 0;
+        }
 
         // 3. Move player if no collision
         if (!collisionOn) {
@@ -194,7 +200,7 @@ public class Entity {
      * Inputs: imagePath - relative path to the image file
      * Outputs: Scaled BufferedImage
      ***************************************************************************/
-    public BufferedImage setup(String imagePath) {
+    public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
         BufferedImage scaledImage = null;
@@ -203,7 +209,7 @@ public class Entity {
             // Load image
             image = ImageIO.read(getClass().getResourceAsStream(imagePath));
             // Scale image to tile size
-            scaledImage = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            scaledImage = uTool.scaleImage(image, width, height);
         } catch (Exception e) {
             throw new RuntimeException("Failed to load image: " + imagePath, e);
         }

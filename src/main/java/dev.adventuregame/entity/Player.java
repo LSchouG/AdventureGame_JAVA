@@ -1,4 +1,5 @@
-/** ******************************************************************************
+/**
+ * *****************************************************************************
  * FileName: Player.java
  * Purpose: Represents the player character with movement, collision, and animation.
  * Author: Lars S Gregersen
@@ -13,20 +14,15 @@ package dev.adventuregame.entity;
 
 import dev.adventuregame.GamePanel;
 import dev.adventuregame.KeyHandler;
-import dev.adventuregame.UtilityTool;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
-    KeyHandler keyH;
-
     public final int screenX;
     public final int screenY;
-
+    KeyHandler keyH;
     int standCounter = 0;
 
     /**************************************************************************
@@ -35,6 +31,7 @@ public class Player extends Entity {
      ***************************************************************************/
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
+        type = 0;
         this.keyH = keyH;
 
         // Place player in center of screen
@@ -51,7 +48,8 @@ public class Player extends Entity {
         solidArea.height = 15;
 
         setDefaultValues();
-        getImages();
+        getPlayerImages();
+        getPlayerAttachImages();
     }
 
     /**************************************************************************
@@ -71,19 +69,30 @@ public class Player extends Entity {
      * Method: getImages()
      * Purpose: Load and assign all directional sprite images.
      ***************************************************************************/
-    public void getImages() {
-        downStill  = setup("/images/player/down_still_boy.png");
-        down1      = setup("/images/player/down_1_boy.png");
-        down2      = setup("/images/player/down_2_boy.png");
-        upStill    = setup("/images/player/up_still_boy.png");
-        up1        = setup("/images/player/up_1_boy.png");
-        up2        = setup("/images/player/up_2_boy.png");
-        leftStill  = setup("/images/player/left_still_boy.png");
-        left1      = setup("/images/player/left_1_boy.png");
-        left2      = setup("/images/player/left_2_boy.png");
-        rightStill = setup("/images/player/right_still_boy.png");
-        right1     = setup("/images/player/right_1_boy.png");
-        right2     = setup("/images/player/right_2_boy.png");
+    public void getPlayerImages() {
+        downStill = setup("/images/player/down_still_boy.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/player/down_1_boy.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/player/down_2_boy.png", gp.tileSize, gp.tileSize);
+        upStill = setup("/images/player/up_still_boy.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/player/up_1_boy.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/player/up_2_boy.png", gp.tileSize, gp.tileSize);
+        leftStill = setup("/images/player/left_still_boy.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/player/left_1_boy.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/player/left_2_boy.png", gp.tileSize, gp.tileSize);
+        rightStill = setup("/images/player/right_still_boy.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/player/right_1_boy.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/player/right_2_boy.png", gp.tileSize, gp.tileSize);
+    }
+
+    /**************************************************************************
+     * Method: getImages()
+     * Purpose: Load and assign all directional sprite images.
+     ***************************************************************************/
+    public void getPlayerAttachImages() {
+        attachUp = setup("/images/player/attach_up.png", gp.tileSize, gp.tileSize * 2);
+        attachDown = setup("/images/player/attach_down.png", gp.tileSize, gp.tileSize * 2);
+        attachLeft = setup("/images/player/attach_left.png", gp.tileSize * 2, gp.tileSize);
+        attachRight = setup("/images/player/attach_right.png", gp.tileSize * 2, gp.tileSize);
     }
 
     /**************************************************************************
@@ -91,36 +100,42 @@ public class Player extends Entity {
      * Purpose: Handle player input, movement, collisions, and animation.
      ***************************************************************************/
     public void update() {
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+
+        if (attaching == true){ attaching(); }
+
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
 
             // 1. Update direction
-            if (keyH.upPressed) {
-                direction = "up";
-            } else if (keyH.downPressed) {
-                direction = "down";
-            } else if (keyH.leftPressed) {
-                direction = "left";
-            } else if (keyH.rightPressed) {
-                direction = "right";
-            }
-            spriteNumber = 1; // start walking animation
+            if (keyH.upPressed) {direction = "up";}
+            else if (keyH.downPressed) {direction = "down";}
+            else if (keyH.leftPressed) {direction = "left";}
+            else if (keyH.rightPressed) {direction = "right";}
+            if(spriteNumber == 0){spriteNumber = 1;}
 
-            // 2. Check tile collisions
+            // 2 CHECK
+            // COLLISION CHECK TILE
             collisionOn = false;
             gp.collisionChecker.checkTile(this);
+
+            // COLLISION CHECK OBJECT
             int objIndex = gp.collisionChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
-            // 2.1. Check player to entity collisions
-            int ncpIndex = gp.collisionChecker.checkPlayer(this, gp.npc);
+            // COLLISION CHECK NPC
+            int ncpIndex = gp.collisionChecker.checkEntity(this, gp.npc);
             interactNPC(ncpIndex);
 
-            // CHECK EVENT
+            // COLLISION CHECK ENTITY
+            int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+            interactNPC(monsterIndex);
+            contactMonster(monsterIndex);
+
+
+            // COLLISION CHECK TILE EVENT
             gp.eventHandler.checkEvent();
-            gp.keyH.enterPressed = false;
 
             // 3. Move player if no collision
-            if (!collisionOn) {
+            if (!collisionOn && !keyH.enterPressed) {
                 switch (direction) {
                     case "up" -> worldY -= speed;
                     case "down" -> worldY += speed;
@@ -129,21 +144,42 @@ public class Player extends Entity {
                 }
             }
 
-            // 4. Handle sprite animation timing
+            gp.keyH.enterPressed = false;
+
+            // Increase the counter
             spriteCounter++;
+
+            // Every 13 frames, switch the sprite between 1 and 2
             if (spriteCounter > 12) {
-                spriteNumber = (spriteNumber == 1) ? 2 : 1;
+                if (spriteNumber == 1)
+                {
+                    spriteNumber = 2;
+                } else if (spriteNumber == 2)
+                {
+                    spriteNumber = 1;
+                }
+
+                // Reset the counter
                 spriteCounter = 0;
             }
-
         } else {
             // Player standing still
             standCounter++;
             if (standCounter > 20) {
-                spriteNumber = 0; // idle frame
+                spriteNumber = 0;
                 standCounter = 0;
             }
         }
+
+        // this needs to be outside of key if statment
+        if (invincible == true) {
+            invincibleCounter++;
+            if (invincibleCounter > 100) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
     }
 
     /**************************************************************************
@@ -162,12 +198,56 @@ public class Player extends Entity {
      * Purpose:
      * Inputs:
      ***************************************************************************/
-    public void interactNPC(int i){
-        if (i != 999){
-            if (gp.keyH.enterPressed == true)
-            {
+     public void attaching(){
+         spriteCounter++;
+         if (spriteCounter >= 3){
+             spriteNumber = 1;
+         }
+         if (spriteCounter > 3 && spriteCounter < 12){
+             spriteNumber = 2;
+         }
+         if (spriteCounter >= 12 && spriteCounter < 15){
+             spriteNumber = 1;
+         }
+         if (spriteCounter >= 15 && spriteCounter < 24){
+             spriteNumber = 2;
+         }
+         if (spriteCounter >= 24){
+             spriteNumber = 1;
+             spriteCounter = 0;
+             attaching = false;
+         }
+     }
+
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     ***************************************************************************/
+    public void interactNPC(int i) {
+
+        if (gp.keyH.enterPressed == true) {
+
+            if (i != 999) {
+
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
+            } else {
+                attaching = true;
+            }
+        }
+    }
+
+    /**************************************************************************
+     * Method: contactMonster()
+     * Purpose:
+     * Inputs:
+     ***************************************************************************/
+    public void contactMonster(int i) {
+        if (i != 999) {
+            if (!invincible) {
+                life -= 1;
+                invincible = true;
             }
         }
     }
@@ -181,40 +261,61 @@ public class Player extends Entity {
         BufferedImage image = null;
 
         switch (direction) {
-            case "down" -> {
-                image = switch (spriteNumber) {
-                    case 0 -> downStill;
-                    case 1 -> down1;
-                    case 2 -> down2;
-                    default -> null;
-                };
-            }
-            case "up" -> {
-                image = switch (spriteNumber) {
-                    case 0 -> upStill;
-                    case 1 -> up1;
-                    case 2 -> up2;
-                    default -> null;
-                };
-            }
-            case "right" -> {
-                image = switch (spriteNumber) {
-                    case 0 -> rightStill;
-                    case 1 -> right1;
-                    case 2 -> right2;
-                    default -> null;
-                };
-            }
-            case "left" -> {
-                image = switch (spriteNumber) {
-                    case 0 -> leftStill;
-                    case 1 -> left1;
-                    case 2 -> left2;
-                    default -> null;
-                };
-            }
+            case "down":
+                if (attaching == false){
+                    if (spriteNumber == 0){image = downStill;}
+                    if (spriteNumber == 1){image = down1;}
+                    if (spriteNumber == 2){image = down2;}
+                }
+                if (attaching == true){
+                    if (spriteNumber == 1){image = down1;}
+                    if (spriteNumber == 2){image = attachDown;}
+                } break;
+            case "up":
+                if (attaching == false){
+                    if (spriteNumber == 0){image = upStill;}
+                    if (spriteNumber == 1){image = up1;}
+                    if (spriteNumber == 2){image = up2;}
+                }
+                if (attaching == true){
+                    if (spriteNumber == 1){image = up1;}
+                    if (spriteNumber == 2){image = attachUp;}
+                } break;
+            case "right":
+                if (attaching == false){
+                    if (spriteNumber == 0){image = rightStill;}
+                    if (spriteNumber == 1){image = right1;}
+                    if (spriteNumber == 2){image = right2;}
+                }
+                if (attaching == true){
+                    if (spriteNumber == 1){image = right1;}
+                    if (spriteNumber == 2){image = attachRight;}
+                } break;
+            case "left":
+                if (attaching == false){
+                    if (spriteNumber == 0){image = leftStill;}
+                    if (spriteNumber == 1){image = left1;}
+                    if (spriteNumber == 2){image = left2;}
+                }
+                if (attaching == true){
+                    if (spriteNumber == 1){image = left1;}
+                    if (spriteNumber == 2){image = attachLeft;}
+                } break;
+            default:
+                if (attaching == false){
+                    image = downStill;
+                }
+                if (attaching == true){
+                    if (spriteNumber == 0){image = downStill;}
+                    if (spriteNumber == 1){image = down1;}
+                    if (spriteNumber == 2){image = attachDown;}
+                } break;
         }
 
+        if (invincible == true) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
         g2.drawImage(image, screenX, screenY, null); // draw sprite
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 }

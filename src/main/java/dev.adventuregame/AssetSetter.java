@@ -12,6 +12,7 @@
 package dev.adventuregame;
 
 import dev.adventuregame.entity.NPC_OldMan;
+import dev.adventuregame.monster.MON_GreenSlime;
 import dev.adventuregame.objects.OBJ_Boots;
 import dev.adventuregame.objects.OBJ_Chest;
 import dev.adventuregame.objects.OBJ_Door;
@@ -38,10 +39,10 @@ public class AssetSetter {
         // Example:
         gp.obj[0] = new OBJ_Key(gp);
         gp.obj[0].worldX = gp.tileSize * 24;
-        gp.obj[0].worldY = gp.tileSize * 18;
+        gp.obj[0].worldY = gp.tileSize * 19;
 
         gp.obj[1] = new OBJ_Door(gp);
-        gp.obj[1].worldX = gp.tileSize * 22;
+        gp.obj[1].worldX = gp.tileSize * 21;
         gp.obj[1].worldY = gp.tileSize * 25;
     }
 
@@ -60,9 +61,15 @@ public class AssetSetter {
         gp.npc[1].worldY = gp.tileSize * 28;
 
 
-        gp.npc[1] = new NPC_OldMan(gp);
-        gp.npc[1].worldX = gp.tileSize * 40;
-        gp.npc[1].worldY = gp.tileSize * 29;
+        gp.npc[3] = new NPC_OldMan(gp);
+        gp.npc[3].worldX = gp.tileSize * 40;
+        gp.npc[3].worldY = gp.tileSize * 29;
+
+    }
+    public void setMonster(){
+        gp.monster[0] = new MON_GreenSlime(gp);
+        gp.monster[0].worldX = gp.tileSize * 21;
+        gp.monster[0].worldY = gp.tileSize * 22;
 
     }
 }

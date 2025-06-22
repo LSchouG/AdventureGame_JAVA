@@ -60,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
+    public Entity monster[] = new Entity[20];
     ArrayList<Entity> entityList = new ArrayList<>();
 
     /**************************** GAME STATE **********************************/
@@ -90,6 +91,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         aSetter.setObject();
         aSetter.setNPC();
+        aSetter.setMonster();
         // playMusic(0); // play background music track 0
         //stopMusic();  // optionally stop it immediately
         gameState = titleState;
@@ -147,6 +149,13 @@ public class GamePanel extends JPanel implements Runnable {
                     npc[i].update();
                 }
             }
+            // Monster updates only if game is running
+            for (int i =0; i < monster.length; i++)
+            {
+                if (monster[i] != null){
+                    monster[i].update();
+                }
+            }
         } else if (gameState == pauseState) {
             // pause logic here if needed
         }
@@ -190,6 +199,12 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            for(int i = 0; i < monster.length; i++){
+                if(monster[i] != null){
+                    entityList.add(monster[i]);
+                }
+            }
+
             //SORT
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
@@ -204,9 +219,7 @@ public class GamePanel extends JPanel implements Runnable {
                 entityList.get(i).draw(g2);
             }
             // EMPTY LIST
-            for(int i = 0; i < entityList.size(); i++){
-                entityList.remove(i);
-            }
+           entityList.clear();
 
 
             // 5. Draw UI
