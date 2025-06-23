@@ -168,7 +168,7 @@ public class GamePanel extends JPanel implements Runnable {
     /**************************************************************************
      * Method: paintComponent(Graphics g)
      * Purpose: Handles all rendering (tiles, objects, entities, UI).
-     * Inputs: g - the graphics context
+     * Inputs: g - the graphics context.
      ***************************************************************************/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
