@@ -50,122 +50,160 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
 
         // TITLE STATE
-        if (gp.gameState == gp.titleState) {
-            if (gp.ui.titleScreenState == 0) {
-                if (code == KeyEvent.VK_W) {
-                    gp.ui.commandNumber--;
-                    if (gp.ui.commandNumber < 0) {
-                        gp.ui.commandNumber = 2;
-                    }
-                }
-                if (code == KeyEvent.VK_S) {
-                    gp.ui.commandNumber++;
-                    if (gp.ui.commandNumber > 2) {
-                        gp.ui.commandNumber = 0;
-                    }
-                }
-                if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                    if (gp.ui.commandNumber == 0) {
-                        gp.ui.titleScreenState = 1;
-                    } else if (gp.ui.commandNumber == 1) {
-
-
-                        // ADD LATER
-
-
-                    } else if (gp.ui.commandNumber == 2) {
-                        System.exit(0);
-                    }
-                }
-            } else if (gp.ui.titleScreenState == 1) {
-                if (code == KeyEvent.VK_W) {
-                    gp.ui.commandNumber--;
-                    if (gp.ui.commandNumber < 0) {
-                        gp.ui.commandNumber = 3;
-                    }
-                }
-                if (code == KeyEvent.VK_S) {
-                    gp.ui.commandNumber++;
-                    if (gp.ui.commandNumber > 3) {
-                        gp.ui.commandNumber = 0;
-                    }
-                }
-                if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                    if (gp.ui.commandNumber == 0) {
-                        //Figther
-                        gp.gameState = gp.playState;
-                        gp.playMusic(0);
-
-                    }
-                    else if (gp.ui.commandNumber == 1) {
-                        //Theif
-                        gp.gameState = gp.playState;
-                        gp.playMusic(0);
-                    }
-                    else if (gp.ui.commandNumber == 2) {
-                        //Sorcerer
-                        gp.gameState = gp.playState;
-                        gp.playMusic(0);
-                    }
-                    else if (gp.ui.commandNumber == 3) {
-                        gp.ui.titleScreenState = 0;
-                    }
-                }
-
-            }else if (gp.ui.titleScreenState == 2) {
-
-                // ADD LATER
-
-            }
-        }
+        if (gp.gameState == gp.titleState) {titleState(code);}
 
         // PLAY STATE
-        else if (gp.gameState == gp.playState) {
-            // Movement Controls (WASD)
-            if (code == KeyEvent.VK_W) {
-                upPressed = true;
-            }
-            if (code == KeyEvent.VK_S) {
-                downPressed = true;
-            }
-            if (code == KeyEvent.VK_A) {
-                leftPressed = true;
-            }
-            if (code == KeyEvent.VK_D) {
-                rightPressed = true;
-            }
-            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                enterPressed = true;
-            }
+        else if (gp.gameState == gp.playState) {playState(code);}
 
-            // Toggle play/pause state with P key
-            if (code == KeyEvent.VK_P) {
-                gp.gameState = gp.pauseState;
-            }
-            if (code == KeyEvent.VK_ESCAPE) {
-                System.exit(0);
-            }
-
-            // Debug: Toggle draw time display with T key
-            if (code == KeyEvent.VK_T) {
-                checkDrawTime = !checkDrawTime;
-            }
-        }
         // PAUSE STATE
-        if (gp.gameState == gp.pauseState) {
-            if (code == KeyEvent.VK_P) {
-                gp.gameState = gp.playState;
-            }
-        }
-
+        else if (gp.gameState == gp.pauseState) {pauseState(code);}
 
         // DIALOGUE STATE
-        if (gp.gameState == gp.dialogueState) {
-            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                gp.gameState = gp.playState;
+       else if (gp.gameState == gp.dialogueState) {dialogueState(code);}
+
+        // CHARACTER STATE
+        else if (gp.gameState == gp.characterState) {characterState(code);}
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void titleState(int code){
+        if (gp.ui.titleScreenState == 0) {
+            if (code == KeyEvent.VK_W) {
+                gp.ui.commandNumber--;
+                if (gp.ui.commandNumber < 0) {
+                    gp.ui.commandNumber = 2;
+                }
             }
+            if (code == KeyEvent.VK_S) {
+                gp.ui.commandNumber++;
+                if (gp.ui.commandNumber > 2) {
+                    gp.ui.commandNumber = 0;
+                }
+            }
+            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+                if (gp.ui.commandNumber == 0) {
+                    gp.ui.titleScreenState = 1;
+                } else if (gp.ui.commandNumber == 1) {
+                        // ADD LATER Load GAME save
+                } else if (gp.ui.commandNumber == 2) {
+                    System.exit(0);
+                }
+            }
+        } else if (gp.ui.titleScreenState == 1) {
+            if (code == KeyEvent.VK_W) {
+                gp.ui.commandNumber--;
+                if (gp.ui.commandNumber < 0) {
+                    gp.ui.commandNumber = 3;
+                }
+            }
+            if (code == KeyEvent.VK_S) {
+                gp.ui.commandNumber++;
+                if (gp.ui.commandNumber > 3) {
+                    gp.ui.commandNumber = 0;
+                }
+            }
+            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+                if (gp.ui.commandNumber == 0) {
+                    //Figther
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+
+                }
+                else if (gp.ui.commandNumber == 1) {
+                    //Theif
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+                }
+                else if (gp.ui.commandNumber == 2) {
+                    //Sorcerer
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+                }
+                else if (gp.ui.commandNumber == 3) {
+                    gp.ui.titleScreenState = 0;
+                }
+            }
+
+        }else if (gp.ui.titleScreenState == 2) {
+
+            // ADD LATER
+
         }
     }
+
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void playState( int code){
+        // Movement Controls (WASD)
+        if (code == KeyEvent.VK_W) {
+            upPressed = true;
+        }
+        if (code == KeyEvent.VK_S) {
+            downPressed = true;
+        }
+        if (code == KeyEvent.VK_A) {
+            leftPressed = true;
+        }
+        if (code == KeyEvent.VK_D) {
+            rightPressed = true;
+        }
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            enterPressed = true;
+        }
+        // Toggle play/pause state with P key
+        if (code == KeyEvent.VK_P) {
+            gp.gameState = gp.pauseState;
+        }
+        // opens up CharacterSTATE
+        if (code == KeyEvent.VK_C) {
+            gp.gameState = gp.characterState;
+        }
+
+        if (code == KeyEvent.VK_ESCAPE) {
+            System.exit(0);
+        }
+
+        // Debug: Toggle draw time display with T key
+        if (code == KeyEvent.VK_T) {
+            checkDrawTime = !checkDrawTime;
+        }
+    }
+
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void pauseState(int code){
+        if (code == KeyEvent.VK_P) {
+            gp.gameState = gp.playState;
+        }
+    }
+
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void dialogueState(int code){
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            gp.gameState = gp.playState;
+        }
+    }
+
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void characterState(int code){
+        if (code == KeyEvent.VK_C){
+            gp.gameState = gp.playState;
+        }
+    }
+
+
 
     /**************************************************************************
      * Method: keyReleased(KeyEvent e)

@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Entity {
+public class  Entity {
     protected GamePanel gp;
 
     public BufferedImage downStill, down1, down2, upStill, up1, up2, leftStill, left1, left2, rightStill, right1, right2;
@@ -37,22 +37,41 @@ public class Entity {
     int dialogueIndex = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;
-    public boolean attaching = false;
+    public boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
+    boolean hpBarOn = false;
 
     /** COUNTER **/
     public int spriteCounter = 0;
     public int actionLockCounter;
     public int invincibleCounter;
     int dyingCounter = 0;
+    int hpBarCounter = 0;
 
     /** CHARACTER ATTRIBUTES **/
     public String name; // Object name identifier
     public int type;// 0 = player, 1 = npc, 2 = monster
+    public int chosenClass;// 0 = fighter, 1 = Theif, 2 = Sorcerer
     public int speed;
     public int  maxLife;
     public int  life;
+    public  int level;
+    public int strength;
+    public int dexterity;
+    public int attack;
+    public int  defense;
+    public int  magic;
+    public  int exp;
+    public int nextLevelExp;
+    public int  gold;
+    public Entity currentWeapon;
+    public Entity currentShield;
+
+    // ITEM ATTRIBUTES
+    public int attackValue;
+    public int  defenseValue;
+    public int  magicValue;
 
 
     /**************************************************************************
@@ -68,8 +87,14 @@ public class Entity {
      * Purpose: Placeholder for subclasses to define specific behavior.
      * Notes: Empty in base class. Override in subclasses.
      ***************************************************************************/
-    public void setAction() {
-    }
+    public void setAction() {}
+    /**************************************************************************
+     * Method: damageReaction()
+     * Purpose:
+     * Notes:
+     ***************************************************************************/
+    public void damageReaction() {}
+
 
     /**************************************************************************
      * Method: speak()
@@ -116,7 +141,13 @@ public class Entity {
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 
         if (this.type == 2 && contactPlayer == true && gp.player.invincible == false){
-            gp.player.life--;
+            gp.playSE(6);
+
+            int damage = attack - gp.player.defense;
+            if (damage < 0){
+                damage = 0;
+            }
+            gp.player.life -= damage;
             gp.player.invincible = true;
             gp.player.invincibleCounter = 0;
         }
@@ -201,16 +232,34 @@ public class Entity {
                 }
             }
 
+            // MONTER HEALTH BAR
+            if (type == 2 && hpBarOn == true){
+                double oneScale = (double)gp.tileSize/maxLife;
+                double hpBarValue = oneScale * life;
+
+                g2.setColor(new Color(35,35,35));
+                g2.fillRect(screenX - 1, screenY - 16, gp.tileSize + 2, 10 + 2);
+                g2.setColor(new Color(250,0,30));
+                g2.fillRect(screenX, screenY - 15, (int)hpBarValue, 10);
+                hpBarCounter++;
+                if (hpBarCounter > 600){
+                    hpBarOn = false;
+                    hpBarCounter = 0;
+                }
+            }
+
             // Draw the image on screen
             if (invincible == true) {
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+                hpBarOn = true;
+                hpBarCounter = 0;
+                changeAlpha(g2, 0.3f);
             }
             if (dying == true){
                 dyingAnimation(g2);
             }
 
             g2.drawImage(image, screenX, screenY, null); // draw sprite
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            changeAlpha(g2, 1f);
 
         }
     }

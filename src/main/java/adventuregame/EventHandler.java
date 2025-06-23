@@ -182,13 +182,15 @@ public class EventHandler {
      * Inputs: gameState - the dialogue state to switch to
      ***************************************************************************/
     public void healingBed(int col, int row, int gameState) {
+        if (gp.keyH.enterPressed) {
         gp.gameState = gameState;
+        gp.player.attackCanceled = true;
         gp.ui.currentDialogue = "You took a nap and feel better!";
         gp.player.life = gp.player.maxLife;
         gp.keyH.enterPressed = false;
         if (gp.keyH.enterPressed) {}
         canTouchEvent = false;
-    }
+    }}
 
     /**************************************************************************
      * Method: teleport(int gameState)
@@ -198,6 +200,7 @@ public class EventHandler {
     public void teleport(int gameState) {
         if (gp.keyH.enterPressed) {
             gp.gameState = gameState;
+            gp.player.attackCanceled = true;
             gp.ui.currentDialogue = "Teleport!";
             gp.player.worldX = gp.tileSize*37;
             gp.player.worldY = gp.tileSize*20;
