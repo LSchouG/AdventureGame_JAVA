@@ -9,7 +9,7 @@
  * - Can be extended for other image/graphics-related utilities
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

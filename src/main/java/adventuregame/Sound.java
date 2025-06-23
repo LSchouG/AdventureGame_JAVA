@@ -9,7 +9,7 @@
  * - Includes methods to load, play, loop, and stop audio clips
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
 import java.net.URL;
 import javax.sound.sampled.AudioInputStream;

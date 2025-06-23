@@ -11,7 +11,7 @@
  * - Supports debug toggle with T key
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -120,7 +120,7 @@ public class KeyHandler implements KeyListener {
         }
 
         // PLAY STATE
-        if (gp.gameState == gp.playState) {
+        else if (gp.gameState == gp.playState) {
             // Movement Controls (WASD)
             if (code == KeyEvent.VK_W) {
                 upPressed = true;

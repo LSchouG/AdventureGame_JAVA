@@ -1,4 +1,4 @@
-package dev.adventuregame;
+package adventuregame;
 
 import java.awt.*;
 

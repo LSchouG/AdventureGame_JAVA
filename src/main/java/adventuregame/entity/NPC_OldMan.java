@@ -11,9 +11,9 @@
  * - Uses random movement behavior for idle wandering
  *******************************************************************************/
 
-package dev.adventuregame.entity;
+package adventuregame.entity;
 
-import dev.adventuregame.GamePanel;
+import adventuregame.GamePanel;
 
 import java.util.Random;
 

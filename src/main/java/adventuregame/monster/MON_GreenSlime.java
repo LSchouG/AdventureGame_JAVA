@@ -1,7 +1,7 @@
-package dev.adventuregame.monster;
+package adventuregame.monster;
 
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.entity.Entity;
+import adventuregame.GamePanel;
+import adventuregame.entity.Entity;
 
 import java.util.Random;
 

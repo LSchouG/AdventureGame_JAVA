@@ -9,7 +9,7 @@
  * - Supports event types like pit traps and healing beds
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
 public class EventHandler {
 

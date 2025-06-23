@@ -10,10 +10,10 @@
  * - Can be extended by more specific entities
  *******************************************************************************/
 
-package dev.adventuregame.entity;
+package adventuregame.entity;
 
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.UtilityTool;
+import adventuregame.GamePanel;
+import adventuregame.UtilityTool;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -25,6 +25,7 @@ public class Entity {
     public BufferedImage attachUp, attachDown, attachLeft, attachRight;
     public BufferedImage image1, image2, image3;      // Object image/sprite
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // collision bounds
+    public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
     String dialogues[] = new String[20];
@@ -36,12 +37,15 @@ public class Entity {
     int dialogueIndex = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;
-    boolean attaching = false;
+    public boolean attaching = false;
+    public boolean alive = true;
+    public boolean dying = false;
 
     /** COUNTER **/
     public int spriteCounter = 0;
     public int actionLockCounter;
     public int invincibleCounter;
+    int dyingCounter = 0;
 
     /** CHARACTER ATTRIBUTES **/
     public String name; // Object name identifier
@@ -133,6 +137,14 @@ public class Entity {
             spriteNumber = (spriteNumber == 1) ? 2 : 1;
             spriteCounter = 0;
         }
+        // this needs to be outside of key if statment
+        if (invincible == true) {
+            invincibleCounter++;
+            if (invincibleCounter > 40) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
 
     /**************************************************************************
@@ -190,7 +202,16 @@ public class Entity {
             }
 
             // Draw the image on screen
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            if (invincible == true) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+            }
+            if (dying == true){
+                dyingAnimation(g2);
+            }
+
+            g2.drawImage(image, screenX, screenY, null); // draw sprite
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
         }
     }
 
@@ -216,4 +237,40 @@ public class Entity {
 
         return scaledImage;
     }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     * Outputs:
+     ***************************************************************************/
+    public void  dyingAnimation(Graphics2D g2) {
+        int i = 5;
+        dyingCounter++;
+        if (dyingCounter <= i) {changeAlpha(g2, 0.0f);}
+        if (dyingCounter > i && dyingCounter <= i*2) {changeAlpha(g2, 1f);}
+        if (dyingCounter > i*2 && dyingCounter <= i*3) {changeAlpha(g2, 0.0f);}
+        if (dyingCounter > i*3 && dyingCounter <= i*4) {changeAlpha(g2, 1f);}
+        if (dyingCounter > i*4 && dyingCounter <= i*5) {changeAlpha(g2, 0.0f);}
+        if (dyingCounter > i*5 && dyingCounter <= i*6) {changeAlpha(g2, 1f);}
+        if (dyingCounter > i*6 && dyingCounter <= i*7) {changeAlpha(g2, 0.0f);}
+        if (dyingCounter > i*7 && dyingCounter <= i*8) {changeAlpha(g2, 1f);}
+        if (dyingCounter > i*8){
+            System.out.println("Hallo World");
+            dying = false;
+            alive = false;
+        dyingCounter = 0;
+        }
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     * Outputs:
+     ***************************************************************************/
+    public  void  changeAlpha(Graphics2D g2, float alphaValue) {
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+    }
+
+
+
 }

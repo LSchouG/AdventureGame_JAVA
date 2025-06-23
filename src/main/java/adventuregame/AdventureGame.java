@@ -9,7 +9,7 @@
  * - Initializes GamePanel and adds it to the window
  * - Starts the game loop and sets up initial game configuration
  *******************************************************************************/
-package dev.adventuregame;
+package adventuregame;
 
 import javax.swing.JFrame;
 
@@ -25,6 +25,7 @@ public class AdventureGame {
 
         // 1. Create the main application window
         JFrame window = new JFrame();  // use lowercase "window" as the variable name
+
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close app on exit
         window.setResizable(false); // Disable resizing for consistent layout
         window.setTitle("Adventure Game");  // Set the window title

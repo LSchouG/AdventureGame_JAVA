@@ -9,10 +9,10 @@
  * - Loads key sprite and scales it to tile size
  * - Typically used to unlock doors or trigger events
  *******************************************************************************/
-package dev.adventuregame.objects;
+package adventuregame.objects;
 
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.entity.Entity;
+import adventuregame.GamePanel;
+import adventuregame.entity.Entity;
 
 public class OBJ_Key extends Entity {
     public OBJ_Key(GamePanel gp) {

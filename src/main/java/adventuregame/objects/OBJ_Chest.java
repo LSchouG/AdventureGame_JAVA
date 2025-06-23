@@ -9,13 +9,10 @@
  * - Sets image and enables collision detection
  *******************************************************************************/
 
-package dev.adventuregame.objects;
+package adventuregame.objects;
 
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.entity.Entity;
-
-import javax.imageio.ImageIO;
-import java.io.IOException;
+import adventuregame.GamePanel;
+import adventuregame.entity.Entity;
 
 public class OBJ_Chest extends Entity {
     public OBJ_Chest(GamePanel gp) {

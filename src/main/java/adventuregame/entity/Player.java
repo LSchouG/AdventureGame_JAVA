@@ -10,10 +10,10 @@
  * - Handles keyboard input and character sprite animation
  * - Uses collision detection and supports object interactions
  *******************************************************************************/
-package dev.adventuregame.entity;
+package adventuregame.entity;
 
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.KeyHandler;
+import adventuregame.GamePanel;
+import adventuregame.KeyHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -46,6 +46,9 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
         solidArea.width = 22;
         solidArea.height = 15;
+
+        attackArea.width = 36;
+        attackArea.height = 36;
 
         setDefaultValues();
         getPlayerImages();
@@ -101,9 +104,9 @@ public class Player extends Entity {
      ***************************************************************************/
     public void update() {
 
-        if (attaching == true){ attaching(); }
 
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
+        if (attaching == true){ attaching(); }
+        else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
 
             // 1. Update direction
             if (keyH.upPressed) {direction = "up";}
@@ -124,6 +127,10 @@ public class Player extends Entity {
             // COLLISION CHECK NPC
             int ncpIndex = gp.collisionChecker.checkEntity(this, gp.npc);
             interactNPC(ncpIndex);
+
+            if (ncpIndex == 999) {
+                handleAttack();
+            }
 
             // COLLISION CHECK ENTITY
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
@@ -205,6 +212,36 @@ public class Player extends Entity {
          }
          if (spriteCounter > 3 && spriteCounter < 12){
              spriteNumber = 2;
+
+             // save the current worldX, worldY and solidarea
+             int currentWorldX = worldX;
+             int currentWorldY = worldY;
+             int solidAreaWidth = solidArea.width;
+             int solidAreaHeight = solidArea.height;
+
+             //Adjust players worldX/Y for the attackArea
+             switch (direction){
+                 case "up": worldX -= attackArea.height; break;
+                 case "down": worldY += attackArea.height; break;
+                 case "left": worldX -= attackArea.width; break;
+                 case "right": worldX += attackArea.width; break;
+             }
+
+             // attack area become solid area
+             solidArea.width = attackArea.width;
+             solidArea.height = attackArea.height;
+
+             //check if solidArea(attackeArea) hit the monster
+             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+
+             // After checking change back to  current worldX, worldY and solidarea
+             worldX = currentWorldX;
+             worldY = currentWorldY;
+             solidArea.width = solidAreaWidth;
+             solidArea.height = solidAreaHeight;
+
+             damageMonster(monsterIndex);
+
          }
          if (spriteCounter >= 12 && spriteCounter < 15){
              spriteNumber = 1;
@@ -225,18 +262,12 @@ public class Player extends Entity {
      * Inputs:
      ***************************************************************************/
     public void interactNPC(int i) {
-
-        if (gp.keyH.enterPressed == true) {
-
-            if (i != 999) {
-
-                gp.gameState = gp.dialogueState;
-                gp.npc[i].speak();
-            } else {
-                attaching = true;
-            }
+        if (gp.keyH.enterPressed && i != 999) {
+            gp.gameState = gp.dialogueState;
+            gp.npc[i].speak();
         }
     }
+
 
     /**************************************************************************
      * Method: contactMonster()
@@ -251,7 +282,34 @@ public class Player extends Entity {
             }
         }
     }
+    /**************************************************************************
+     * Method: handleAttack()
+     * Purpose:
+     * Inputs:
+     ***************************************************************************/
+    public void handleAttack() {
+        if (gp.keyH.enterPressed && !attaching) {
+            attaching = true;
+            spriteCounter = 0;  // Reset sprite counter for attack animation
+        }
+    }
+    /**************************************************************************
+     * Method: handleAttack()
+     * Purpose:
+     * Inputs:
+     ***************************************************************************/
+    public void damageMonster(int i){
+        if (i != 999){
+            if (gp.monster[i].invincible == false){
+                gp.monster[i].life -= 1;
+                gp.monster[i].invincible = true;
 
+                if (gp.monster[i].life <= 0){
+                    gp.monster[i].dying = true;
+                }
+            }
+        }
+    }
     /**************************************************************************
      * Method: draw(Graphics2D g2)
      * Purpose: Draw the player's current sprite on screen.

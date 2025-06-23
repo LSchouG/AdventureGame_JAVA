@@ -9,9 +9,9 @@
  * - Loads door sprite and enables collision detection
  * - Can be used to block or unlock areas
  *******************************************************************************/
-package dev.adventuregame.objects;
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.entity.Entity;
+package adventuregame.objects;
+import adventuregame.GamePanel;
+import adventuregame.entity.Entity;
 
 public class OBJ_Door extends Entity {
     public OBJ_Door(GamePanel gp) {

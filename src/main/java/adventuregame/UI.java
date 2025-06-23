@@ -10,10 +10,10 @@
  * - Supports center alignment, play/pause states, and messages
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
-import dev.adventuregame.entity.Entity;
-import dev.adventuregame.objects.OBJ_Heart;
+import adventuregame.entity.Entity;
+import adventuregame.objects.OBJ_Heart;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

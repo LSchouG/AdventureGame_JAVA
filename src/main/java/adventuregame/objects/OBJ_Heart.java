@@ -1,10 +1,7 @@
-package dev.adventuregame.objects;
+package adventuregame.objects;
 
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.entity.Entity;
-
-import javax.imageio.ImageIO;
-import java.io.IOException;
+import adventuregame.GamePanel;
+import adventuregame.entity.Entity;
 
 public class OBJ_Heart extends Entity {
     public OBJ_Heart(GamePanel gp) {

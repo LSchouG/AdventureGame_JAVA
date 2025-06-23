@@ -10,9 +10,9 @@
  * - Used by Player and NPCs during movement updates
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
-import dev.adventuregame.entity.Entity;
+import adventuregame.entity.Entity;
 
 public class CollisionChecker {
 
@@ -170,7 +170,6 @@ public class CollisionChecker {
                         entity.solidArea.x += entity.speed;
                         break;
                 }
-
                 if (entity.solidArea.intersects(target[i].solidArea)) {
                     if (target[i] != entity){
                         entity.collisionOn = true;

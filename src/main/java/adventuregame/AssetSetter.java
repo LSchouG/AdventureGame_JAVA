@@ -9,14 +9,12 @@
  * - Includes both static objects and non-player characters (NPCs)
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
-import dev.adventuregame.entity.NPC_OldMan;
-import dev.adventuregame.monster.MON_GreenSlime;
-import dev.adventuregame.objects.OBJ_Boots;
-import dev.adventuregame.objects.OBJ_Chest;
-import dev.adventuregame.objects.OBJ_Door;
-import dev.adventuregame.objects.OBJ_Key;
+import adventuregame.entity.NPC_OldMan;
+import adventuregame.monster.MON_GreenSlime;
+import adventuregame.objects.OBJ_Door;
+import adventuregame.objects.OBJ_Key;
 
 public class AssetSetter {
 
@@ -67,6 +65,7 @@ public class AssetSetter {
 
     }
     public void setMonster(){
+
         gp.monster[0] = new MON_GreenSlime(gp);
         gp.monster[0].worldX = gp.tileSize * 21;
         gp.monster[0].worldY = gp.tileSize * 22;

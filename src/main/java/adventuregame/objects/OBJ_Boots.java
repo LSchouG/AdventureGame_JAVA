@@ -9,10 +9,10 @@
  * - Loads and scales the boots image used for rendering
  *******************************************************************************/
 
-package dev.adventuregame.objects;
+package adventuregame.objects;
 
-import dev.adventuregame.GamePanel;
-import dev.adventuregame.entity.Entity;
+import adventuregame.GamePanel;
+import adventuregame.entity.Entity;
 
 public class OBJ_Boots extends Entity {
     public OBJ_Boots(GamePanel gp) {

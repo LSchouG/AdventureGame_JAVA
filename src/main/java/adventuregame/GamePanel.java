@@ -10,21 +10,20 @@
  * - Manages input, collision, and sound
  *******************************************************************************/
 
-package dev.adventuregame;
+package adventuregame;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.JPanel;
 
-import dev.adventuregame.entity.Entity;
-import dev.adventuregame.entity.Player;
-import dev.adventuregame.tiles.TileManager;
+import adventuregame.entity.Entity;
+import adventuregame.entity.Player;
+import adventuregame.tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -153,7 +152,12 @@ public class GamePanel extends JPanel implements Runnable {
             for (int i =0; i < monster.length; i++)
             {
                 if (monster[i] != null){
-                    monster[i].update();
+                    if (monster[i].alive == true && monster[i].dying == false){
+                        monster[i].update();
+                    }
+                    if (monster[i].alive == false){
+                        monster[i] = null;
+                    }
                 }
             }
         } else if (gameState == pauseState) {
