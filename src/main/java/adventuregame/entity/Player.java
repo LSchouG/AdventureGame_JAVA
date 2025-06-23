@@ -14,6 +14,8 @@ package adventuregame.entity;
 
 import adventuregame.GamePanel;
 import adventuregame.KeyHandler;
+import adventuregame.objects.OBJ_Shield_Wood;
+import adventuregame.objects.OBJ_Sword_Normal;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -24,6 +26,7 @@ public class Player extends Entity {
     public final int screenY;
     KeyHandler keyH;
     int standCounter = 0;
+    public boolean attackCanceled = false;
 
     /**************************************************************************
      * Constructor: Player(GamePanel gp, KeyHandler keyH)
@@ -64,8 +67,36 @@ public class Player extends Entity {
         worldY = gp.tileSize * 22;
         speed = 4;
         direction = "down";
+
+        // PLAYER STATUS
         maxLife = 6;
         life = maxLife;
+        level = 1;
+        strength = 1;
+        dexterity = 1;
+        magic = 1;
+        exp = 0;
+        nextLevelExp = 5;
+        gold = 0;
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+        attack = getAttack();
+        defense = getDefense();
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public int getAttack(){
+        return attack = strength * currentWeapon.attackValue;
+    }
+
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public int getDefense(){
+        return defense = dexterity * currentShield.defenseValue;
     }
 
     /**************************************************************************
@@ -105,7 +136,7 @@ public class Player extends Entity {
     public void update() {
 
 
-        if (attaching == true){ attaching(); }
+        if (attacking == true){ attaching(); }
         else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
 
             // 1. Update direction
@@ -150,7 +181,14 @@ public class Player extends Entity {
                     case "right" -> worldX += speed;
                 }
             }
+            if (keyH.enterPressed == true && attackCanceled == false){
 
+                gp.playSE(8);
+                attacking = true;
+                spriteCounter = 0;
+            }
+
+            attackCanceled = false;
             gp.keyH.enterPressed = false;
 
             // Increase the counter
@@ -186,7 +224,6 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
-
     }
 
     /**************************************************************************
@@ -252,7 +289,7 @@ public class Player extends Entity {
          if (spriteCounter >= 24){
              spriteNumber = 1;
              spriteCounter = 0;
-             attaching = false;
+             attacking = false;
          }
      }
 
@@ -263,6 +300,7 @@ public class Player extends Entity {
      ***************************************************************************/
     public void interactNPC(int i) {
         if (gp.keyH.enterPressed && i != 999) {
+            attackCanceled = true;
             gp.gameState = gp.dialogueState;
             gp.npc[i].speak();
         }
@@ -277,6 +315,7 @@ public class Player extends Entity {
     public void contactMonster(int i) {
         if (i != 999) {
             if (!invincible) {
+                gp.playSE(6);
                 life -= 1;
                 invincible = true;
             }
@@ -288,8 +327,9 @@ public class Player extends Entity {
      * Inputs:
      ***************************************************************************/
     public void handleAttack() {
-        if (gp.keyH.enterPressed && !attaching) {
-            attaching = true;
+        if (gp.keyH.enterPressed && !attacking) {
+            gp.playSE(8);
+            attacking = true;
             spriteCounter = 0;  // Reset sprite counter for attack animation
         }
     }
@@ -303,8 +343,10 @@ public class Player extends Entity {
             if (gp.monster[i].invincible == false){
                 gp.monster[i].life -= 1;
                 gp.monster[i].invincible = true;
+                gp.monster[i].damageReaction();
 
                 if (gp.monster[i].life <= 0){
+                    gp.playSE(7);
                     gp.monster[i].dying = true;
                 }
             }
@@ -320,50 +362,50 @@ public class Player extends Entity {
 
         switch (direction) {
             case "down":
-                if (attaching == false){
+                if (attacking == false){
                     if (spriteNumber == 0){image = downStill;}
                     if (spriteNumber == 1){image = down1;}
                     if (spriteNumber == 2){image = down2;}
                 }
-                if (attaching == true){
+                if (attacking == true){
                     if (spriteNumber == 1){image = down1;}
                     if (spriteNumber == 2){image = attachDown;}
                 } break;
             case "up":
-                if (attaching == false){
+                if (attacking == false){
                     if (spriteNumber == 0){image = upStill;}
                     if (spriteNumber == 1){image = up1;}
                     if (spriteNumber == 2){image = up2;}
                 }
-                if (attaching == true){
+                if (attacking == true){
                     if (spriteNumber == 1){image = up1;}
                     if (spriteNumber == 2){image = attachUp;}
                 } break;
             case "right":
-                if (attaching == false){
+                if (attacking == false){
                     if (spriteNumber == 0){image = rightStill;}
                     if (spriteNumber == 1){image = right1;}
                     if (spriteNumber == 2){image = right2;}
                 }
-                if (attaching == true){
+                if (attacking == true){
                     if (spriteNumber == 1){image = right1;}
                     if (spriteNumber == 2){image = attachRight;}
                 } break;
             case "left":
-                if (attaching == false){
+                if (attacking == false){
                     if (spriteNumber == 0){image = leftStill;}
                     if (spriteNumber == 1){image = left1;}
                     if (spriteNumber == 2){image = left2;}
                 }
-                if (attaching == true){
+                if (attacking == true){
                     if (spriteNumber == 1){image = left1;}
                     if (spriteNumber == 2){image = attachLeft;}
                 } break;
             default:
-                if (attaching == false){
+                if (attacking == false){
                     image = downStill;
                 }
-                if (attaching == true){
+                if (attacking == true){
                     if (spriteNumber == 0){image = downStill;}
                     if (spriteNumber == 1){image = down1;}
                     if (spriteNumber == 2){image = attachDown;}

@@ -11,7 +11,7 @@ public class MON_GreenSlime extends Entity {
         type = 2;
         name = "Green Slime";
         speed = 1;
-        maxLife = 2;
+        maxLife = 10;
         life = maxLife;
         collision = true;
 
@@ -52,4 +52,27 @@ public class MON_GreenSlime extends Entity {
             actionLockCounter = 0;
         }
     }
+
+    /**************************************************************************
+     * Method: damageReaction()
+     * Purpose:
+     * Notes:
+     ***************************************************************************/
+    public void damageReaction() {
+
+        actionLockCounter = 0;
+
+        // Monster moves away from player when attacked
+        //direction = gp.player.direction;
+
+        //Monster move towards the player when attacked
+        switch (direction){
+            case "up":    direction = "down";  break;
+            case "down":  direction = "up";    break;
+            case "left":  direction = "right"; break;
+            case "right": direction = "left";  break;
+        }
+
+    }
+
 }
