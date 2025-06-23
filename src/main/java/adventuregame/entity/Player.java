@@ -315,8 +315,14 @@ public class Player extends Entity {
     public void contactMonster(int i) {
         if (i != 999) {
             if (!invincible) {
+
+                int damage = gp.monster[i].attack - defense;
+                if (damage < 0){
+                    damage = 0;
+                }
+
                 gp.playSE(6);
-                life -= 1;
+                life -= damage;
                 invincible = true;
             }
         }
@@ -341,13 +347,21 @@ public class Player extends Entity {
     public void damageMonster(int i){
         if (i != 999){
             if (gp.monster[i].invincible == false){
-                gp.monster[i].life -= 1;
+
+                int damage = attack - gp.monster[i].defense;
+                if(damage < 0){
+                    damage = 0;
+                }
+
+                gp.monster[i].life -= damage;
+                gp.ui.AddMessage("Hit " + damage);
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
 
                 if (gp.monster[i].life <= 0){
                     gp.playSE(7);
                     gp.monster[i].dying = true;
+                    gp.ui.AddMessage("Killed the " + gp.monster[i].name + "!");
                 }
             }
         }
@@ -364,8 +378,8 @@ public class Player extends Entity {
             case "down":
                 if (attacking == false){
                     if (spriteNumber == 0){image = downStill;}
-                    if (spriteNumber == 1){image = down1;}
                     if (spriteNumber == 2){image = down2;}
+                    if (spriteNumber == 1){image = down1;}
                 }
                 if (attacking == true){
                     if (spriteNumber == 1){image = down1;}

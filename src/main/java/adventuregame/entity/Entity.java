@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Entity {
+public class  Entity {
     protected GamePanel gp;
 
     public BufferedImage downStill, down1, down2, upStill, up1, up2, leftStill, left1, left2, rightStill, right1, right2;
@@ -142,7 +142,12 @@ public class Entity {
 
         if (this.type == 2 && contactPlayer == true && gp.player.invincible == false){
             gp.playSE(6);
-            gp.player.life--;
+
+            int damage = attack - gp.player.defense;
+            if (damage < 0){
+                damage = 0;
+            }
+            gp.player.life -= damage;
             gp.player.invincible = true;
             gp.player.invincibleCounter = 0;
         }

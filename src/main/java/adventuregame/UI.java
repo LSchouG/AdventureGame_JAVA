@@ -17,6 +17,7 @@ import adventuregame.objects.OBJ_Heart;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class UI {
 
@@ -25,13 +26,15 @@ public class UI {
     public String message = "";
     public boolean gameFinished = false;
     BufferedImage fullHeart, halfHeart, blankHeart;
-    public String currentDialogue = "";
-    public int commandNumber = 0;
+//    public String currentDialogue = "";
+//    public int commandNumber = 0;
+    ArrayList<String> massage = new ArrayList<>();
+    ArrayList<Integer> massageCounter = new ArrayList<>();
     public int titleScreenState = 0; // 0: first screen 1: is the second screen ect.
     GamePanel gp;
     Graphics2D g2;
     Font titelFont, menuFontP, menuFontB, textFont;
-    int massageCounter = 0;
+//    int massageCounter = 0;
 
     /**************************************************************************
      * Constructor: UI(GamePanel gp)
@@ -62,9 +65,9 @@ public class UI {
      * Purpose: Enables a temporary on-screen message to the player.
      * Inputs: text - the message string to display
      ***************************************************************************/
-    public void showMessage(String text) {
-        message = text;
-        messageOn = true;
+    public void AddMessage(String text) {
+        massage.add(text);
+        massageCounter.add(0);
     }
 
     /**************************************************************************
@@ -83,8 +86,8 @@ public class UI {
         }
         // PLAY STATE
         if (gp.gameState == gp.playState) {
-            // In-game UI rendering will go here (e.g., timer, inventory, etc.)
             drawPlayerLife();
+            drawMessage();
         }
         // PAUSE STATE
         if (gp.gameState == gp.pauseState) {
@@ -133,6 +136,19 @@ public class UI {
             x += gp.tileSize;
         }
     }
+
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void drawMessage(){
+
+        int massageX = gp.tileSize;
+        int massageY = gp.tileSize * 4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,32f));
+    }
+
+
     /**************************************************************************
      * Method: drawTitleScreen()
      * Purpose:
