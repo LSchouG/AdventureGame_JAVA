@@ -32,13 +32,13 @@ public class OBJ_FireBall extends Projectile {
 
     public void getImage(){
 
-        down1 = setup("/images/objects/.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/attack/FireBallDown1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/attack/FireBallDown1.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/attack/FireBallUp1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/attack/FireBallUp2.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/attack/FireBallLeft1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/attack/FireBallLeft2.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/attack/FireBallRight1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/attack/FireBallRight2.png", gp.tileSize, gp.tileSize);
     }
 }
