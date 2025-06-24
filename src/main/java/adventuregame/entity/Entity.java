@@ -58,6 +58,8 @@ public class  Entity {
     public  int level;
     public int strength;
     public int dexterity;
+    public int maxMana;
+    public int mana;
     public int attack;
     public int  defense;
     public int  magic;
@@ -66,12 +68,14 @@ public class  Entity {
     public int  gold;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Projectile projectile;
 
     // ITEM ATTRIBUTES
     public int attackValue;
     public int  defenseValue;
     public int  restoreValue;
     public String itemDescription = "";
+    public int manaUse; //
 
     // TYPE
     public int type;// 0 = player, 1 = npc, 2 = monster
@@ -307,11 +311,7 @@ public class  Entity {
         if (dyingCounter > i*5 && dyingCounter <= i*6) {changeAlpha(g2, 1f);}
         if (dyingCounter > i*6 && dyingCounter <= i*7) {changeAlpha(g2, 0.0f);}
         if (dyingCounter > i*7 && dyingCounter <= i*8) {changeAlpha(g2, 1f);}
-        if (dyingCounter > i*8){
-            dying = false;
-            alive = false;
-        dyingCounter = 0;
-        }
+        if (dyingCounter > i*8){alive = false;dyingCounter = 0;}
     }
     /**************************************************************************
      * Method:
