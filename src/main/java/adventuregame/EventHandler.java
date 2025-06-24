@@ -91,7 +91,7 @@ public class EventHandler {
         }
         if (canTouchEvent){
             if (hit(23, 28, "any")) {damagePit(23, 28, gp.dialogueState);}
-            if (interact(24, 19, "any")) {healingBed(24,19,gp.dialogueState);}
+            if (interact(23, 19, "any")) {healingBed(23, 19,gp.dialogueState);}
         }
         if (interact(23, 29, "up")) {teleport(gp.dialogueState);}
 

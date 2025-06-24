@@ -35,6 +35,8 @@ public class UI {
     public String currentDialogue = "";
     public int commandNumber = 0;
     public int titleScreenState = 0; // 0: first screen 1: is the second screen ect.
+    public int slotCol = 0;
+    public int slotRow = 0;
 
 
 
@@ -67,7 +69,7 @@ public class UI {
      * Purpose: Enables a temporary on-screen message to the player.
      * Inputs: text - the message string to display
      ***************************************************************************/
-    public void AddMessage(String text) {
+    public void addMessage(String text) {
         message.add(text);
         messageCounter.add(0);
     }
@@ -103,9 +105,12 @@ public class UI {
         }
         // CHARACTER STATE
         if (gp.gameState == gp.characterState) {
-            drawCharacterScreen();
+            drawCharacterAttributes();
+            drawInventory();
         }
     }
+
+
     /**************************************************************************
      * Method: drawPlayerLife()
      * Purpose:
@@ -177,7 +182,6 @@ public class UI {
         }
 
     }
-
 
     /**************************************************************************
      * Method: drawTitleScreen()
@@ -323,7 +327,7 @@ public class UI {
      * Method:
      * Purpose:
      ***************************************************************************/
-    public void drawCharacterScreen(){
+    public void drawCharacterAttributes(){
         // CREATE A FRAME FOR VIEWING THE ATTRIBUTES OF THE CHARACTER
         final int frameX = gp.tileSize * 1;
         final int frameY = gp.tileSize * 1;
@@ -414,6 +418,87 @@ public class UI {
     }
 
     /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    private void drawInventory() {
+        // FRAME
+        final int frameX = (gp.screenWidth/2) + gp.tileSize ;
+        final int frameY = gp.tileSize;
+        final int frameWidth = (gp.screenWidth/2) - (gp.tileSize * 2);
+        final int frameHeight = gp.tileSize * 5;
+        drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+        // SLOT
+        final int  slotXstart = frameX + 20;
+        final int slotYstart = frameY + 20;
+        int slotX = slotXstart;
+        int slotY = slotYstart;
+        int slotSizeX = gp.tileSize + 2;
+        int slotSizeY = gp.tileSize + 3;
+
+        // DRAW PLAYERS ITEMS
+        for (int i = 0; i < gp.player.inventory.size(); i++){
+
+            // EQUIP CURSOR
+            if(gp.player.inventory.get(i) == gp.player.currentWeapon ||gp.player.inventory.get(i) == gp.player.currentShield) {
+                g2.setColor(new Color(240,190,90));
+                g2.fillRoundRect(slotX, slotY, slotSizeX, slotSizeY, 10, 10);
+            }
+
+            g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
+
+            slotX += slotSizeX;
+
+            if (i == 4 || i == 9|| i == 14){
+                slotY += slotSizeY;
+                slotX = slotXstart;
+            }
+        }
+
+        //CURSOR
+        int cursorX  = slotXstart + (slotSizeX * slotCol);
+        int cursorY = slotYstart + (slotSizeY * slotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        // DRAW CURSOR
+        g2.setColor(Color.WHITE);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+
+        // DESCRIPTION FRAME
+        int dFrameX = frameX;
+        int dFrameY = frameY + frameHeight + 10;
+        int dFrameWidth = frameWidth;
+        int dFrameHeight =  (gp.tileSize * 4) + 10 ;
+
+        // DRAW DESCRIPTION TEXT
+        int textX = dFrameX + 20;
+        int textY =  dFrameY + 40;
+        g2.setFont(g2.getFont().deriveFont(20f));
+
+        int itemIndex = getItemIndexOnSlot();
+
+        if (itemIndex < gp.player.inventory.size()){
+            drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+            for (String line : gp.player.inventory.get(itemIndex).itemDescription.split("\n"))
+            {
+                g2.drawString(line, textX, textY);
+                textY += 32;
+            }
+        }
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public int getItemIndexOnSlot(){
+        int itemIndex = slotCol + (slotRow * 5);
+        return itemIndex;
+    }
+
+    /**************************************************************************
      * Method: drawSubWindow()
      * Purpose:
      ***************************************************************************/
@@ -452,6 +537,7 @@ public class UI {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return (gp.screenWidth / 2) - (length / 2);
     }
+
     /**************************************************************************
      * Method:
      * Purpose:

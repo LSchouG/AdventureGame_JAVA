@@ -25,7 +25,7 @@ public class NPC_OldMan extends Entity {
      ***************************************************************************/
     public NPC_OldMan(GamePanel gp) {
         super(gp);
-        type = 1;
+        type = type_npc;
         direction = "down"; // default facing direction
         speed = 1;           // slower than player
         solidArea.x = 0;// goes 0 pixel in from the side

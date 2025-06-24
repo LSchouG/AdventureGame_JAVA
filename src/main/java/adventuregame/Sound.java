@@ -38,6 +38,7 @@ public class Sound {
         soundURL[9] = getClass().getResource("/sound/slash.wav");
         soundURL[10] = getClass().getResource("/sound/slime1.wav");
         soundURL[11] = getClass().getResource("/sound/levelUp.wav");
+        soundURL[12] = getClass().getResource("/sound/menuCursor.wav");
     }
 
     /**************************************************************************

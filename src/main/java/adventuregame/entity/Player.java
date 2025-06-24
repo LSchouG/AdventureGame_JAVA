@@ -14,11 +14,13 @@ package adventuregame.entity;
 
 import adventuregame.GamePanel;
 import adventuregame.KeyHandler;
+import adventuregame.objects.OBJ_Key;
 import adventuregame.objects.OBJ_Shield_Wood;
 import adventuregame.objects.OBJ_Sword_Normal;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends Entity {
 
@@ -27,6 +29,8 @@ public class Player extends Entity {
     KeyHandler keyH;
     int standCounter = 0;
     public boolean attackCanceled = false;
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     /**************************************************************************
      * Constructor: Player(GamePanel gp, KeyHandler keyH)
@@ -34,7 +38,7 @@ public class Player extends Entity {
      ***************************************************************************/
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
-        type = 0;
+        type = type_player;
         this.keyH = keyH;
 
         // Place player in center of screen
@@ -56,8 +60,8 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImages();
         getPlayerAttachImages();
+        setItems();
     }
-
     /**************************************************************************
      * Method: setDefaultValues()
      * Purpose: Set default player position, speed, and direction.
@@ -87,10 +91,18 @@ public class Player extends Entity {
      * Method:
      * Purpose:
      ***************************************************************************/
+    public void setItems(){
+        inventory. add(currentWeapon);
+        inventory.add(currentShield);
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
     public int getAttack(){
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackValue;
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -98,7 +110,6 @@ public class Player extends Entity {
     public int getDefense(){
         return defense = dexterity * currentShield.defenseValue;
     }
-
     /**************************************************************************
      * Method: getImages()
      * Purpose: Load and assign all directional sprite images.
@@ -117,18 +128,26 @@ public class Player extends Entity {
         right1 = setup("/images/player/right_1_boy.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/player/right_2_boy.png", gp.tileSize, gp.tileSize);
     }
-
     /**************************************************************************
      * Method: getImages()
      * Purpose: Load and assign all directional sprite images.
      ***************************************************************************/
     public void getPlayerAttachImages() {
-        attachUp = setup("/images/player/attach_up.png", gp.tileSize, gp.tileSize * 2);
-        attachDown = setup("/images/player/attach_down.png", gp.tileSize, gp.tileSize * 2);
-        attachLeft = setup("/images/player/attach_left.png", gp.tileSize * 2, gp.tileSize);
-        attachRight = setup("/images/player/attach_right.png", gp.tileSize * 2, gp.tileSize);
-    }
 
+        /** IF WANT A SWORD IMAGES
+         if (currentWeapon.type == type_sword){
+            attachUp = setup("/images/player/attach_up.png", gp.tileSize, gp.tileSize *2);
+            attachDown = setup("/images/player/attach_down.png", gp.tileSize, gp.tileSize *2);
+            attachLeft = setup("/images/player/attach_left.png", gp.tileSize *2, gp.tileSize);
+            attachRight = setup("/images/player/attach_right.png", gp.tileSize *2, gp.tileSize);
+        }**/
+
+        // UNIVERSAL ATTACK SWING
+        attachUp = setup("/images/player/attack_up.png", gp.tileSize, gp.tileSize *2);
+        attachDown = setup("/images/player/attack_down.png", gp.tileSize, gp.tileSize *2);
+        attachLeft = setup("/images/player/attack_left.png", gp.tileSize *2, gp.tileSize);
+        attachRight = setup("/images/player/attack_right.png", gp.tileSize *2, gp.tileSize);
+    }
     /**************************************************************************
      * Method: update()
      * Purpose: Handle player input, movement, collisions, and animation.
@@ -225,7 +244,6 @@ public class Player extends Entity {
             }
         }
     }
-
     /**************************************************************************
      * Method: pickUpObject(int i)
      * Purpose: Handle object pickup when player collides with one.
@@ -233,10 +251,19 @@ public class Player extends Entity {
      ***************************************************************************/
     public void pickUpObject(int i) {
         if (i != 999) {
-            // future: implement object interaction logic here
+            String text = "";
+            if (inventory.size() != maxInventorySize){
+                inventory.add(gp.obj[i]);
+                gp.playSE(2);
+                text = "Got a " + gp.obj[i].name + "!";
+            } else {
+
+                text = "Your inventory is full!";
+            }
+            gp.ui.addMessage(text);
+            gp.obj[i] = null;
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -292,7 +319,6 @@ public class Player extends Entity {
              attacking = false;
          }
      }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -305,8 +331,6 @@ public class Player extends Entity {
             gp.npc[i].speak();
         }
     }
-
-
     /**************************************************************************
      * Method: contactMonster()
      * Purpose:
@@ -354,7 +378,7 @@ public class Player extends Entity {
                 }
 
                 gp.monster[i].life -= damage;
-                gp.ui.AddMessage(damage + " Damage!");
+                gp.ui.addMessage(damage + " Damage!");
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
 
@@ -362,14 +386,17 @@ public class Player extends Entity {
                     gp.playSE(10);
                     gp.monster[i].dying = true;
                     gp.player.exp += gp.monster[i].exp;
-                    gp.ui.AddMessage("Killed the " + gp.monster[i].name + "!");
-                    gp.ui.AddMessage("Gain" + gp.monster[i].exp + " Exp!");
+                    gp.ui.addMessage("Killed the " + gp.monster[i].name + "!");
+                    gp.ui.addMessage("Gain" + gp.monster[i].exp + " Exp!");
                     checkLevelUp();
                 }
             }
         }
     }
-
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
     public void checkLevelUp() {
 
         if (gp.player.exp >= gp.player.nextLevelExp)
@@ -388,7 +415,32 @@ public class Player extends Entity {
         }
 
     }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void selectItem(){
 
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+        if( itemIndex < inventory.size()){
+            Entity selectedItem = inventory.get(itemIndex);
+            if (selectedItem.type == type_sword || selectedItem.type == type_axe || selectedItem.type == type_spell){
+
+                currentWeapon = selectedItem;
+                getAttack();
+                getPlayerAttachImages();
+            }
+            if (selectedItem.type == type_shield){
+                currentShield = selectedItem;
+                getDefense();
+                getPlayerAttachImages();
+            }
+            if (selectedItem.type == type_consumable){
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+            }
+        }
+    }
     /**************************************************************************
      * Method: draw(Graphics2D g2)
      * Purpose: Draw the player's current sprite on screen.
@@ -396,6 +448,10 @@ public class Player extends Entity {
      ***************************************************************************/
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
+
+        // VARIABLE FOR CHANGING X AND Y FOR TWO ATTACK IMAGES AS THEY A RENDERD WRONG
+        int tempScreenX = screenX;
+        int tempScreenY = screenY;
 
         switch (direction) {
             case "down":
@@ -416,7 +472,7 @@ public class Player extends Entity {
                 }
                 if (attacking == true){
                     if (spriteNumber == 1){image = up1;}
-                    if (spriteNumber == 2){image = attachUp;}
+                    if (spriteNumber == 2){image = attachUp;  tempScreenY -= gp.tileSize;}
                 } break;
             case "right":
                 if (attacking == false){
@@ -436,7 +492,7 @@ public class Player extends Entity {
                 }
                 if (attacking == true){
                     if (spriteNumber == 1){image = left1;}
-                    if (spriteNumber == 2){image = attachLeft;}
+                    if (spriteNumber == 2){image = attachLeft; tempScreenX -= gp.tileSize;}
                 } break;
             default:
                 if (attacking == false){
@@ -452,7 +508,7 @@ public class Player extends Entity {
         if (invincible == true) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
-        g2.drawImage(image, screenX, screenY, null); // draw sprite
+        g2.drawImage(image, tempScreenX, tempScreenY, null); // draw sprite
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 }

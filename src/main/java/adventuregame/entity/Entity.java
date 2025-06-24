@@ -51,7 +51,6 @@ public class  Entity {
 
     /** CHARACTER ATTRIBUTES **/
     public String name; // Object name identifier
-    public int type;// 0 = player, 1 = npc, 2 = monster
     public int chosenClass;// 0 = fighter, 1 = Theif, 2 = Sorcerer
     public int speed;
     public int  maxLife;
@@ -71,8 +70,19 @@ public class  Entity {
     // ITEM ATTRIBUTES
     public int attackValue;
     public int  defenseValue;
-    public int  magicValue;
+    public int  restoreValue;
+    public String itemDescription = "";
 
+    // TYPE
+    public int type;// 0 = player, 1 = npc, 2 = monster
+    public final int type_player = 0;
+    public final int type_npc = 1;
+    public final int type_monster = 2;
+    public final int type_sword = 3;
+    public final int type_axe = 4;
+    public final int type_shield = 5;
+    public final int type_spell = 6;
+    public final int type_consumable = 7;
 
     /**************************************************************************
      * Constructor: Entity(GamePanel gp)
@@ -81,7 +91,6 @@ public class  Entity {
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
-
     /**************************************************************************
      * Method: setAction()
      * Purpose: Placeholder for subclasses to define specific behavior.
@@ -94,8 +103,6 @@ public class  Entity {
      * Notes:
      ***************************************************************************/
     public void damageReaction() {}
-
-
     /**************************************************************************
      * Method: speak()
      * Purpose:
@@ -124,7 +131,6 @@ public class  Entity {
         }
 
     }
-
     /**************************************************************************
      * Method: update()
      * Purpose: Update logic (e.g., movement, collision). Called every frame.
@@ -140,7 +146,7 @@ public class  Entity {
         gp.collisionChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 
-        if (this.type == 2 && contactPlayer == true && gp.player.invincible == false){
+        if (this.type == type_monster && contactPlayer == true && gp.player.invincible == false){
             gp.playSE(9);
 
             int damage = attack - gp.player.defense;
@@ -177,7 +183,6 @@ public class  Entity {
             }
         }
     }
-
     /**************************************************************************
      * Method: draw(Graphics2D g2)
      * Purpose: Draws the entity to the screen with correct sprite based on direction.
@@ -233,7 +238,7 @@ public class  Entity {
             }
 
             // MONTER HEALTH BAR
-            if (type == 2 && hpBarOn == true){
+            if (type == type_monster && hpBarOn == true){
                 double oneScale = (double)gp.tileSize/maxLife;
                 double hpBarValue = oneScale * life;
 
@@ -263,7 +268,6 @@ public class  Entity {
 
         }
     }
-
     /**************************************************************************
      * Method: setup(String imagePath)
      * Purpose: Load and scale an image for entity sprite.
@@ -318,7 +322,12 @@ public class  Entity {
     public  void  changeAlpha(Graphics2D g2, float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
-
-
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     * Outputs:
+     ***************************************************************************/
+    public void use(Entity entity) {}
 
 }

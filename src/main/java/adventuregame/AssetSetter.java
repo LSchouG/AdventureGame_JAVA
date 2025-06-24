@@ -13,8 +13,7 @@ package adventuregame;
 
 import adventuregame.entity.NPC_OldMan;
 import adventuregame.monster.MON_GreenSlime;
-import adventuregame.objects.OBJ_Door;
-import adventuregame.objects.OBJ_Key;
+import adventuregame.objects.*;
 
 public class AssetSetter {
 
@@ -34,18 +33,31 @@ public class AssetSetter {
      * Notes: Currently empty – expand to add objects like keys, chests, etc.
      ***************************************************************************/
     public void setObject() {
-        // Example:
+        int i = 0;
 
-        /**
-        gp.obj[0] = new OBJ_Key(gp);
-        gp.obj[0].worldX = gp.tileSize * 24;
-        gp.obj[0].worldY = gp.tileSize * 19;
 
-        gp.obj[1] = new OBJ_Door(gp);
-        gp.obj[1].worldX = gp.tileSize * 21;
-        gp.obj[1].worldY = gp.tileSize * 25;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = gp.tileSize * 20;
+        gp.obj[i].worldY = gp.tileSize * 19;
+        i++;
+        gp.obj[i] = new OBJ_Door(gp);
+        gp.obj[i].worldX = gp.tileSize * 21;
+        gp.obj[i].worldY = gp.tileSize * 24;
+        i++;
+        gp.obj[i] = new OBJ_Red_Potion(gp);
+        gp.obj[i].worldX = gp.tileSize * 21;
+        gp.obj[i].worldY = gp.tileSize * 29;
+        i++;
+        gp.obj[i] = new OBJ_Red_Potion(gp);
+        gp.obj[i].worldX = gp.tileSize * 22;
+        gp.obj[i].worldY = gp.tileSize * 29;
+        i++;
+        gp.obj[i] = new OBJ_Red_Potion(gp);
+        gp.obj[i].worldX = gp.tileSize * 23;
+        gp.obj[i].worldY = gp.tileSize * 29;
 
-         **/
+
+
     }
 
     /**************************************************************************
@@ -56,7 +68,7 @@ public class AssetSetter {
     public void setNPC() {
         int i = 0;
         gp.npc[i] = new NPC_OldMan(gp);
-        gp.npc[i].worldX = gp.tileSize * 21;
+        gp.npc[i].worldX = gp.tileSize * 25;
         gp.npc[i].worldY = gp.tileSize * 21;
         i++;
         gp.npc[i] = new NPC_OldMan(gp);
