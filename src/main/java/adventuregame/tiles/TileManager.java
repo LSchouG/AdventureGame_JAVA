@@ -13,6 +13,8 @@ import adventuregame.GamePanel;
 import adventuregame.UtilityTool;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 public final class TileManager {
 
@@ -25,7 +27,7 @@ public final class TileManager {
         tile = new Tile[100];
         mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        loadMap("/images/tiles/worlmap2.csv");
+        loadMap("/images/tiles/worldMapNew.csv");
     }
 
     public void getTileImage() {
@@ -110,43 +112,57 @@ public final class TileManager {
 
 
     public void loadMap(String filePath) {
-        try {
-            InputStream is = getClass().getResourceAsStream(filePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            int row = 0;
-            while (row < gp.maxWorldRow) {
-                String line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-
-                String[] numbers = line.split(",");
-
-                for (int col = 0; col < gp.maxWorldCol && col < numbers.length; col++) {
-                    try {
-                        String rawCol = numbers[col];
-
-                        if (rawCol == null || rawCol.trim().isEmpty()) {
-                            mapTileNumber[col][row] = 0; // default Grass if null or empty
-                        } else {
-                            String cleaned = rawCol.trim().replaceAll("[^0-9]", "");
-                            mapTileNumber[col][row] = cleaned.isEmpty() ? 0 : Integer.parseInt(cleaned);
-                        }
-                    } catch(NumberFormatException nfe)  {
-                        System.err.println("Invalid value at row " + row + ", col " + col + ": '" + numbers[col] + "'");
-                        mapTileNumber[col][row] = 0; // fallback to grass
-                    }
-                }
-
-                row++;
-            }
-
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    try {
+        // Convert resource path to actual file path
+        String actualPath = "src/main/resources" + filePath;
+        File mapFile = new File(actualPath);
+        
+        if (!mapFile.exists()) {
+            System.err.println("ERROR: Could not find map file: " + actualPath);
+            return;
         }
+        
+        BufferedReader br = new BufferedReader(new FileReader(mapFile));
+
+        // Clear existing map data
+        for (int row = 0; row < gp.maxWorldRow; row++) {
+            for (int col = 0; col < gp.maxWorldCol; col++) {
+                mapTileNumber[col][row] = 0;
+            }
+        }
+
+        int row = 0;
+        while (row < gp.maxWorldRow) {
+            String line = br.readLine();
+            if (line == null) break;
+
+            String[] numbers = line.split(",");
+
+            for (int col = 0; col < gp.maxWorldCol && col < numbers.length; col++) {
+                try {
+                    String rawCol = numbers[col];
+                    if (rawCol == null || rawCol.trim().isEmpty()) {
+                        mapTileNumber[col][row] = 0;
+                    } else {
+                        String cleaned = rawCol.trim().replaceAll("[^0-9]", "");
+                        mapTileNumber[col][row] = cleaned.isEmpty() ? 0 : Integer.parseInt(cleaned);
+                    }
+                } catch(NumberFormatException nfe) {
+                    System.err.println("Invalid value at row " + row + ", col " + col + ": '" + numbers[col] + "'");
+                    mapTileNumber[col][row] = 0;
+                }
+            }
+            row++;
+        }
+
+        br.close();
+        //System.out.println("Map loaded successfully from: " + actualPath);
+        
+    } catch (IOException e) {
+        System.err.println("Error loading map file: " + filePath);
+        e.printStackTrace();
     }
+}
 
     public void draw(Graphics2D g2) {
         int worldCol = 0;

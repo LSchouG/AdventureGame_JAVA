@@ -22,19 +22,21 @@ import java.util.ArrayList;
 public class UI {
 
     // UI States
-    public boolean messageOn = false;
-    public String message = "";
-    public boolean gameFinished = false;
-    BufferedImage fullHeart, halfHeart, blankHeart;
-//    public String currentDialogue = "";
-//    public int commandNumber = 0;
-    ArrayList<String> massage = new ArrayList<>();
-    ArrayList<Integer> massageCounter = new ArrayList<>();
-    public int titleScreenState = 0; // 0: first screen 1: is the second screen ect.
     GamePanel gp;
     Graphics2D g2;
     Font titelFont, menuFontP, menuFontB, textFont;
-//    int massageCounter = 0;
+    BufferedImage fullHeart, halfHeart, blankHeart;
+    public boolean messageOn = false;
+    //public String message = "";
+    //int massageCounter = 0;
+    ArrayList<String> message = new ArrayList<>();
+    ArrayList<Integer> messageCounter = new ArrayList<>();
+    public boolean gameFinished = false;
+    public String currentDialogue = "";
+    public int commandNumber = 0;
+    public int titleScreenState = 0; // 0: first screen 1: is the second screen ect.
+
+
 
     /**************************************************************************
      * Constructor: UI(GamePanel gp)
@@ -66,8 +68,8 @@ public class UI {
      * Inputs: text - the message string to display
      ***************************************************************************/
     public void AddMessage(String text) {
-        massage.add(text);
-        massageCounter.add(0);
+        message.add(text);
+        messageCounter.add(0);
     }
 
     /**************************************************************************
@@ -145,7 +147,35 @@ public class UI {
 
         int massageX = gp.tileSize;
         int massageY = gp.tileSize * 4;
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD,32f));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,20f));
+
+        //DEBUG
+       // System.out.println("message.size(): " + message.size());
+
+        for(int i = 0; i < message.size(); i++){
+            if(message.get(i) != null){
+
+                // SHADOW
+                g2.setColor(Color.BLACK);
+                g2.drawString(message.get(i), massageX+3, massageY+3);
+
+                // TEXT
+                g2.setColor(Color.WHITE);
+                g2.drawString(message.get(i), massageX, massageY);
+
+                int counter = messageCounter.get(i) + 1; // messageCounter++
+                messageCounter.set(i,counter); // set the counter to the array
+                massageY += 50;
+
+                if (messageCounter.get(i) > 180){
+                    message.remove(i);
+                    messageCounter.remove(i);
+                }
+
+            }
+
+        }
+
     }
 
 

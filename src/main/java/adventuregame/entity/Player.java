@@ -165,7 +165,7 @@ public class Player extends Entity {
 
             // COLLISION CHECK ENTITY
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-            interactNPC(monsterIndex);
+            // interactNPC(monsterIndex);
             contactMonster(monsterIndex);
 
 
@@ -334,7 +334,7 @@ public class Player extends Entity {
      ***************************************************************************/
     public void handleAttack() {
         if (gp.keyH.enterPressed && !attacking) {
-            gp.playSE(8);
+            gp.playSE(9);
             attacking = true;
             spriteCounter = 0;  // Reset sprite counter for attack animation
         }
@@ -354,18 +354,41 @@ public class Player extends Entity {
                 }
 
                 gp.monster[i].life -= damage;
-                gp.ui.AddMessage("Hit " + damage);
+                gp.ui.AddMessage(damage + " Damage!");
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
 
                 if (gp.monster[i].life <= 0){
-                    gp.playSE(7);
+                    gp.playSE(10);
                     gp.monster[i].dying = true;
+                    gp.player.exp += gp.monster[i].exp;
                     gp.ui.AddMessage("Killed the " + gp.monster[i].name + "!");
+                    gp.ui.AddMessage("Gain" + gp.monster[i].exp + " Exp!");
+                    checkLevelUp();
                 }
             }
         }
     }
+
+    public void checkLevelUp() {
+
+        if (gp.player.exp >= gp.player.nextLevelExp)
+        {
+            gp.player.level++;
+            gp.player.nextLevelExp += gp.player.nextLevelExp * 2;
+            gp.player.maxLife += 2;
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defense = getDefense();
+            gp.playSE(11);
+            gp.gameState = gp.dialogueState;
+            gp.ui.currentDialogue ="You are level " + gp.player.level + " now! \n" +
+                    "You feel stronger!";
+        }
+
+    }
+
     /**************************************************************************
      * Method: draw(Graphics2D g2)
      * Purpose: Draw the player's current sprite on screen.

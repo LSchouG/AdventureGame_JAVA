@@ -16,6 +16,7 @@ public class MON_GreenSlime extends Entity {
         attack = 4;
         defense = 0;
         collision = true;
+        exp = 2;
 
         solidArea.x = 3; // goes 3 pixel in from the side
         solidArea.y = 18;// goes 3 pixel down from the top

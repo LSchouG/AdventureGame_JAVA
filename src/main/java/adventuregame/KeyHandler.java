@@ -21,7 +21,7 @@ public class KeyHandler implements KeyListener {
     // Movement keys
     public boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false, enterPressed = false;
     // Debugging
-    public boolean checkDrawTime = false;
+    public boolean showDebugText = false;
     GamePanel gp;
 
     /**************************************************************************
@@ -167,9 +167,22 @@ public class KeyHandler implements KeyListener {
             System.exit(0);
         }
 
-        // Debug: Toggle draw time display with T key
+
+
+        // DEBUG
         if (code == KeyEvent.VK_T) {
-            checkDrawTime = !checkDrawTime;
+            if(showDebugText == false){
+                showDebugText = true;
+            } else if (showDebugText == true){
+                showDebugText = false;
+            }
+        }
+        if (code == KeyEvent.VK_R) {
+            gp.tileM.mapTileNumber = null;
+            gp.tileM.mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
+            gp.tileM.loadMap("/images/tiles/worldMapNew.csv");
+            //System.out.println("Map Reloaded" );
+            gp.repaint();  // Force immediate repaint
         }
     }
 

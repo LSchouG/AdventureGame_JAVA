@@ -35,6 +35,8 @@ public class AssetSetter {
      ***************************************************************************/
     public void setObject() {
         // Example:
+
+        /**
         gp.obj[0] = new OBJ_Key(gp);
         gp.obj[0].worldX = gp.tileSize * 24;
         gp.obj[0].worldY = gp.tileSize * 19;
@@ -42,6 +44,8 @@ public class AssetSetter {
         gp.obj[1] = new OBJ_Door(gp);
         gp.obj[1].worldX = gp.tileSize * 21;
         gp.obj[1].worldY = gp.tileSize * 25;
+
+         **/
     }
 
     /**************************************************************************
@@ -50,25 +54,46 @@ public class AssetSetter {
      * Notes: Currently places 1 old man NPC at tile (21, 21)
      ***************************************************************************/
     public void setNPC() {
-        gp.npc[0] = new NPC_OldMan(gp);
-        gp.npc[0].worldX = gp.tileSize * 21;
-        gp.npc[0].worldY = gp.tileSize * 21;
-
-        gp.npc[1] = new NPC_OldMan(gp);
-        gp.npc[1].worldX = gp.tileSize * 39;
-        gp.npc[1].worldY = gp.tileSize * 28;
-
-
-        gp.npc[3] = new NPC_OldMan(gp);
-        gp.npc[3].worldX = gp.tileSize * 40;
-        gp.npc[3].worldY = gp.tileSize * 29;
+        int i = 0;
+        gp.npc[i] = new NPC_OldMan(gp);
+        gp.npc[i].worldX = gp.tileSize * 21;
+        gp.npc[i].worldY = gp.tileSize * 21;
+        i++;
+        gp.npc[i] = new NPC_OldMan(gp);
+        gp.npc[i].worldX = gp.tileSize * 39;
+        gp.npc[i].worldY = gp.tileSize * 28;
+        i++;
+        gp.npc[i] = new NPC_OldMan(gp);
+        gp.npc[i].worldX = gp.tileSize * 40;
+        gp.npc[i].worldY = gp.tileSize * 29;
 
     }
     public void setMonster(){
 
-        gp.monster[0] = new MON_GreenSlime(gp);
-        gp.monster[0].worldX = gp.tileSize * 21;
-        gp.monster[0].worldY = gp.tileSize * 22;
+        int i = 0;
+        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i].worldX = gp.tileSize * 20;
+        gp.monster[i].worldY = gp.tileSize * 30;
+        i++;
+        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i].worldX = gp.tileSize * 21;
+        gp.monster[i].worldY = gp.tileSize * 30;
+        i++;
+        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i].worldX = gp.tileSize * 22;
+        gp.monster[i].worldY = gp.tileSize * 30;
+        i++;
+        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i].worldX = gp.tileSize * 23;
+        gp.monster[i].worldY = gp.tileSize * 30;
+        i++;
+        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i].worldX = gp.tileSize * 24;
+        gp.monster[i].worldY = gp.tileSize * 30;
+        i++;
+        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i].worldX = gp.tileSize * 25;
+        gp.monster[i].worldY = gp.tileSize * 30;
 
     }
 }

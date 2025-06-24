@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -177,7 +178,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // DEBUG - Start draw time measurement
         long drawStart = 0;
-        if (keyH.checkDrawTime) {
+        if (keyH.showDebugText) {
             drawStart = System.nanoTime();
         }
 
@@ -233,17 +234,47 @@ public class GamePanel extends JPanel implements Runnable {
 
 
         // DEBUG - End draw time measurement
-        if (keyH.checkDrawTime) {
+        if (keyH.showDebugText) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
+
+
+            g2.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 20));
             g2.setColor(Color.WHITE);
-            g2.drawString("Draw Time: " + passed, 10, 400);
-            System.out.println("Draw Time: " + passed);
+            int x = 10;
+            int y = 400;
+            int lineHeight = 20;
+            int row = (player.worldY + player.solidArea.y)/tileSize;
+            int col = (player.worldX + player.solidArea.x)/tileSize;
+
+            String colLabel = convertToColumnLabel(col + 1); // +1 because Excel-style labels start at 1
+
+            g2.drawString("WorldX: " + player.worldX, x, y);
+            y += lineHeight;
+            g2.drawString("WorldY: " + player.worldY, x, y);
+            y += lineHeight;
+            g2.drawString("ColLetter: " + colLabel + " ColNumb: " + col, x, y); // Column shown as letters
+            y += lineHeight;
+            g2.drawString("Row: " + (row + 1), x, y); // Row shown as number (1-based index)
+            y += lineHeight;
+            g2.drawString("Draw Time: " + passed, x, y);
         }
 
         g2.dispose(); // dispose of the graphics context
     }
-
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public String convertToColumnLabel(int colNumber) {
+        StringBuilder colName = new StringBuilder();
+        while (colNumber > 0) {
+            colNumber--; // Adjust for 0-based index
+            colName.insert(0, (char) ('A' + (colNumber % 26)));
+            colNumber /= 26;
+        }
+        return colName.toString();
+    }
     /**************************************************************************
      * Method: playMusic(int i)
      * Purpose: Plays background music using given index.

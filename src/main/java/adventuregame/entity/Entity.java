@@ -141,7 +141,7 @@ public class  Entity {
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 
         if (this.type == 2 && contactPlayer == true && gp.player.invincible == false){
-            gp.playSE(6);
+            gp.playSE(9);
 
             int damage = attack - gp.player.defense;
             if (damage < 0){
@@ -304,7 +304,6 @@ public class  Entity {
         if (dyingCounter > i*6 && dyingCounter <= i*7) {changeAlpha(g2, 0.0f);}
         if (dyingCounter > i*7 && dyingCounter <= i*8) {changeAlpha(g2, 1f);}
         if (dyingCounter > i*8){
-            System.out.println("Hallo World");
             dying = false;
             alive = false;
         dyingCounter = 0;

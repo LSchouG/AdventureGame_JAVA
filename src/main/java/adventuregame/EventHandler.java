@@ -190,6 +190,7 @@ public class EventHandler {
         gp.keyH.enterPressed = false;
         if (gp.keyH.enterPressed) {}
         canTouchEvent = false;
+        gp.aSetter.setMonster();
     }}
 
     /**************************************************************************
