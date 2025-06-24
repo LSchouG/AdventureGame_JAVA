@@ -27,14 +27,18 @@ public class OBJ_FireBall extends Projectile {
         attack = 2;
         manaUse = 1;
         alive = false;
-        type = type_spell;
+        getImage();
+    }
+
+    public void getImage(){
+
+        down1 = setup("/images/objects/.png", gp.tileSize, gp.tileSize);
         down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
-        attackValue = 1;
-        attackArea.width = 50;
-        attackArea.height = 50;
-        itemDescription = "[" + name + "]\nBook of basic fire magic." +
-                "\nAttack Value: " + attackValue + "\nAttack range: " + attackArea.width;
-
-
+        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
     }
 }
