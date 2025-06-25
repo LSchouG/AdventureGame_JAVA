@@ -28,14 +28,14 @@ public class MON_GreenSlime extends Entity {
     }
     public void getImage(){
 
-        up1 = setup("/images/monster/greenslime1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/monster/greenslime2.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/monster/greenslime1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/monster/greenslime2.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/monster/greenslime1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/monster/greenslime2.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/monster/greenslime1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/monster/greenslime2.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
     }
     public void setAction(){
         actionLockCounter++;

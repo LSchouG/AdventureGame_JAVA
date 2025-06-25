@@ -11,7 +11,7 @@ public class OBJ_FireBall extends Projectile {
 /** OLD WAY OF FIREBALL
         name = "FireBall";
         type = type_spell;
-        down1 = setup("/images/objects/Book.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/bbook.png", gp.tileSize, gp.tileSize);
         attackValue = 1;
         attackArea.width = 50;
         attackArea.height = 50;
@@ -32,13 +32,13 @@ public class OBJ_FireBall extends Projectile {
 
     public void getImage(){
 
-        down1 = setup("/images/attack/FireBallDown1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/attack/FireBallDown1.png", gp.tileSize, gp.tileSize);
-        up1 = setup("/images/attack/FireBallUp1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/attack/FireBallUp2.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/attack/FireBallLeft1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/attack/FireBallLeft2.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/attack/FireBallRight1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/attack/FireBallRight2.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/attack/fireball-down-1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/attack/fireball-down-1.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/attack/fireball-up-1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/attack/fireball-up-2.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/attack/fireball-left-1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/attack/fireball-left-2.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/attack/fireball-right-1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/attack/fireball-right-2.png", gp.tileSize, gp.tileSize);
     }
 }

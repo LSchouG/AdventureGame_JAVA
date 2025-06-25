@@ -14,7 +14,6 @@ package adventuregame.entity;
 
 import adventuregame.GamePanel;
 import adventuregame.KeyHandler;
-import adventuregame.objects.OBJ_Key;
 import adventuregame.objects.OBJ_Shield_Wood;
 import adventuregame.objects.OBJ_Sword_Normal;
 
@@ -115,18 +114,18 @@ public class Player extends Entity {
      * Purpose: Load and assign all directional sprite images.
      ***************************************************************************/
     public void getPlayerImages() {
-        downStill = setup("/images/player/down_still_boy.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/player/down_1_boy.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/player/down_2_boy.png", gp.tileSize, gp.tileSize);
-        upStill = setup("/images/player/up_still_boy.png", gp.tileSize, gp.tileSize);
-        up1 = setup("/images/player/up_1_boy.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/player/up_2_boy.png", gp.tileSize, gp.tileSize);
-        leftStill = setup("/images/player/left_still_boy.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/player/left_1_boy.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/player/left_2_boy.png", gp.tileSize, gp.tileSize);
-        rightStill = setup("/images/player/right_still_boy.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/player/right_1_boy.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/player/right_2_boy.png", gp.tileSize, gp.tileSize);
+        downStill = setup("/images/player/player-down-still.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/player/player-down-1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/player/player-down-2.png", gp.tileSize, gp.tileSize);
+        upStill = setup("/images/player/player-up-still.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/player/player-up-1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/player/player-up-2.png", gp.tileSize, gp.tileSize);
+        leftStill = setup("/images/player/player-left-still.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/player/player-left-1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/player/player-left-2.png", gp.tileSize, gp.tileSize);
+        rightStill = setup("/images/player/player-right-still.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/player/player-right-1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/player/player-right-2.png", gp.tileSize, gp.tileSize);
     }
     /**************************************************************************
      * Method: getImages()
@@ -136,17 +135,17 @@ public class Player extends Entity {
 
         /** IF WANT A SWORD IMAGES
          if (currentWeapon.type == type_sword){
-            attachUp = setup("/images/player/attach_up.png", gp.tileSize, gp.tileSize *2);
-            attachDown = setup("/images/player/attach_down.png", gp.tileSize, gp.tileSize *2);
-            attachLeft = setup("/images/player/attach_left.png", gp.tileSize *2, gp.tileSize);
-            attachRight = setup("/images/player/attach_right.png", gp.tileSize *2, gp.tileSize);
+            attachUp = setup("/images/player/attach-up.png", gp.tileSize, gp.tileSize *2);
+            attachDown = setup("/images/player/attach-down.png", gp.tileSize, gp.tileSize *2);
+            attachLeft = setup("/images/player/attach-left.png", gp.tileSize *2, gp.tileSize);
+            attachRight = setup("/images/player/attach-right.png", gp.tileSize *2, gp.tileSize);
         }**/
 
         // UNIVERSAL ATTACK SWING
-        attachUp = setup("/images/player/attack_up.png", gp.tileSize, gp.tileSize *2);
-        attachDown = setup("/images/player/attack_down.png", gp.tileSize, gp.tileSize *2);
-        attachLeft = setup("/images/player/attack_left.png", gp.tileSize *2, gp.tileSize);
-        attachRight = setup("/images/player/attack_right.png", gp.tileSize *2, gp.tileSize);
+        attachUp = setup("/images/player/attack-up.png", gp.tileSize, gp.tileSize *2);
+        attachDown = setup("/images/player/attack-down.png", gp.tileSize, gp.tileSize *2);
+        attachLeft = setup("/images/player/attack-left.png", gp.tileSize *2, gp.tileSize);
+        attachRight = setup("/images/player/attack-right.png", gp.tileSize *2, gp.tileSize);
     }
     /**************************************************************************
      * Method: update()

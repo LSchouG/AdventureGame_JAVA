@@ -44,18 +44,18 @@ public class NPC_OldMan extends Entity {
      * Purpose: Loads all sprite images for this NPC (idle and walking).
      ***************************************************************************/
     public void getImages() {
-        downStill = setup("/images/npc/oldManDownStill.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/npc/oldManDown1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/npc/oldManDown2.png", gp.tileSize, gp.tileSize);
-        upStill = setup("/images/npc/oldManUpStill.png", gp.tileSize, gp.tileSize);
-        up1 = setup("/images/npc/oldManUp1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/npc/oldManUp2.png", gp.tileSize, gp.tileSize);
-        leftStill = setup("/images/npc/oldManLeftStill.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/npc/oldManLeft1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/npc/oldManLeft2.png", gp.tileSize, gp.tileSize);
-        rightStill = setup("/images/npc/oldManRightStill.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/npc/oldManRight1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/npc/oldManRight2.png", gp.tileSize, gp.tileSize);
+        downStill = setup("/images/npc/old-man-down-still.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/npc/old-man-down-1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/npc/old-man-down-2.png", gp.tileSize, gp.tileSize);
+        upStill = setup("/images/npc/old-man-up-still.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/npc/old-man-up-1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/npc/old-man-up-2.png", gp.tileSize, gp.tileSize);
+        leftStill = setup("/images/npc/old-man-left-still.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/npc/old-man-left-1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/npc/old-man-left-2.png", gp.tileSize, gp.tileSize);
+        rightStill = setup("/images/npc/old-man-right-still.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/npc/old-man-right-1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/npc/old-man-right2.png", gp.tileSize, gp.tileSize);
     }
 
     public void setDialogue() {

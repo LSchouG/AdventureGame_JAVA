@@ -34,8 +34,8 @@ public final class TileManager {
 
         //GRASS
         setup(0, "grass", false);
-        setup(48, "grassPit", false);
-        setup(50, "grassTeleport", false);
+        setup(48, "grass-pit", false);
+        setup(50, "grass-teleport", false);
 
 
         //WALL
@@ -63,18 +63,18 @@ public final class TileManager {
         setup(18, "waterToGrassTopRightOut", true);
         //SAND
         setup(19, "sand", false);
-        setup(20, "sandToGrassDown", false);
-        setup(21, "sandToGrassDownLeft", false);
-        setup(22, "sandToGrassDownOutLeft", false);
-        setup(23, "sandToGrassDownOutRight", false);
-        setup(24, "sandToGrassDownRight", false);
-        setup(25, "sandToGrassTop", false);
+        setup(20, "sand-to-grass-down", false);
+        setup(21, "sand-to-grass-down-left", false);
+        setup(22, "sand-to-grass-down-out-left", false);
+        setup(23, "sand-to-grass-down-out-right", false);
+        setup(24, "sand-to-grass-down-right", false);
+        setup(25, "sand-to-grass-top", false);
         setup(26, "sandToGrassTopLeft", false);
         setup(27, "sandToGrassTopOutLeft", false);
         setup(28, "sandToGrassTopOutRight", false);
         setup(29, "sandToGrassTopRight", false);
-        setup(46, "sandToGrassRight", false);
-        setup(47, "sandToGrassLeft", false);
+        setup(46, "sand-to-grass-right", false);
+        setup(47, "sand-to-grass-left", false);
 
 
         setup(30, "sandToWaterDown1", true);

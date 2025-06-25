@@ -10,7 +10,7 @@ public class OBJ_Axe extends Entity {
 
         name = "Axe";
         type = type_axe;
-        down1 = setup("/images/objects/Axe.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/axe.png", gp.tileSize, gp.tileSize);
         attackValue = 2;
         attackArea.width = 30;
         attackArea.height = 30;

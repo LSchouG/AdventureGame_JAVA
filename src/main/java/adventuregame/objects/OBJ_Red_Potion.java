@@ -13,7 +13,7 @@ public class OBJ_Red_Potion extends Entity{
         name = "Red Potion";
         type = type_consumable;
         restoreValue = 5;
-        down1 = setup("/images/objects/red_potion.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects/red-potion.png", gp.tileSize, gp.tileSize);
         itemDescription = "[" + name + "]" + " \nA healing potion. \nRestores " + restoreValue + " HP.";
     }
     public void use(Entity entity) {

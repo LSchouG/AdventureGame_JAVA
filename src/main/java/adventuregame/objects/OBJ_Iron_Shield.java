@@ -8,7 +8,7 @@ public class OBJ_Iron_Shield extends Entity{
 
          name = "Iron Shield";
          type = type_shield;
-         down1 = setup("/images/objects/Shield_Iron.png", gp.tileSize, gp.tileSize);
+         down1 = setup("/images/objects/shield-iron.png", gp.tileSize, gp.tileSize);
          defenseValue = 2;
          attackArea.width = 36;
          attackArea.height = 36;
