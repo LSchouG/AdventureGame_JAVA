@@ -14,6 +14,7 @@ package adventuregame.entity;
 
 import adventuregame.GamePanel;
 import adventuregame.KeyHandler;
+import adventuregame.objects.OBJ_FireBall;
 import adventuregame.objects.OBJ_Shield_Wood;
 import adventuregame.objects.OBJ_Sword_Normal;
 
@@ -83,8 +84,10 @@ public class Player extends Entity {
         gold = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectile = new OBJ_FireBall(gp);
         attack = getAttack();
         defense = getDefense();
+        coolDownMagicCounter = 100;
     }
     /**************************************************************************
      * Method:
@@ -153,8 +156,10 @@ public class Player extends Entity {
      ***************************************************************************/
     public void update() {
 
-
+        // if attack attack
         if (attacking == true){ attaching(); }
+
+        // else if not attacking do something else.
         else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
 
             // 1. Update direction
@@ -225,13 +230,32 @@ public class Player extends Entity {
                 // Reset the counter
                 spriteCounter = 0;
             }
-        } else {
+        }
+
+        // else player is standing still.
+        else {
             // Player standing still
             standCounter++;
             if (standCounter > 20) {
                 spriteNumber = 0;
                 standCounter = 0;
             }
+        }
+
+        // shot a magic ball
+        if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == coolDownMagicCounter){
+
+            // SET DEFAULT COORDINATION DIRECTION AND USE
+            projectile.set(worldX, worldY,direction, true, this);
+
+            // ADD IT TO THE LIST
+            gp.projectileList.add(projectile);
+
+            shotAvailableCounter = 0;
+
+            // PLAY SOUND
+            gp.playSE(13);
+
         }
 
         // this needs to be outside of key if statment
@@ -241,6 +265,9 @@ public class Player extends Entity {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+        if(shotAvailableCounter < coolDownMagicCounter){
+            shotAvailableCounter++;
         }
     }
     /**************************************************************************
@@ -303,7 +330,7 @@ public class Player extends Entity {
              solidArea.width = solidAreaWidth;
              solidArea.height = solidAreaHeight;
 
-             damageMonster(monsterIndex);
+             damageMonster(monsterIndex, attack);
 
          }
          if (spriteCounter >= 12 && spriteCounter < 15){
@@ -367,7 +394,7 @@ public class Player extends Entity {
      * Purpose:
      * Inputs:
      ***************************************************************************/
-    public void damageMonster(int i){
+    public void damageMonster(int i, int attack){
         if (i != 999){
             if (gp.monster[i].invincible == false){
 

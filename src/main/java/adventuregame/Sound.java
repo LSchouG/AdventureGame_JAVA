@@ -26,19 +26,20 @@ public class Sound {
      * Purpose: Preloads sound file paths into the URL array.
      ***************************************************************************/
     public Sound() {
-        soundURL[0] = getClass().getResource("/sound/backGroundMusic.wav");
-        soundURL[1] = getClass().getResource("/sound/powerUp.wav");
+        soundURL[0] = getClass().getResource("/sound/back-ground-music.wav");
+        soundURL[1] = getClass().getResource("/sound/power-up.wav");
         soundURL[2] = getClass().getResource("/sound/coin.wav");
         soundURL[3] = getClass().getResource("/sound/door.wav");
-        soundURL[4] = getClass().getResource("/sound/endGameVictory.wav");
-        soundURL[5] = getClass().getResource("/sound/hitMonster.wav");
+        soundURL[4] = getClass().getResource("/sound/end-game-victory.wav");
+        soundURL[5] = getClass().getResource("/sound/hit-monster.wav");
         soundURL[6] = getClass().getResource("/sound/hurt.wav");
         soundURL[7] = getClass().getResource("/sound/slime.wav");
-        soundURL[8] = getClass().getResource("/sound/swordSwing.wav");
+        soundURL[8] = getClass().getResource("/sound/sword-swing.wav");
         soundURL[9] = getClass().getResource("/sound/slash.wav");
-        soundURL[10] = getClass().getResource("/sound/slime1.wav");
-        soundURL[11] = getClass().getResource("/sound/levelUp.wav");
-        soundURL[12] = getClass().getResource("/sound/menuCursor.wav");
+        soundURL[10] = getClass().getResource("/sound/slime-1.wav");
+        soundURL[11] = getClass().getResource("/sound/level-up.wav");
+        soundURL[12] = getClass().getResource("/sound/menu-cursor.wav");
+        soundURL[13] = getClass().getResource("/sound/fireball-woosh.wav");
     }
 
     /**************************************************************************

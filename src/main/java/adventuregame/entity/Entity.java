@@ -44,10 +44,12 @@ public class  Entity {
 
     /** COUNTER **/
     public int spriteCounter = 0;
-    public int actionLockCounter;
-    public int invincibleCounter;
+    public int actionLockCounter = 0;
+    public int invincibleCounter = 0;
+    public int shotAvailableCounter = 0;
     int dyingCounter = 0;
     int hpBarCounter = 0;
+    int coolDownMagicCounter = 100;
 
     /** CHARACTER ATTRIBUTES **/
     public String name; // Object name identifier
@@ -66,6 +68,7 @@ public class  Entity {
     public  int exp;
     public int nextLevelExp;
     public int  gold;
+    public Entity user;
     public Entity currentWeapon;
     public Entity currentShield;
     public Projectile projectile;
@@ -151,15 +154,7 @@ public class  Entity {
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 
         if (this.type == type_monster && contactPlayer == true && gp.player.invincible == false){
-            gp.playSE(9);
-
-            int damage = attack - gp.player.defense;
-            if (damage < 0){
-                damage = 0;
-            }
-            gp.player.life -= damage;
-            gp.player.invincible = true;
-            gp.player.invincibleCounter = 0;
+            damageplayer(attack);
         }
 
         // 3. Move player if no collision
@@ -185,6 +180,9 @@ public class  Entity {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+        if(shotAvailableCounter < coolDownMagicCounter){
+            shotAvailableCounter++;
         }
     }
     /**************************************************************************
@@ -312,6 +310,25 @@ public class  Entity {
         if (dyingCounter > i*6 && dyingCounter <= i*7) {changeAlpha(g2, 0.0f);}
         if (dyingCounter > i*7 && dyingCounter <= i*8) {changeAlpha(g2, 1f);}
         if (dyingCounter > i*8){alive = false;dyingCounter = 0;}
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     * Outputs:
+     ***************************************************************************/
+    public void  damageplayer(int attack){
+        gp.playSE(9);
+
+        int damage = attack - gp.player.defense;
+        if (damage < 0){
+            damage = 0;
+        }
+        gp.player.life -= damage;
+        gp.player.invincible = true;
+        gp.player.invincibleCounter = 0;
+
+
     }
     /**************************************************************************
      * Method:

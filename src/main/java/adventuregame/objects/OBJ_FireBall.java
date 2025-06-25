@@ -8,6 +8,7 @@ public class OBJ_FireBall extends Projectile {
     GamePanel gp;
     public OBJ_FireBall(GamePanel gp) {
         super(gp);
+        this.gp = gp;
 /** OLD WAY OF FIREBALL
         name = "FireBall";
         type = type_spell;
@@ -22,7 +23,7 @@ public class OBJ_FireBall extends Projectile {
 // NEW WAY OF FIREBALL
         name = "FireBall";
         speed = 5;
-        maxLife = 80;
+        maxLife = 30;
         life = maxLife;
         attack = 2;
         manaUse = 1;

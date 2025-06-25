@@ -19,7 +19,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     // Movement keys
-    public boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false, enterPressed = false;
+    public boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false, enterPressed = false, shotKeyPressed = false;
     // Debugging
     public boolean showDebugText = false;
     GamePanel gp;
@@ -31,7 +31,6 @@ public class KeyHandler implements KeyListener {
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
-
     /**************************************************************************
      * Method: keyTyped(KeyEvent e)
      * Purpose: Required by KeyListener but not used here.
@@ -40,7 +39,6 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
         // Not used
     }
-
     /**************************************************************************
      * Method: keyPressed(KeyEvent e)
      * Purpose: Responds to key press events for movement, pause, and debug.
@@ -132,7 +130,6 @@ public class KeyHandler implements KeyListener {
 
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -162,9 +159,11 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_C) {
             gp.gameState = gp.characterState;
         }
-
         if (code == KeyEvent.VK_ESCAPE) {
             System.exit(0);
+        }
+        if (code == KeyEvent.VK_E) {
+            shotKeyPressed = true;
         }
 
 
@@ -185,7 +184,6 @@ public class KeyHandler implements KeyListener {
             gp.repaint();  // Force immediate repaint
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -195,7 +193,6 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.playState;
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -205,7 +202,6 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.playState;
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -248,9 +244,6 @@ public class KeyHandler implements KeyListener {
             gp.player.selectItem();
         }
     }
-
-
-
     /**************************************************************************
      * Method: keyReleased(KeyEvent e)
      * Purpose: Responds to key release events to stop movement.
@@ -273,6 +266,9 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
             enterPressed = false;
+        }
+        if (code == KeyEvent.VK_E) {
+            shotKeyPressed = false;
         }
     }
 }

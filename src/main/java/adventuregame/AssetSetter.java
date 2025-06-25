@@ -13,6 +13,7 @@ package adventuregame;
 
 import adventuregame.entity.NPC_OldMan;
 import adventuregame.monster.MON_GreenSlime;
+import adventuregame.monster.MON_RedSlime;
 import adventuregame.objects.*;
 
 public class AssetSetter {
@@ -95,15 +96,15 @@ public class AssetSetter {
         gp.monster[i].worldX = gp.tileSize * 22;
         gp.monster[i].worldY = gp.tileSize * 30;
         i++;
-        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i] = new MON_RedSlime(gp);
         gp.monster[i].worldX = gp.tileSize * 23;
         gp.monster[i].worldY = gp.tileSize * 30;
         i++;
-        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i] = new MON_RedSlime(gp);
         gp.monster[i].worldX = gp.tileSize * 24;
         gp.monster[i].worldY = gp.tileSize * 30;
         i++;
-        gp.monster[i] = new MON_GreenSlime(gp);
+        gp.monster[i] = new MON_RedSlime(gp);
         gp.monster[i].worldX = gp.tileSize * 25;
         gp.monster[i].worldY = gp.tileSize * 30;
 

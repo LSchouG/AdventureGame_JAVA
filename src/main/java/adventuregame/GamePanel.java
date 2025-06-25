@@ -61,6 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[20];
+    public ArrayList<Entity> projectileList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
     /**************************** GAME STATE **********************************/
@@ -84,7 +85,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true); // allows the panel to receive keyboard input
     }
-
     /**************************************************************************
      * Method: setupGame()
      * Purpose: Prepares the game before starting by setting objects, NPCs, and music.
@@ -97,7 +97,6 @@ public class GamePanel extends JPanel implements Runnable {
         //stopMusic();  // optionally stop it immediately
         gameState = titleState;
     }
-
     /**************************************************************************
      * Method: startGameThread()
      * Purpose: Starts the main game loop in a new thread.
@@ -106,7 +105,6 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
     /**************************************************************************
      * Method: run()
      * Purpose: Main game loop. Uses delta time for consistent frame rate.
@@ -134,25 +132,38 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
-
     /**************************************************************************
      * Method: update()
      * Purpose: Update the game state, player movement, and other logic.
      ***************************************************************************/
     public void update() {
+
         if (gameState == playState) {
+
             // Player updates only if game is running
             player.update();
+
             // npc updates only if game is running
-            for (int i =0; i < npc.length; i++)
-            {
+            for (int i =0; i < npc.length; i++) {
                 if (npc[i] != null){
                     npc[i].update();
                 }
             }
+
             // Monster updates only if game is running
-            for (int i =0; i < monster.length; i++)
-            {
+            for (int i =0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null){
+                    if (projectileList.get(i).alive == true){
+                        projectileList.get(i).update();
+                    }
+                    if (projectileList.get(i).alive == false){
+                        projectileList.remove(i);
+                    }
+                }
+            }
+
+            // Projectile updates only if game is running
+            for (int i =0; i < monster.length ; i++) {
                 if (monster[i] != null){
                     if (monster[i].alive == true && monster[i].dying == false){
                         monster[i].update();
@@ -162,11 +173,11 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
-        } else if (gameState == pauseState) {
+        }
+        else if (gameState == pauseState) {
             // pause logic here if needed
         }
     }
-
     /**************************************************************************
      * Method: paintComponent(Graphics g)
      * Purpose: Handles all rendering (tiles, objects, entities, UI).
@@ -191,26 +202,32 @@ public class GamePanel extends JPanel implements Runnable {
             // 1. Draw tiles
             tileM.draw(g2);
 
+            // ADD PLAYER TO LIST
             entityList.add(player);
-
+            // ADD NPC TI LIST
             for(int i = 0; i < npc.length; i++){
                 if(npc[i] != null){
                     entityList.add(npc[i]);
                 }
             }
-
+            // ADD OBJ TO LIST
             for(int i = 0; i < obj.length; i++){
                 if(obj[i] != null){
                     entityList.add(obj[i]);
                 }
             }
-
+            // ADD MONSTER TO LIST
             for(int i = 0; i < monster.length; i++){
                 if(monster[i] != null){
                     entityList.add(monster[i]);
                 }
             }
-
+            // ADD PROJECTILES TO LIST
+            for(int i = 0; i < projectileList.size(); i++){
+                if(projectileList.get(i) != null){
+                    entityList.add(projectileList.get(i));
+                }
+            }
             //SORT
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
@@ -284,7 +301,6 @@ public class GamePanel extends JPanel implements Runnable {
         music.play();
         music.loop(); // loop the background music
     }
-
     /**************************************************************************
      * Method: stopMusic()
      * Purpose: Stops background music.
@@ -292,7 +308,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void stopMusic() {
         music.stop();
     }
-
     /**************************************************************************
      * Method: playSE(int i)
      * Purpose: Plays a sound effect using given index.
