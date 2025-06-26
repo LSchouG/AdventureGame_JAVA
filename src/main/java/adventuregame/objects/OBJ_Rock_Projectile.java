@@ -19,7 +19,6 @@ public class OBJ_Rock_Projectile extends Projectile {
         alive = false;
         getImage();
     }
-
     public void getImage(){
 
         down1 = setup("/images/attack/rock-projectile.png", gp.tileSize, gp.tileSize);
@@ -32,7 +31,6 @@ public class OBJ_Rock_Projectile extends Projectile {
         right2 = setup("/images/attack/rock-projectile.png", gp.tileSize, gp.tileSize);
 
     }
-
     public boolean haveResource(Entity user){
 
         boolean haveResource = false;
@@ -42,7 +40,6 @@ public class OBJ_Rock_Projectile extends Projectile {
         }
         return haveResource;
     }
-
     public void subtractResource(Entity user){
         gp.player.mana -= useCost;
     }

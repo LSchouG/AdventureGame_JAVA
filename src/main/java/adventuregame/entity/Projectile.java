@@ -6,7 +6,6 @@ public class Projectile extends Entity{
     public Projectile(GamePanel gp){
         super(gp);
     }
-
     public void use(){}
     public void set(int worldX, int worldY, String direction, boolean alive, Entity user){
 
@@ -55,7 +54,6 @@ public class Projectile extends Entity{
             spriteCounter = 0;
         }
     }
-
     public boolean haveResource(Entity user){
 
         boolean haveResource = false;

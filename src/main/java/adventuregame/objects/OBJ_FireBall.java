@@ -10,18 +10,7 @@ public class OBJ_FireBall extends Projectile {
     public OBJ_FireBall(GamePanel gp) {
         super(gp);
         this.gp = gp;
-/** OLD WAY OF FIREBALL
-        name = "FireBall";
-        type = type_spell;
-        down1 = setup("/images/objects/bbook.png", gp.tileSize, gp.tileSize);
-        attackValue = 1;
-        attackArea.width = 50;
-        attackArea.height = 50;
-        itemDescription = "[" + name + "]\nBook of basic fire magic." +
-                "\nAttack Value: " + attackValue + "\nAttack range: " + attackArea.width;
- **/
 
-// NEW WAY OF FIREBALL
         name = "FireBall";
         speed = 5;
         maxLife = 30;

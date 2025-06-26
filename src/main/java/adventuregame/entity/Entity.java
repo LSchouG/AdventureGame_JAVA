@@ -81,6 +81,8 @@ public class  Entity {
     public int  restoreValue;
     public String itemDescription = "";
     public int useCost; //
+    public int value;
+    public String lockKeyType;
 
     // TYPE
 
@@ -93,6 +95,8 @@ public class  Entity {
     public final int type_shield = 5;
     public final int type_spell = 6;
     public final int type_consumable = 7;
+    public final int type_pickUpOnly = 8;
+
 
     /**************************************************************************
      * Constructor: Entity(GamePanel gp)
@@ -270,7 +274,6 @@ public class  Entity {
 
             g2.drawImage(image, screenX, screenY, null); // draw sprite
             changeAlpha(g2, 1f);
-
         }
     }
     /**************************************************************************

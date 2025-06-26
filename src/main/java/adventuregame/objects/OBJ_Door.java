@@ -19,6 +19,7 @@ public class OBJ_Door extends Entity {
         name = "Door";
         down1 = setup("/images/objects/door.png", gp.tileSize, gp.tileSize);
         collision = true;
+        lockKeyType = "common";
 
 
         solidArea.x = 0;// goes 0 pixel in from the side

@@ -34,11 +34,9 @@ public class UI {
     Graphics2D g2;
     Font titelFont, menuFontP, menuFontB, textFont;
     BufferedImage fullHeart, halfHeart, blankHeart, fullCrystal, halfCrystal, blankCrystal;
-    //public String message = "";
-    //int massageCounter = 0;
+
     ArrayList<String> message = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
-
 
     /**************************************************************************
      * Constructor: UI(GamePanel gp)
@@ -67,7 +65,6 @@ public class UI {
         blankCrystal = crystal.image1;
 
     }
-
     /**************************************************************************
      * Method: showMessage(String text)
      * Purpose: Enables a temporary on-screen message to the player.
@@ -77,7 +74,6 @@ public class UI {
         message.add(text);
         messageCounter.add(0);
     }
-
     /**************************************************************************
      * Method: draw(Graphics2D g2)
      * Purpose: Renders the UI elements depending on game state.
@@ -113,7 +109,6 @@ public class UI {
             drawInventory();
         }
     }
-
     /**************************************************************************
      * Method: drawPlayerLife()
      * Purpose:
@@ -178,7 +173,6 @@ public class UI {
         }
 
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -217,7 +211,6 @@ public class UI {
         }
 
     }
-
     /**************************************************************************
      * Method: drawTitleScreen()
      * Purpose:
@@ -331,7 +324,6 @@ public class UI {
         }
 
     }
-
     /**************************************************************************
      * Method: drawSDialogueScreen()
      * Purpose:
@@ -356,7 +348,6 @@ public class UI {
         }
 
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -445,7 +436,6 @@ public class UI {
 
 
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -517,7 +507,6 @@ public class UI {
             }
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -526,7 +515,6 @@ public class UI {
         int itemIndex = slotCol + (slotRow * 5);
         return itemIndex;
     }
-
     /**************************************************************************
      * Method: drawSubWindow()
      * Purpose:
@@ -542,7 +530,6 @@ public class UI {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
-
     /**************************************************************************
      * Method: drawPauseScreen()
      * Purpose: Displays the "PAUSED" screen centered on screen.
@@ -555,7 +542,6 @@ public class UI {
         int y = getYForCenter();
         g2.drawString(text, x, y);
     }
-
     /**************************************************************************
      * Method: getXForCenter(String text)
      * Purpose: Calculates the X-coordinate to center text horizontally.
@@ -566,7 +552,6 @@ public class UI {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return (gp.screenWidth / 2) - (length / 2);
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -577,7 +562,6 @@ public class UI {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return (tailX - length);
     }
-
     /**************************************************************************
      * Method: getYForCenter()
      * Purpose: Calculates the Y-coordinate to vertically center text.

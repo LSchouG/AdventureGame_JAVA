@@ -19,6 +19,7 @@ public class OBJ_Key extends Entity {
         super(gp);
         name = "Key";
         type = type_consumable;
+        lockKeyType = "common";
         down1 = setup("/images/objects/key.png", gp.tileSize, gp.tileSize);
         itemDescription = "[" + name + "]\nA common key.";
     }
