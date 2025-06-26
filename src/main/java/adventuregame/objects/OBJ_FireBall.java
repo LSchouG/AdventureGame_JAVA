@@ -1,6 +1,7 @@
 package adventuregame.objects;
 
 import adventuregame.GamePanel;
+import adventuregame.entity.Entity;
 import adventuregame.entity.Projectile;
 
 public class OBJ_FireBall extends Projectile {
@@ -26,7 +27,7 @@ public class OBJ_FireBall extends Projectile {
         maxLife = 30;
         life = maxLife;
         attack = 2;
-        manaUse = 1;
+        useCost = 1;
         alive = false;
         getImage();
     }
@@ -41,5 +42,19 @@ public class OBJ_FireBall extends Projectile {
         left2 = setup("/images/attack/fireball-left-2.png", gp.tileSize, gp.tileSize);
         right1 = setup("/images/attack/fireball-right-1.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/attack/fireball-right-2.png", gp.tileSize, gp.tileSize);
+    }
+
+    public boolean haveResource(Entity user){
+
+        boolean haveResource = false;
+
+        if (user.mana >= useCost) {
+            haveResource = true;
+        }
+        return haveResource;
+    }
+
+    public void subtractResource(Entity user){
+            gp.player.mana -= useCost;
     }
 }

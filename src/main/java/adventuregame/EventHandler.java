@@ -27,8 +27,6 @@ public class EventHandler {
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
 
-
-
     /**************************************************************************
      * Constructor: EventHandler(GamePanel gp)
      * Purpose: Initializes trigger rectangles and stores default positions.
@@ -75,7 +73,6 @@ public class EventHandler {
             }
         }
     }
-
     /**************************************************************************
      * Method: checkEvent()
      * Purpose: Triggers specific game events based on player's tile position.
@@ -96,7 +93,6 @@ public class EventHandler {
         if (interact(23, 29, "up")) {teleport(gp.dialogueState);}
 
     }
-
     /**************************************************************************
      * Method: hit(int eventCol, int eventRow, String reqDirection)
      * Purpose: Detects collision with a small event zone.
@@ -132,7 +128,6 @@ public class EventHandler {
 
         return hit;
     }
-
     /**************************************************************************
      * Method: interact(int eventCol, int eventRow, String reqDirection)
      * Purpose: Detects interaction with a larger area (e.g., beds).
@@ -162,7 +157,6 @@ public class EventHandler {
 
         return interact;
     }
-
     /**************************************************************************
      * Method: damagePit(int gameState)
      * Purpose: Simulates falling into a pit and decreases player health.
@@ -175,7 +169,6 @@ public class EventHandler {
        // eventRect1[col][row].eventDone = true;
         canTouchEvent = false;
     }
-
     /**************************************************************************
      * Method: healingBed(int gameState)
      * Purpose: Heals the player to full health when interacting with a bed.
@@ -187,12 +180,9 @@ public class EventHandler {
         gp.player.attackCanceled = true;
         gp.ui.currentDialogue = "You took a nap and feel better!";
         gp.player.life = gp.player.maxLife;
-        gp.keyH.enterPressed = false;
-        if (gp.keyH.enterPressed) {}
-        canTouchEvent = false;
+        gp.player.mana = gp.player.maxMana;
         gp.aSetter.setMonster();
     }}
-
     /**************************************************************************
      * Method: teleport(int gameState)
      * Purpose:

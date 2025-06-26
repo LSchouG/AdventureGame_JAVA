@@ -3,17 +3,18 @@ package adventuregame.objects;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
-public class OBJ_Red_Potion extends Entity{
+public class OBJ_Potion_Red extends Entity{
     GamePanel gp;
 
-    public OBJ_Red_Potion(GamePanel gp){
+    public OBJ_Potion_Red(GamePanel gp){
         super(gp);
         this.gp = gp;
 
         name = "Red Potion";
         type = type_consumable;
         restoreValue = 5;
-        down1 = setup("/images/objects/red-potion.png", gp.tileSize, gp.tileSize);
+        image1 = setup("/images/objects/small-red-potion.png", gp.tileSize, gp.tileSize);
+        image2 = setup("/images/objects/big-red-potion.png", gp.tileSize, gp.tileSize);
         itemDescription = "[" + name + "]" + " \nA healing potion. \nRestores " + restoreValue + " HP.";
     }
     public void use(Entity entity) {

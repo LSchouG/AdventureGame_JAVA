@@ -56,12 +56,14 @@ public class  Entity {
     public int chosenClass;// 0 = fighter, 1 = Theif, 2 = Sorcerer
     public int speed;
     public int  maxLife;
+    public  int  maxMana;
+    public  int  mana;
+    public int ammo;
+    public int maxAmmo;
     public int  life;
     public  int level;
     public int strength;
     public int dexterity;
-    public int maxMana;
-    public int mana;
     public int attack;
     public int  defense;
     public int  magic;
@@ -78,9 +80,10 @@ public class  Entity {
     public int  defenseValue;
     public int  restoreValue;
     public String itemDescription = "";
-    public int manaUse; //
+    public int useCost; //
 
     // TYPE
+
     public int type;// 0 = player, 1 = npc, 2 = monster
     public final int type_player = 0;
     public final int type_npc = 1;

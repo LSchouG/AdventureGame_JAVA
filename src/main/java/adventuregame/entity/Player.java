@@ -75,6 +75,10 @@ public class Player extends Entity {
         // PLAYER STATUS
         maxLife = 6;
         life = maxLife;
+        maxMana = 6;
+        mana = maxMana;
+        maxAmmo = 20;
+        ammo = 5;
         level = 1;
         strength = 1;
         dexterity = 1;
@@ -85,71 +89,12 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_FireBall(gp);
+//      projectile = new OBJ_Rock_Projectile(gp);
         attack = getAttack();
         defense = getDefense();
         coolDownMagicCounter = 100;
     }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
-    public void setItems(){
-        inventory. add(currentWeapon);
-        inventory.add(currentShield);
-    }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
-    public int getAttack(){
-        attackArea = currentWeapon.attackArea;
-        return attack = strength * currentWeapon.attackValue;
-    }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
-    public int getDefense(){
-        return defense = dexterity * currentShield.defenseValue;
-    }
-    /**************************************************************************
-     * Method: getImages()
-     * Purpose: Load and assign all directional sprite images.
-     ***************************************************************************/
-    public void getPlayerImages() {
-        downStill = setup("/images/player/player-down-still.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/player/player-down-1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/player/player-down-2.png", gp.tileSize, gp.tileSize);
-        upStill = setup("/images/player/player-up-still.png", gp.tileSize, gp.tileSize);
-        up1 = setup("/images/player/player-up-1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/player/player-up-2.png", gp.tileSize, gp.tileSize);
-        leftStill = setup("/images/player/player-left-still.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/player/player-left-1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/player/player-left-2.png", gp.tileSize, gp.tileSize);
-        rightStill = setup("/images/player/player-right-still.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/player/player-right-1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/player/player-right-2.png", gp.tileSize, gp.tileSize);
-    }
-    /**************************************************************************
-     * Method: getImages()
-     * Purpose: Load and assign all directional sprite images.
-     ***************************************************************************/
-    public void getPlayerAttachImages() {
 
-        /** IF WANT A SWORD IMAGES
-         if (currentWeapon.type == type_sword){
-            attachUp = setup("/images/player/attach-up.png", gp.tileSize, gp.tileSize *2);
-            attachDown = setup("/images/player/attach-down.png", gp.tileSize, gp.tileSize *2);
-            attachLeft = setup("/images/player/attach-left.png", gp.tileSize *2, gp.tileSize);
-            attachRight = setup("/images/player/attach-right.png", gp.tileSize *2, gp.tileSize);
-        }**/
-
-        // UNIVERSAL ATTACK SWING
-        attachUp = setup("/images/player/attack-up.png", gp.tileSize, gp.tileSize *2);
-        attachDown = setup("/images/player/attack-down.png", gp.tileSize, gp.tileSize *2);
-        attachLeft = setup("/images/player/attack-left.png", gp.tileSize *2, gp.tileSize);
-        attachRight = setup("/images/player/attack-right.png", gp.tileSize *2, gp.tileSize);
-    }
     /**************************************************************************
      * Method: update()
      * Purpose: Handle player input, movement, collisions, and animation.
@@ -242,11 +187,18 @@ public class Player extends Entity {
             }
         }
 
-        // shot a magic ball
-        if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == coolDownMagicCounter){
+        // SHOT A OBJ LIKE FIREBALL OR ARROW
+        if (gp.keyH.shotKeyPressed == true
+                && projectile.alive == false
+                && shotAvailableCounter == coolDownMagicCounter
+                && projectile.haveResource(this) == true){
 
             // SET DEFAULT COORDINATION DIRECTION AND USE
             projectile.set(worldX, worldY,direction, true, this);
+
+            // SUBTRACT COST OF PROJECTILE (MANA; AMMO ETC.)
+            projectile.subtractResource(this);
+
 
             // ADD IT TO THE LIST
             gp.projectileList.add(projectile);
@@ -269,6 +221,67 @@ public class Player extends Entity {
         if(shotAvailableCounter < coolDownMagicCounter){
             shotAvailableCounter++;
         }
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void setItems(){
+        inventory. add(currentWeapon);
+        inventory.add(currentShield);
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public int getAttack(){
+        attackArea = currentWeapon.attackArea;
+        return attack = strength * currentWeapon.attackValue;
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public int getDefense(){
+        return defense = dexterity * currentShield.defenseValue;
+    }
+    /**************************************************************************
+     * Method: getImages()
+     * Purpose: Load and assign all directional sprite images.
+     ***************************************************************************/
+    public void getPlayerImages() {
+        downStill = setup("/images/player/player-down-still.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/player/player-down-1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/player/player-down-2.png", gp.tileSize, gp.tileSize);
+        upStill = setup("/images/player/player-up-still.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/player/player-up-1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/player/player-up-2.png", gp.tileSize, gp.tileSize);
+        leftStill = setup("/images/player/player-left-still.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/player/player-left-1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/player/player-left-2.png", gp.tileSize, gp.tileSize);
+        rightStill = setup("/images/player/player-right-still.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/player/player-right-1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/player/player-right-2.png", gp.tileSize, gp.tileSize);
+    }
+    /**************************************************************************
+     * Method: getImages()
+     * Purpose: Load and assign all directional sprite images.
+     ***************************************************************************/
+    public void getPlayerAttachImages() {
+
+        /** IF WANT A SWORD IMAGES
+         if (currentWeapon.type == type_sword){
+            attachUp = setup("/images/player/attach-up.png", gp.tileSize, gp.tileSize *2);
+            attachDown = setup("/images/player/attach-down.png", gp.tileSize, gp.tileSize *2);
+            attachLeft = setup("/images/player/attach-left.png", gp.tileSize *2, gp.tileSize);
+            attachRight = setup("/images/player/attach-right.png", gp.tileSize *2, gp.tileSize);
+        }**/
+
+        // UNIVERSAL ATTACK SWING
+        attachUp = setup("/images/player/attack-up.png", gp.tileSize, gp.tileSize *2);
+        attachDown = setup("/images/player/attack-down.png", gp.tileSize, gp.tileSize *2);
+        attachLeft = setup("/images/player/attack-left.png", gp.tileSize *2, gp.tileSize);
+        attachRight = setup("/images/player/attack-right.png", gp.tileSize *2, gp.tileSize);
     }
     /**************************************************************************
      * Method: pickUpObject(int i)
