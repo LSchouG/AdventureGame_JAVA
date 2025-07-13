@@ -17,7 +17,6 @@ import adventuregame.KeyHandler;
 import adventuregame.objects.OBJ_FireBall;
 import adventuregame.objects.OBJ_Shield_Wood;
 import adventuregame.objects.OBJ_Sword_Normal;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
