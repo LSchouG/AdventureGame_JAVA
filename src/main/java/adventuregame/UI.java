@@ -429,7 +429,7 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += 5;
 
-        // weapon imagesc
+        // weapon images
         g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY, null);
         textY += gp.tileSize - 5;
         g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY, null);

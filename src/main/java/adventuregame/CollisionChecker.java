@@ -144,7 +144,7 @@ public class CollisionChecker {
     public int checkEntity(Entity entity, Entity[] target) {
         int index = 999;
 
-        for (int i = 0; i < gp.obj.length; i++) {
+        for (int i = 0; i < target.length; i++) {
             if (target[i] != null) {
 
                 // Set entity's solid area position

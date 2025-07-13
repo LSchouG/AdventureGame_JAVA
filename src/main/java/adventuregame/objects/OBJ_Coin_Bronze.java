@@ -15,13 +15,12 @@ public class OBJ_Coin_Bronze extends Entity {
         name = "Bronze Coin";
         type = type_pickUpOnly;
         value = 1;
-        down1 = setup("/images/objects/coin-bronze.png", gp.tileSize, gp.tileSize);
-        itemDescription = "[" + name + "]" + " \nA bronze coin.";
+        down1 = setup("/images/objects_pickup/coin-bronze.png", gp.tileSize, gp.tileSize);
     }
 
     public void use(Entity entity) {
         gp.playSE(2);
-        gp.ui.addMessage("+ " + name);
+        gp.ui.addMessage("Coin + " + name);
         gp.player.gold += value;
     }
 }

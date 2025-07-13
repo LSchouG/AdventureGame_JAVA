@@ -61,7 +61,6 @@ public class Player extends Entity {
         getPlayerAttachImages();
         setItems();
     }
-
     /**************************************************************************
      * Method: setDefaultValues()
      * Purpose: Set default player position, speed, and direction.
@@ -94,7 +93,6 @@ public class Player extends Entity {
         defense = getDefense();
         coolDownMagicCounter = 100;
     }
-
     /**************************************************************************
      * Method: update()
      * Purpose: Handle player input, movement, collisions, and animation.
@@ -236,7 +234,6 @@ public class Player extends Entity {
             mana = maxMana;
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -245,7 +242,6 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -254,7 +250,6 @@ public class Player extends Entity {
         attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackValue;
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -262,7 +257,6 @@ public class Player extends Entity {
     public int getDefense() {
         return defense = dexterity * currentShield.defenseValue;
     }
-
     /**************************************************************************
      * Method: getImages()
      * Purpose: Load and assign all directional sprite images.
@@ -281,13 +275,11 @@ public class Player extends Entity {
         right1 = setup("/images/player/player-right-1.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/player/player-right-2.png", gp.tileSize, gp.tileSize);
     }
-
     /**************************************************************************
      * Method: getImages()
      * Purpose: Load and assign all directional sprite images.
      ***************************************************************************/
     public void getPlayerAttachImages() {
-
         /** IF WANT A SWORD IMAGES
          if (currentWeapon.type == type_sword){
          attachUp = setup("/images/player/attach-up.png", gp.tileSize, gp.tileSize *2);
@@ -302,7 +294,6 @@ public class Player extends Entity {
         attachLeft = setup("/images/player/attack-left.png", gp.tileSize * 2, gp.tileSize);
         attachRight = setup("/images/player/attack-right.png", gp.tileSize * 2, gp.tileSize);
     }
-
     /**************************************************************************
      * Method: pickUpObject(int i)
      * Purpose: Handle object pickup when player collides with one.
@@ -317,8 +308,7 @@ public class Player extends Entity {
                 gp.obj[i] = null;
             }
             // INVENTORY ITEMS
-            else if (gp.obj[i].type == type_axe || gp.obj[i].type == type_sword ||
-                    gp.obj[i].type == type_spell || gp.obj[i].type == type_consumable) {
+            else {
 
                 if (inventory.size() <= maxInventorySize) {
                     inventory.add(gp.obj[i]);
@@ -332,7 +322,6 @@ public class Player extends Entity {
             }
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -396,7 +385,6 @@ public class Player extends Entity {
             attacking = false;
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -409,7 +397,6 @@ public class Player extends Entity {
             gp.npc[i].speak();
         }
     }
-
     /**************************************************************************
      * Method: contactMonster()
      * Purpose:
@@ -430,7 +417,6 @@ public class Player extends Entity {
             }
         }
     }
-
     /**************************************************************************
      * Method: handleAttack()
      * Purpose:
@@ -443,7 +429,6 @@ public class Player extends Entity {
             spriteCounter = 0;  // Reset sprite counter for attack animation
         }
     }
-
     /**************************************************************************
      * Method: handleAttack()
      * Purpose:
@@ -474,7 +459,6 @@ public class Player extends Entity {
             }
         }
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -496,7 +480,6 @@ public class Player extends Entity {
         }
 
     }
-
     /**************************************************************************
      * Method:
      * Purpose:
@@ -523,7 +506,6 @@ public class Player extends Entity {
             }
         }
     }
-
     /**************************************************************************
      * Method: draw(Graphics2D g2)
      * Purpose: Draw the player's current sprite on screen.

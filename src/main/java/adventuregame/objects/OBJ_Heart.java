@@ -14,10 +14,10 @@ public class OBJ_Heart extends Entity {
         type = type_pickUpOnly;
         name = "heart";
         value = 2;
-        down1 = setup("/images/objects/full-heart.png", gp.tileSize, gp.tileSize);
-        image1 = setup("/images/objects/full-heart.png", gp.tileSize, gp.tileSize);
-        image2 = setup("/images/objects/half-heart.png", gp.tileSize, gp.tileSize);
-        image3 = setup("/images/objects/blank-heart.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_pickup/full-heart.png", gp.tileSize, gp.tileSize);
+        image1 = setup("/images/objects_pickup/full-heart.png", gp.tileSize, gp.tileSize);
+        image2 = setup("/images/objects_pickup/half-heart.png", gp.tileSize, gp.tileSize);
+        image3 = setup("/images/objects_pickup/blank-heart.png", gp.tileSize, gp.tileSize);
     }
     public void use(Entity entity){
     gp.gameState = gp.dialogueState;

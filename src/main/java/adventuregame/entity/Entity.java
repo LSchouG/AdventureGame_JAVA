@@ -146,6 +146,37 @@ public class  Entity {
 
     }
     /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     * Outputs:
+     ***************************************************************************/
+    public void use(Entity entity) {}
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     * Outputs:
+     ***************************************************************************/
+    public void checkDrop() {}
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     * Outputs:
+     ***************************************************************************/
+    public void dropItem(Entity droppedItem) {
+
+        for (int i = 0; i < gp.player.inventory.size(); i++) {
+            if (gp.obj[i] == null) {
+               gp.obj[i] = droppedItem;
+               gp.obj[i].worldX = worldX;
+               gp.obj[i].worldY = worldY;
+               break;
+            }
+        }
+    }
+    /**************************************************************************
      * Method: update()
      * Purpose: Update logic (e.g., movement, collision). Called every frame.
      ***************************************************************************/
@@ -345,12 +376,4 @@ public class  Entity {
     public  void  changeAlpha(Graphics2D g2, float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Inputs:
-     * Outputs:
-     ***************************************************************************/
-    public void use(Entity entity) {}
-
 }

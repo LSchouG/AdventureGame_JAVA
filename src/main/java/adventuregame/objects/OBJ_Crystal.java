@@ -14,10 +14,10 @@ public class OBJ_Crystal extends Entity {
         value = 2;
         type = type_pickUpOnly;
         useCost = 1;
-        down1 = setup("/images/objects/full-crystal.png", gp.tileSize, gp.tileSize);
-        image1 = setup("/images/objects/blank-crystal.png", gp.tileSize, gp.tileSize);
-        image2 = setup("/images/objects/half-crystal.png", gp.tileSize, gp.tileSize);
-        image3 = setup("/images/objects/full-crystal.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_pickup/full-crystal.png", gp.tileSize, gp.tileSize);
+        image1 = setup("/images/objects_pickup/blank-crystal.png", gp.tileSize, gp.tileSize);
+        image2 = setup("/images/objects_pickup/half-crystal.png", gp.tileSize, gp.tileSize);
+        image3 = setup("/images/objects_pickup/full-crystal.png", gp.tileSize, gp.tileSize);
     }
 
     public void use(Entity entity) {
@@ -44,8 +44,6 @@ public class OBJ_Crystal extends Entity {
 
         gp.ui.currentDialogue = text;
         entity.maxMana += value;
-        entity.mana = entity.maxMana;
-
         gp.playSE(1);
     }
     }

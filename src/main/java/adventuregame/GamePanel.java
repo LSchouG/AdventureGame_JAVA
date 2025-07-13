@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 
 import adventuregame.entity.Entity;
 import adventuregame.entity.Player;
+import adventuregame.tile_interactive.InteractiveTile;
 import adventuregame.tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -58,9 +59,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     /************************* ENTITY AND OBJECTS *****************************/
     public Player player = new Player(this, keyH);
-    public Entity obj[] = new Entity[10];
+    public Entity obj[] = new Entity[30];
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[20];
+    public InteractiveTile iTile[] = new InteractiveTile[50];
     public ArrayList<Entity> projectileList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
@@ -150,7 +152,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-            // Monster updates only if game is running
+            // Projectile updates only if game is running
             for (int i =0; i < projectileList.size(); i++) {
                 if (projectileList.get(i) != null){
                     if (projectileList.get(i).alive == true){
@@ -162,15 +164,23 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-            // Projectile updates only if game is running
+            // Monster updates only if game is running
             for (int i =0; i < monster.length ; i++) {
                 if (monster[i] != null){
                     if (monster[i].alive == true && monster[i].dying == false){
                         monster[i].update();
                     }
                     if (monster[i].alive == false){
+                        monster[i].checkDrop();
                         monster[i] = null;
                     }
+                }
+            }
+
+            // Interactiv tiles updates only if game is running
+            for (int i =0; i < iTile.length ; i++) {
+                if (iTile[i] != null){
+                    iTile[i].update();
                 }
             }
         }
@@ -199,8 +209,15 @@ public class GamePanel extends JPanel implements Runnable {
         }
         // OTHERS
         else{
-            // 1. Draw tiles
+            // Tiles
             tileM.draw(g2);
+
+            // Interactiv Tiles
+            for (int i = 0; i < iTile.length; i++) {
+                if (iTile[i] != null) {
+                    iTile[i].draw(g2);
+                }
+            }
 
             // ADD PLAYER TO LIST
             entityList.add(player);
@@ -270,9 +287,11 @@ public class GamePanel extends JPanel implements Runnable {
             y += lineHeight;
             g2.drawString("WorldY: " + player.worldY, x, y);
             y += lineHeight;
-            g2.drawString("ColLetter: " + colLabel + " ColNumb: " + col, x, y); // Column shown as letters
+            g2.drawString("Col: " + colLabel, x , y); // Column shown as letters
             y += lineHeight;
-            g2.drawString("Row: " + (row + 1), x, y); // Row shown as number (1-based index)
+            g2.drawString( "WorldX: " + col, x, y); // Column shown as letters
+            y += lineHeight;
+            g2.drawString("WorldY/Row: " + (row), x, y);
             y += lineHeight;
             g2.drawString("Draw Time: " + passed, x, y);
         }

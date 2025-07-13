@@ -15,6 +15,7 @@ import adventuregame.entity.NPC_OldMan;
 import adventuregame.monster.MON_GreenSlime;
 import adventuregame.monster.MON_RedSlime;
 import adventuregame.objects.*;
+import adventuregame.tile_interactive.IT_DryTree;
 
 public class AssetSetter {
 
@@ -42,8 +43,8 @@ public class AssetSetter {
         gp.obj[i].worldY = gp.tileSize * 19;
         i++;
         gp.obj[i] = new OBJ_Door(gp);
-        gp.obj[i].worldX = gp.tileSize * 22;
-        gp.obj[i].worldY = gp.tileSize * 24;
+        gp.obj[i].worldX = gp.tileSize * 22; // 22
+        gp.obj[i].worldY = gp.tileSize * 24; // 25
         i++;
         gp.obj[i] = new OBJ_Potion_Red(gp);
         gp.obj[i].worldX = gp.tileSize * 21;
@@ -75,9 +76,9 @@ public class AssetSetter {
     }
 
     /**************************************************************************
-     * Method: setNPC()
-     * Purpose: Instantiates and places NPCs in the game world.
-     * Notes: Currently places 1 old man NPC at tile (21, 21)
+     * Method:
+     * Purpose:
+     * Notes:
      ***************************************************************************/
     public void setNPC() {
         int i = 0;
@@ -120,6 +121,21 @@ public class AssetSetter {
         gp.monster[i] = new MON_RedSlime(gp);
         gp.monster[i].worldX = gp.tileSize * 25;
         gp.monster[i].worldY = gp.tileSize * 30;
-
     }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Notes:
+     ***************************************************************************/
+    public void setInteractivTiles() {
+        int i = 0;
+        gp.iTile[i] = new IT_DryTree(gp);
+        gp.iTile[i].worldX = gp.tileSize * 19;
+        gp.iTile[i].worldY = gp.tileSize * 25;
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp);
+        gp.iTile[i].worldX = gp.tileSize * 20;
+        gp.iTile[i].worldY = gp.tileSize * 25;
+    }
+
 }

@@ -17,7 +17,7 @@ public class OBJ_Door extends Entity {
     public OBJ_Door(GamePanel gp) {
         super(gp);
         name = "Door";
-        down1 = setup("/images/objects/door.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_interactive/door.png", gp.tileSize, gp.tileSize);
         collision = true;
         lockKeyType = "common";
 

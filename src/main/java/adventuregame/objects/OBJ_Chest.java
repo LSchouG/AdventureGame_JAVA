@@ -18,7 +18,7 @@ public class OBJ_Chest extends Entity {
     public OBJ_Chest(GamePanel gp) {
         super(gp);
         name = "Chest";
-        down1 = setup("/images/objects/chest.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_interactive/chest.png", gp.tileSize, gp.tileSize);
         collision = true;
         solidArea.x = 0;// goes 0 pixel in from the side
         solidArea.y = 16;// goes 16 pixel down from the top
