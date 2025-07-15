@@ -3,20 +3,20 @@ package adventuregame.tile_interactive;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
-public class IT_DryTree extends InteractiveTile{
+public class IT_Trunk extends InteractiveTile{
 
     GamePanel gp;
-    public IT_DryTree(GamePanel gp, int col,int row) {
+    public  IT_Trunk(GamePanel gp, int col,int row) {
         super(gp, col, row);
         this.gp = gp;
 
-        name = "Dry Tree";
+        name = "Trunk";
         this.worldX = gp.tileSize * col;
         this.worldY = gp.tileSize * row;
 
-        down1 = setup("/images/objects_interactive/dry-tree.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_interactive/trunk.png", gp.tileSize, gp.tileSize);
         destructible = true;
-        life = 3;
+        life = 2;
     }
     public boolean isCurrentItem(Entity entity){
         boolean isCurrentItem = false;
@@ -30,8 +30,9 @@ public class IT_DryTree extends InteractiveTile{
         // IMPLEMENT SOUND EFFECTS FOR TREES
         //  EXAMPLE  gp.playSE(1);
     }
+
     public InteractiveTile getDestroyedForm(){
-        InteractiveTile tile = new IT_Trunk(gp, worldX/gp.tileSize, worldY/gp.tileSize);
+        InteractiveTile tile = null;
         return tile;
     }
 }

@@ -16,6 +16,7 @@ import adventuregame.monster.MON_GreenSlime;
 import adventuregame.monster.MON_RedSlime;
 import adventuregame.objects.*;
 import adventuregame.tile_interactive.IT_DryTree;
+import adventuregame.tile_interactive.IT_Trunk;
 
 public class AssetSetter {
 
@@ -58,7 +59,7 @@ public class AssetSetter {
         gp.obj[i].worldX = gp.tileSize * 23;
         gp.obj[i].worldY = gp.tileSize * 29;
         i++;
-        gp.obj[i] = new OBJ_Coin_Bronze(gp);
+        gp.obj[i] = new OBJ_Axe(gp);
         gp.obj[i].worldX = gp.tileSize * 24;
         gp.obj[i].worldY = gp.tileSize * 29;
         i++;
@@ -127,15 +128,12 @@ public class AssetSetter {
      * Purpose:
      * Notes:
      ***************************************************************************/
-    public void setInteractivTiles() {
+    public void setInteractiveTiles() {
         int i = 0;
-        gp.iTile[i] = new IT_DryTree(gp);
-        gp.iTile[i].worldX = gp.tileSize * 19;
-        gp.iTile[i].worldY = gp.tileSize * 25;
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp);
-        gp.iTile[i].worldX = gp.tileSize * 20;
-        gp.iTile[i].worldY = gp.tileSize * 25;
+        gp.iTile[i] = new IT_DryTree(gp, 19, 25); i++;
+        gp.iTile[i] = new IT_DryTree(gp, 20, 25); i++;
+        gp.iTile[i] = new IT_Trunk(gp, 18, 25); i++;
+
     }
 
 }
