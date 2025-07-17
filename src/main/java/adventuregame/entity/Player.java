@@ -491,9 +491,13 @@ public class Player extends Entity {
     public void damageInteractiveTile(int i) {
         if (i != 999 && gp.iTile[i].destructible == true
                 && gp.iTile[i].isCurrentItem(this) == true && gp.iTile[i].invincible == false) {
+
             gp.iTile[i].playSE(); // PLAY TILE DESTRUCTION SOUND
             gp.iTile[i].life--;
             gp.iTile[i].invincible = true;
+
+            generatePartical(gp.iTile[i], gp.iTile[i]);
+
             if (gp.iTile[i].life <= 0) {
                 gp.iTile[i] = gp.iTile[i].getDestroyedForm(); // REPLACE TILE WITH DESTROYED VERSION
             }

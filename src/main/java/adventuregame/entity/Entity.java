@@ -378,4 +378,35 @@ public class  Entity {
     public  void  changeAlpha(Graphics2D g2, float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
+
+    public Color getParticalColor(){
+        Color color = null;
+        return color;
+    }
+    public int getParticalSize(){
+        int size = 0;
+        return size;
+    }
+    public int getParticalSpeed(){
+        int speed = 0;
+        return speed;
+    }
+    public int getParticalMaxLife(){
+        int maxLife = 0;
+        return maxLife;
+    }
+    public int getParticalLife(){
+        int life = 0;
+        return life;
+    }
+    public void generatePartical(Entity generator, Entity target){
+
+        Color color = generator.getParticalColor();
+        int size = generator.getParticalSize();
+        int speed = generator.getParticalSpeed();
+        int maxLife = generator.getParticalMaxLife();
+
+        Particale pl = new Particale(gp,generator,color,size,speed,maxLife, -1, -1);
+        gp.particalList.add(pl);
+    }
 }

@@ -3,6 +3,8 @@ package adventuregame.tile_interactive;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
+import java.awt.*;
+
 public class IT_Trunk extends InteractiveTile{
 
     GamePanel gp;
@@ -34,5 +36,25 @@ public class IT_Trunk extends InteractiveTile{
     public InteractiveTile getDestroyedForm(){
         InteractiveTile tile = null;
         return tile;
+    }
+    public Color getParticalColor(){
+        Color color = new Color(65,50,30);
+        return color;
+    }
+    public int getParticalSize(){
+        int size = 6;
+        return size;
+    }
+    public int getParticalSpeed(){
+        int speed = 1;
+        return speed;
+    }
+    public int getParticalMaxLife(){
+        int maxLife = 10;
+        return maxLife;
+    }
+    public int getParticalLife(){
+        int life = 20;
+        return life;
     }
 }
