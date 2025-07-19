@@ -4,6 +4,8 @@ import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 import adventuregame.entity.Projectile;
 
+import java.awt.*;
+
 public class OBJ_Rock_Projectile extends Projectile {
 
     GamePanel gp;
@@ -42,5 +44,21 @@ public class OBJ_Rock_Projectile extends Projectile {
     }
     public void subtractResource(Entity user){
         gp.player.mana -= useCost;
+    }
+    public Color getParticalColor(){
+        Color color = new Color(65,50,30);
+        return color;
+    }
+    public int getParticalSize(){
+        int size = 8;
+        return size;
+    }
+    public int getParticalSpeed(){
+        int speed = 1;
+        return speed;
+    }
+    public int getParticalMaxLife(){
+        int maxLife = 15;
+        return maxLife;
     }
 }

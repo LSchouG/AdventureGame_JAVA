@@ -406,7 +406,13 @@ public class  Entity {
         int speed = generator.getParticalSpeed();
         int maxLife = generator.getParticalMaxLife();
 
-        Particale pl = new Particale(gp,generator,color,size,speed,maxLife, -1, -1);
-        gp.particalList.add(pl);
+        Particle p1 = new Particle(gp,generator,color,size,speed,maxLife, -2, -1); // TOP LEFT
+        Particle p2 = new Particle(gp,generator,color,size,speed,maxLife, 2, -1); // TOP RIGTH
+        Particle p3 = new Particle(gp,generator,color,size,speed,maxLife, -2, 1); // BOTTOM LEFT
+        Particle p4 = new Particle(gp,generator,color,size,speed,maxLife, 2, 1); // BOTTOM RIGHT
+        gp.particalList.add(p1);
+        gp.particalList.add(p2);
+        gp.particalList.add(p3);
+        gp.particalList.add(p4);
     }
 }

@@ -165,6 +165,17 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
+            // Particale updates only if game is running
+            for (int i =0; i < particalList.size(); i++) {
+                if (particalList.get(i) != null){
+                    if (particalList.get(i).alive == true){
+                        particalList.get(i).update();
+                    }
+                    if (particalList.get(i).alive == false){
+                        particalList.remove(i);
+                    }
+                }
+            }
 
             // Monster updates only if game is running
             for (int i =0; i < monster.length ; i++) {
@@ -248,6 +259,13 @@ public class GamePanel extends JPanel implements Runnable {
                     entityList.add(projectileList.get(i));
                 }
             }
+            // ADD PARTICALE TO LIST
+            for(int i = 0; i < particalList.size(); i++){
+                if(particalList.get(i) != null){
+                    entityList.add(particalList.get(i));
+                }
+            }
+
             //SORT
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
