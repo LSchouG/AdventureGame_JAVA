@@ -12,11 +12,8 @@
 
 package adventuregame;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.lang.reflect.Array;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,14 +31,19 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     public final int tileSize = originalTileSize * scale; // final tile size = 48x48
-    public final int maxScreenCol = 16;
+    public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+    public final int screenWidth = tileSize * maxScreenCol; // 960 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     /****************************** WORLD SETTINGS ****************************/
     public final int maxWorldCol = 150;
     public final int maxWorldRow = 100;
+
+    int screenWidth2 = screenWidth;
+    int screenHeight2 = screenHeight;
+    BufferedImage tempScreen;
+    Graphics2D g2;
 
     /********************************* FPS ************************************/
     int FPS = 60;
@@ -64,7 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity monster[] = new Entity[20];
     public InteractiveTile iTile[] = new InteractiveTile[5];
     public ArrayList<Entity> projectileList = new ArrayList<>();
-    public ArrayList<Entity> particalList = new ArrayList<>();
+    public ArrayList<Entity> particleList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
     /**************************** GAME STATE **********************************/
@@ -100,6 +102,10 @@ public class GamePanel extends JPanel implements Runnable {
         // playMusic(0); // play background music track 0
         //stopMusic();  // optionally stop it immediately
         gameState = titleState;
+
+        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D)tempScreen.getGraphics();
+        setFullScreen();
     }
     /**************************************************************************
      * Method: startGameThread()
@@ -130,7 +136,8 @@ public class GamePanel extends JPanel implements Runnable {
 
             while (delta >= 1) {
                 update(); // update game logic
-                repaint(); // render the screen
+                drawToTempScreen(); // draw everything to the buffered image
+                drawToScreen(); // draw the buffered image to the screen
                 delta--;
                 drawCount++;
             }
@@ -166,13 +173,13 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
             // Particale updates only if game is running
-            for (int i =0; i < particalList.size(); i++) {
-                if (particalList.get(i) != null){
-                    if (particalList.get(i).alive == true){
-                        particalList.get(i).update();
+            for (int i = 0; i < particleList.size(); i++) {
+                if (particleList.get(i) != null){
+                    if (particleList.get(i).alive == true){
+                        particleList.get(i).update();
                     }
-                    if (particalList.get(i).alive == false){
-                        particalList.remove(i);
+                    if (particleList.get(i).alive == false){
+                        particleList.remove(i);
                     }
                 }
             }
@@ -202,14 +209,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     /**************************************************************************
-     * Method: paintComponent(Graphics g)
-     * Purpose: Handles all rendering (tiles, objects, entities, UI).
-     * Inputs: g - the graphics context.
+     * Method:
+     * Purpose:
+     * Inputs:
      ***************************************************************************/
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-
+    public void drawToTempScreen() {
         // DEBUG - Start draw time measurement
         long drawStart = 0;
         if (keyH.showDebugText) {
@@ -260,9 +264,9 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
             // ADD PARTICALE TO LIST
-            for(int i = 0; i < particalList.size(); i++){
-                if(particalList.get(i) != null){
-                    entityList.add(particalList.get(i));
+            for(int i = 0; i < particleList.size(); i++){
+                if(particleList.get(i) != null){
+                    entityList.add(particleList.get(i));
                 }
             }
 
@@ -280,7 +284,7 @@ public class GamePanel extends JPanel implements Runnable {
                 entityList.get(i).draw(g2);
             }
             // EMPTY LIST
-           entityList.clear();
+            entityList.clear();
 
 
             // 5. Draw UI
@@ -316,8 +320,44 @@ public class GamePanel extends JPanel implements Runnable {
             y += lineHeight;
             g2.drawString("Draw Time: " + passed, x, y);
         }
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     ***************************************************************************/
+    public void drawToScreen() {
+        repaint(); // Request the panel to call paintComponent()
+    }
 
-        g2.dispose(); // dispose of the graphics context
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Call the parent’s painting logic (clears the screen)
+        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null); // Draw the buffered image
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     * Inputs:
+     ***************************************************************************/
+    public void setFullScreen() {
+        // GET LOCAL SCREEN DEVICE
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+
+        try {
+            gd.setFullScreenWindow(AdventureGame.window);
+        } catch (Exception e) {
+            System.err.println("Error switching to full screen: " + e.getMessage());
+            // Optional fallback: Set window size to screen size
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            AdventureGame.window.setSize(screenSize.width, screenSize.height);
+        }
+
+        // GET FULL WIDTH AND HEIGHT
+        screenWidth2 = AdventureGame.window.getWidth();
+        screenHeight2 = AdventureGame.window.getHeight();
+        System.out.println("Fullscreen dimensions: " + screenWidth2 + "x" + screenHeight2);
     }
     /**************************************************************************
      * Method:

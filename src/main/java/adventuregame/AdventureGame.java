@@ -13,8 +13,10 @@ package adventuregame;
 
 import javax.swing.JFrame;
 
+
 public class AdventureGame {
 
+    public static JFrame window;
     /**************************************************************************
      * Method: main(String[] args)
      * Purpose: Program entry point. Creates and displays the game window.
@@ -23,33 +25,25 @@ public class AdventureGame {
      ***************************************************************************/
     public static void main(String[] args) {
 
-        // 1. Create the main application window
-        JFrame window = new JFrame();  // use lowercase "window" as the variable name
+        window = new JFrame();  // use lowercase "window" as the variable name
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close app on exit
-        window.setResizable(false); // Disable resizing for consistent layout
-        window.setTitle("Adventure Game");  // Set the window title
+        window.setResizable(false);             // Disable resizing for consistent layout
+        window.setTitle("Adventure Game");      // Set the window title
 
-        // 2. Create and add the main game panel to the window
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel = new GamePanel();  // 2. Create and add the main game panel to the window
         window.add(gamePanel);
 
-        // 3. Automatically size the window based on the gamePanel's preferred size
-        window.pack();
+        window.pack();                          // 3. Automatically size the window based on the gamePanel's preferred size
 
-        // 4. Center the window on the screen
-        window.setLocationRelativeTo(null);
+        window.setLocationRelativeTo(null);     // 4. Center the window on the screen
 
-        // 5. Make the window visible
-        window.setVisible(true);
+        window.setVisible(true);              // 5. Make the window visible
 
-        // 6. Ensure the game panel receives key input focus
-        gamePanel.requestFocusInWindow();
+        gamePanel.requestFocusInWindow();     // 6. Ensure the game panel receives key input focus
 
-        // 7. Set up game configurations and resources (e.g., tiles, player)
-        gamePanel.setupGame();
+        gamePanel.setupGame();                // 7. Set up game configurations and resources (e.g., tiles, player)
 
-        // 8. Start the main game thread (runs the game loop)
-        gamePanel.startGameThread();
+        gamePanel.startGameThread();          // 8. Start the main game thread (runs the game loop)
     }
 }
