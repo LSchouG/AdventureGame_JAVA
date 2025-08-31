@@ -39,11 +39,11 @@ public class GamePanel extends JPanel implements Runnable {
     /****************************** WORLD SETTINGS ****************************/
     public final int maxWorldCol = 150;
     public final int maxWorldRow = 100;
-
     int screenWidth2 = screenWidth;
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
     Graphics2D g2;
+    public boolean fullScreen = false;
 
     /********************************* FPS ************************************/
     int FPS = 60;
@@ -76,6 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState = 2;
     public final int dialogueState = 3;
     public final int characterState = 4;
+    public final int optionState = 5;
 
 
 
@@ -105,7 +106,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D)tempScreen.getGraphics();
-        setFullScreen();
+//        setFullScreen(); CALL if I want full screen
     }
     /**************************************************************************
      * Method: startGameThread()
@@ -154,14 +155,14 @@ public class GamePanel extends JPanel implements Runnable {
             // Player updates only if game is running
             player.update();
 
-            // npc updates only if game is running
+            // npc updates only if the game is running
             for (int i =0; i < npc.length; i++) {
                 if (npc[i] != null){
                     npc[i].update();
                 }
             }
 
-            // Projectile updates only if game is running
+            // Projectile updates only if the game is running
             for (int i =0; i < projectileList.size(); i++) {
                 if (projectileList.get(i) != null){
                     if (projectileList.get(i).alive == true){
@@ -329,7 +330,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void drawToScreen() {
         repaint(); // Request the panel to call paintComponent()
     }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // Call the parent’s painting logic (clears the screen)
@@ -374,7 +374,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     /**************************************************************************
      * Method: playMusic(int i)
-     * Purpose: Plays background music using given index.
+     * Purpose: Plays background music using a given index.
      ***************************************************************************/
     public void playMusic(int i) {
         music.setFile(i);

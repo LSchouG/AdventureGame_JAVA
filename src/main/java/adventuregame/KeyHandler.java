@@ -61,6 +61,9 @@ public class KeyHandler implements KeyListener {
 
         // CHARACTER STATE
         else if (gp.gameState == gp.characterState) {characterState(code);}
+
+        // OPTION STATE
+        else if (gp.gameState == gp.optionState) {optionState(code);}
     }
     /**************************************************************************
      * Method:
@@ -82,14 +85,20 @@ public class KeyHandler implements KeyListener {
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 if (gp.ui.commandNumber == 0) {
-                    gp.ui.titleScreenState = 1;
+
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+
                 } else if (gp.ui.commandNumber == 1) {
                         // ADD LATER Load GAME save
                 } else if (gp.ui.commandNumber == 2) {
                     System.exit(0);
                 }
             }
-        } else if (gp.ui.titleScreenState == 1) {
+        }
+
+
+        /* else if (gp.ui.titleScreenState == 1) {
             if (code == KeyEvent.VK_W) {
                 gp.ui.commandNumber--;
                 if (gp.ui.commandNumber < 0) {
@@ -128,7 +137,7 @@ public class KeyHandler implements KeyListener {
 
             // ADD LATER
 
-        }
+        }*/
     }
     /**************************************************************************
      * Method:
@@ -160,7 +169,8 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.characterState;
         }
         if (code == KeyEvent.VK_ESCAPE) {
-            System.exit(0);
+            gp.gameState = gp.optionState;
+            // System.exit(0); old exit on escape key
         }
         if (code == KeyEvent.VK_E) {
             shotKeyPressed = true;
@@ -189,9 +199,81 @@ public class KeyHandler implements KeyListener {
      * Purpose:
      ***************************************************************************/
     public void pauseState(int code){
-        if (code == KeyEvent.VK_P) {
-            gp.gameState = gp.playState;
+        if (code == KeyEvent.VK_ESCAPE) {
+               gp.gameState = gp.playState;
         }
+    }
+    /**************************************************************************
+     * Method:
+     * Purpose:
+     ***************************************************************************/
+    public void optionState(int code){
+
+        if (code == KeyEvent.VK_ESCAPE) {
+            if (gp.ui.subState == 0){
+                gp.gameState = gp.playState;
+            } else if (gp.ui.subState == 1){
+                gp.ui.subState = 0;
+                gp.ui.commandNumber = 0;
+            } else if (gp.ui.subState == 2){
+                gp.ui.subState = 0;
+                gp.ui.commandNumber = 3;
+            } else if (gp.ui.subState == 3) {
+                gp.ui.subState = 0;
+                gp.ui.commandNumber = 4;
+            }
+        }
+
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            enterPressed = true;
+        }
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            enterPressed = true;
+        }
+
+
+        // Press up or down to change option
+        if (code == KeyEvent.VK_W ) {
+            gp.ui.commandNumber--;
+            gp.playSE(12);
+            if (gp.ui.commandNumber < 0) {
+                gp.ui.commandNumber = 5;
+            }
+        }
+        if (code == KeyEvent.VK_S) {
+            gp.ui.commandNumber++;
+            gp.playSE(12);
+            if (gp.ui.commandNumber > 5) {
+                gp.ui.commandNumber = 0;
+            }
+        }
+         if (code == KeyEvent.VK_A){
+            if (gp.ui.subState == 0){
+                if (gp.ui.commandNumber == 1 && gp.music.volumeScale > 0) {
+                    gp.music.volumeScale--;
+                    gp.music.checkVolume();
+                    gp.playSE(12);
+                }
+                if (gp.ui.commandNumber == 2 && gp.se.volumeScale > 0) {
+                    gp.se.volumeScale--;
+                    gp.playSE(12);
+                }
+            }
+        }
+        if (code == KeyEvent.VK_D){
+            if (gp.ui.subState == 0){
+                if (gp.ui.commandNumber == 1 && gp.music.volumeScale < 5) {
+                    gp.music.volumeScale++;
+                    gp.music.checkVolume();
+                    gp.playSE(12);
+                }
+                if (gp.ui.commandNumber == 2 && gp.se.volumeScale < 5) {
+                    gp.se.volumeScale++;
+                    gp.playSE(12);
+                }
+            }
+        }
+
     }
     /**************************************************************************
      * Method:
