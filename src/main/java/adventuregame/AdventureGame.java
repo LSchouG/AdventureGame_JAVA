@@ -34,16 +34,19 @@ public class AdventureGame {
         GamePanel gamePanel = new GamePanel();  // 2. Create and add the main game panel to the window
         window.add(gamePanel);
 
+        gamePanel.config.loadConfig();
+        if(gamePanel.fullScreen == true){
+            window.setUndecorated(true);
+        }
+
         window.pack();                          // 3. Automatically size the window based on the gamePanel's preferred size
 
         window.setLocationRelativeTo(null);     // 4. Center the window on the screen
-
         window.setVisible(true);              // 5. Make the window visible
 
         gamePanel.requestFocusInWindow();     // 6. Ensure the game panel receives key input focus
 
         gamePanel.setupGame();                // 7. Set up game configurations and resources (e.g., tiles, player)
-
         gamePanel.startGameThread();          // 8. Start the main game thread (runs the game loop)
     }
 }

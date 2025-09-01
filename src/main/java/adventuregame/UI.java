@@ -503,8 +503,8 @@ public class UI {
         int seWidth = 24 * gp.se.volumeScale;
         g2.fillRect( textX, textY, seWidth, 24);
 
-
-
+        // SAVE TO CONFIG FILE
+        gp.config.saveConfig();
     }
     public void options_control(int frameX, int frameY){
 
