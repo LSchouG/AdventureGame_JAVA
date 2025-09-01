@@ -45,6 +45,7 @@ public class Sound {
         soundURL[11] = getClass().getResource("/sound/level-up.wav");
         soundURL[12] = getClass().getResource("/sound/menu-cursor.wav");
         soundURL[13] = getClass().getResource("/sound/fireball-woosh.wav");
+        soundURL[14] = getClass().getResource("/sound/game-over.wav");
     }
 
     /**************************************************************************

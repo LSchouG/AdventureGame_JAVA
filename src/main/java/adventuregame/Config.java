@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
-    GamePanel gp;
     public List<String> errors = new ArrayList<>(); // COLLECT ALL ERRORS
+    GamePanel gp;
 
     public Config(GamePanel gp) {
         this.gp = gp;

@@ -1,4 +1,5 @@
-/** ******************************************************************************
+/**
+ * *****************************************************************************
  * FileName: GamePanel.java
  * Purpose: Main game panel that handles rendering, game loop, and game state management.
  * Author: Lars S Gregersen
@@ -26,30 +27,27 @@ import adventuregame.tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    /***************************** SCREEN SETTINGS ****************************/
-    final int originalTileSize = 16; // original 16x16 tiles
-    final int scale = 3;
-
-    public final int tileSize = originalTileSize * scale; // final tile size = 48x48
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol; // 960 pixels
-    public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
-
     /****************************** WORLD SETTINGS ****************************/
     public final int maxWorldCol = 150;
     public final int maxWorldRow = 100;
+    public final int titleState = 0;
+    public final int playState = 1;
+    public final int pauseState = 2;
+    public final int dialogueState = 3;
+    public final int characterState = 4;
+    public final int optionState = 5;
+    public final int gameOverState = 6;
+    /***************************** SCREEN SETTINGS ****************************/
+    final int originalTileSize = 16; // original 16x16 tiles
+    final int scale = 3;
+    public final int tileSize = originalTileSize * scale; // final tile size = 48x48
+    public final int screenWidth = tileSize * maxScreenCol; // 960 pixels
     int screenWidth2 = screenWidth;
+    public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
     int screenHeight2 = screenHeight;
-    BufferedImage tempScreen;
-    Graphics2D g2;
     public boolean fullScreen = false;
-
-    /********************************* FPS ************************************/
-    int FPS = 60;
-
-    /******************************* SYSTEM ***********************************/
-    TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     public Sound music = new Sound();
     public Sound se = new Sound();
@@ -57,9 +55,6 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
-    Config config = new Config(this);
-    Thread gameThread;
-
     /************************* ENTITY AND OBJECTS *****************************/
     public Player player = new Player(this, keyH);
     public Entity obj[] = new Entity[30];
@@ -68,17 +63,17 @@ public class GamePanel extends JPanel implements Runnable {
     public InteractiveTile iTile[] = new InteractiveTile[5];
     public ArrayList<Entity> projectileList = new ArrayList<>();
     public ArrayList<Entity> particleList = new ArrayList<>();
-    ArrayList<Entity> entityList = new ArrayList<>();
-
     /**************************** GAME STATE **********************************/
     public int gameState;
-    public final int titleState = 0;
-    public final int playState = 1;
-    public final int pauseState = 2;
-    public final int dialogueState = 3;
-    public final int characterState = 4;
-    public final int optionState = 5;
-
+    BufferedImage tempScreen;
+    Graphics2D g2;
+    /********************************* FPS ************************************/
+    int FPS = 60;
+    /******************************* SYSTEM ***********************************/
+    TileManager tileM = new TileManager(this);
+    Config config = new Config(this);
+    Thread gameThread;
+    ArrayList<Entity> entityList = new ArrayList<>();
 
 
     /**************************************************************************
@@ -92,6 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true); // allows the panel to receive keyboard input
     }
+
     /**************************************************************************
      * Method: setupGame()
      * Purpose: Prepares the game before starting by setting objects, NPCs, and music.
@@ -106,12 +102,13 @@ public class GamePanel extends JPanel implements Runnable {
         gameState = titleState;
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
-        g2 = (Graphics2D)tempScreen.getGraphics();
+        g2 = (Graphics2D) tempScreen.getGraphics();
         if (fullScreen == true) {
             setFullScreen();
         }
 
     }
+
     /**************************************************************************
      * Method: startGameThread()
      * Purpose: Starts the main game loop in a new thread.
@@ -120,6 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
+
     /**************************************************************************
      * Method: run()
      * Purpose: Main game loop. Uses delta time for consistent frame rate.
@@ -148,6 +146,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
+
     /**************************************************************************
      * Method: update()
      * Purpose: Update the game state, player movement, and other logic.
@@ -160,42 +159,42 @@ public class GamePanel extends JPanel implements Runnable {
             player.update();
 
             // npc updates only if the game is running
-            for (int i =0; i < npc.length; i++) {
-                if (npc[i] != null){
+            for (int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
                     npc[i].update();
                 }
             }
 
             // Projectile updates only if the game is running
-            for (int i =0; i < projectileList.size(); i++) {
-                if (projectileList.get(i) != null){
-                    if (projectileList.get(i).alive == true){
+            for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null) {
+                    if (projectileList.get(i).alive == true) {
                         projectileList.get(i).update();
                     }
-                    if (projectileList.get(i).alive == false){
+                    if (projectileList.get(i).alive == false) {
                         projectileList.remove(i);
                     }
                 }
             }
             // Particale updates only if game is running
             for (int i = 0; i < particleList.size(); i++) {
-                if (particleList.get(i) != null){
-                    if (particleList.get(i).alive == true){
+                if (particleList.get(i) != null) {
+                    if (particleList.get(i).alive == true) {
                         particleList.get(i).update();
                     }
-                    if (particleList.get(i).alive == false){
+                    if (particleList.get(i).alive == false) {
                         particleList.remove(i);
                     }
                 }
             }
 
             // Monster updates only if game is running
-            for (int i =0; i < monster.length ; i++) {
-                if (monster[i] != null){
-                    if (monster[i].alive == true && monster[i].dying == false){
+            for (int i = 0; i < monster.length; i++) {
+                if (monster[i] != null) {
+                    if (monster[i].alive == true && monster[i].dying == false) {
                         monster[i].update();
                     }
-                    if (monster[i].alive == false){
+                    if (monster[i].alive == false) {
                         monster[i].checkDrop();
                         monster[i] = null;
                     }
@@ -203,16 +202,16 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             // Interactiv tiles updates only if game is running
-            for (int i =0; i < iTile.length ; i++) {
-                if (iTile[i] != null){
+            for (int i = 0; i < iTile.length; i++) {
+                if (iTile[i] != null) {
                     iTile[i].update();
                 }
             }
-        }
-        else if (gameState == pauseState) {
+        } else if (gameState == pauseState) {
             // pause logic here if needed
         }
     }
+
     /**************************************************************************
      * Method:
      * Purpose:
@@ -226,11 +225,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // TITLE SCREEN
-        if (gameState == titleState){
+        if (gameState == titleState) {
             ui.draw(g2);
         }
         // OTHERS
-        else{
+        else {
             // Tiles
             tileM.draw(g2);
 
@@ -245,32 +244,32 @@ public class GamePanel extends JPanel implements Runnable {
             entityList.add(player);
 
             // ADD NPC TI LIST
-            for(int i = 0; i < npc.length; i++){
-                if(npc[i] != null){
+            for (int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
                     entityList.add(npc[i]);
                 }
             }
             // ADD OBJ TO LIST
-            for(int i = 0; i < obj.length; i++){
-                if(obj[i] != null){
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
                     entityList.add(obj[i]);
                 }
             }
             // ADD MONSTER TO LIST
-            for(int i = 0; i < monster.length; i++){
-                if(monster[i] != null){
+            for (int i = 0; i < monster.length; i++) {
+                if (monster[i] != null) {
                     entityList.add(monster[i]);
                 }
             }
             // ADD PROJECTILES TO LIST
-            for(int i = 0; i < projectileList.size(); i++){
-                if(projectileList.get(i) != null){
+            for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null) {
                     entityList.add(projectileList.get(i));
                 }
             }
             // ADD PARTICALE TO LIST
-            for(int i = 0; i < particleList.size(); i++){
-                if(particleList.get(i) != null){
+            for (int i = 0; i < particleList.size(); i++) {
+                if (particleList.get(i) != null) {
                     entityList.add(particleList.get(i));
                 }
             }
@@ -285,7 +284,7 @@ public class GamePanel extends JPanel implements Runnable {
             });
 
             // DRAW ENTITYLIST
-            for(int i = 0; i < entityList.size(); i++){
+            for (int i = 0; i < entityList.size(); i++) {
                 entityList.get(i).draw(g2);
             }
             // EMPTY LIST
@@ -308,8 +307,8 @@ public class GamePanel extends JPanel implements Runnable {
             int x = 10;
             int y = 400;
             int lineHeight = 20;
-            int row = (player.worldY + player.solidArea.y)/tileSize;
-            int col = (player.worldX + player.solidArea.x)/tileSize;
+            int row = (player.worldY + player.solidArea.y) / tileSize;
+            int col = (player.worldX + player.solidArea.x) / tileSize;
 
             String colLabel = convertToColumnLabel(col + 1); // +1 because Excel-style labels start at 1
 
@@ -317,15 +316,16 @@ public class GamePanel extends JPanel implements Runnable {
             y += lineHeight;
             g2.drawString("WorldY: " + player.worldY, x, y);
             y += lineHeight;
-            g2.drawString("Col: " + colLabel, x , y); // Column shown as letters
+            g2.drawString("Col: " + colLabel, x, y); // Column shown as letters
             y += lineHeight;
-            g2.drawString( "WorldX: " + col, x, y); // Column shown as letters
+            g2.drawString("WorldX: " + col, x, y); // Column shown as letters
             y += lineHeight;
             g2.drawString("WorldY/Row: " + (row), x, y);
             y += lineHeight;
             g2.drawString("Draw Time: " + passed, x, y);
         }
     }
+
     /**************************************************************************
      * Method:
      * Purpose:
@@ -334,11 +334,13 @@ public class GamePanel extends JPanel implements Runnable {
     public void drawToScreen() {
         repaint(); // Request the panel to call paintComponent()
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // Call the parent’s painting logic (clears the screen)
         g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null); // Draw the buffered image
     }
+
     /**************************************************************************
      * Method:
      * Purpose:
@@ -363,6 +365,25 @@ public class GamePanel extends JPanel implements Runnable {
         screenHeight2 = AdventureGame.window.getHeight();
         System.out.println("Fullscreen dimensions: " + screenWidth2 + "x" + screenHeight2);
     }
+
+    public void retry(){
+
+        player.setDefaultPositions();
+        player.restoreLifeAndMana();
+        aSetter.setNPC();
+        aSetter.setMonster();
+    }
+
+    public void restart(){
+
+        player.setDefaultValues();
+        player.setItems();
+        aSetter.setObject();
+        aSetter.setNPC();
+        aSetter.setMonster();
+        aSetter.setInteractiveTiles();
+    }
+
     /**************************************************************************
      * Method:
      * Purpose:
@@ -376,6 +397,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         return colName.toString();
     }
+
     /**************************************************************************
      * Method: playMusic(int i)
      * Purpose: Plays background music using a given index.
@@ -385,6 +407,7 @@ public class GamePanel extends JPanel implements Runnable {
         music.play();
         music.loop(); // loop the background music
     }
+
     /**************************************************************************
      * Method: stopMusic()
      * Purpose: Stops background music.
@@ -392,6 +415,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void stopMusic() {
         music.stop();
     }
+
     /**************************************************************************
      * Method: playSE(int i)
      * Purpose: Plays a sound effect using given index.

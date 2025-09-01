@@ -1,4 +1,5 @@
-/** ******************************************************************************
+/**
+ * *****************************************************************************
  * FileName: AdventureGame.java
  * Purpose: Launches the main game window and sets up the game environment
  * Author: Lars S Gregersen
@@ -17,6 +18,7 @@ import javax.swing.JFrame;
 public class AdventureGame {
 
     public static JFrame window;
+
     /**************************************************************************
      * Method: main(String[] args)
      * Purpose: Program entry point. Creates and displays the game window.
@@ -35,7 +37,7 @@ public class AdventureGame {
         window.add(gamePanel);
 
         gamePanel.config.loadConfig();
-        if(gamePanel.fullScreen == true){
+        if (gamePanel.fullScreen == true) {
             window.setUndecorated(true);
         }
 

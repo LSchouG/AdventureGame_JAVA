@@ -1,0 +1,3 @@
+fullScreen=false
+musicVolume=0
+seVolume=2

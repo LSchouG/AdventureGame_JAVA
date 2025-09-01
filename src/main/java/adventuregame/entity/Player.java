@@ -1,4 +1,4 @@
- /******************************************************************************
+/******************************************************************************
  * FileName: Player.java
  * Purpose: REPRESENTS THE PLAYER CHARACTER WITH MOVEMENT, COLLISION, AND ANIMATION.
  * Author: Lars S Gregersen
@@ -65,6 +65,7 @@ public class Player extends Entity {
         getPlayerAttachImages();  // LOAD ATTACK SPRITE IMAGES
         setItems();               // ADD STARTING ITEMS TO INVENTORY
     }
+
     /**************************************************************************
      * Method: setDefaultValues()
      * Purpose: SETS DEFAULT PLAYER STATS, EQUIPMENT, AND POSITION IN THE WORLD.
@@ -99,6 +100,7 @@ public class Player extends Entity {
         defense = getDefense(); // CALCULATE INITIAL DEFENSE VALUE
         coolDownMagicCounter = 100; // TIME BETWEEN PROJECTILE USE
     }
+
     /**************************************************************************
      * Method: update()
      * Purpose: UPDATES PLAYER STATE, MOVEMENT, COLLISIONS, ATTACKING, SHOOTING,
@@ -238,15 +240,38 @@ public class Player extends Entity {
         if (maxMana > mana) {
             mana = maxMana;
         }
+
+        if (life <= 0) {
+            gp.gameState = gp.gameOverState;
+            gp.playSE(14);
+        }
+
+    }
+
+    public void setDefaultPositions(){
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 22;
+        direction = "down";
+        invincible = false;
+        invincibleCounter = 0;
+    }
+
+    public void restoreLifeAndMana(){
+        life = maxLife;
+        mana = maxMana;
+        invincible = false;
+        invincibleCounter = 0;
     }
     /**************************************************************************
      * Method: setItems()
      * Purpose: ADDS STARTING ITEMS (WEAPON AND SHIELD) TO PLAYER INVENTORY.
      ***************************************************************************/
     public void setItems() {
+        inventory.clear();
         inventory.add(currentWeapon); // ADD STARTING WEAPON
         inventory.add(currentShield); // ADD STARTING SHIELD
     }
+
     /**************************************************************************
      * Method: getAttack()
      * Purpose: CALCULATES PLAYER ATTACK BASED ON STRENGTH AND EQUIPPED WEAPON.
@@ -255,6 +280,7 @@ public class Player extends Entity {
         attackArea = currentWeapon.attackArea; // SET ATTACK AREA BASED ON WEAPON
         return attack = strength * currentWeapon.attackValue; // RETURN CALCULATED ATTACK VALUE
     }
+
     /**************************************************************************
      * Method: getDefense()
      * Purpose: CALCULATES THE PLAYER'S DEFENSE VALUE BASED ON THEIR DEXTERITY
@@ -263,6 +289,7 @@ public class Player extends Entity {
     public int getDefense() {
         return defense = dexterity * currentShield.defenseValue; // CALCULATE TOTAL DEFENSE
     }
+
     /**************************************************************************
      * Method: getPlayerImages()
      * Purpose: LOAD AND ASSIGN ALL BASE MOVEMENT SPRITE IMAGES FOR THE PLAYER
@@ -282,6 +309,7 @@ public class Player extends Entity {
         right1 = setup("/images/player/player-right-1.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/player/player-right-2.png", gp.tileSize, gp.tileSize);
     }
+
     /**************************************************************************
      * Method: getPlayerAttachImages()
      * Purpose: LOADS THE PLAYER'S ATTACK SPRITE IMAGES BASED ON DIRECTION.
@@ -304,6 +332,7 @@ public class Player extends Entity {
         attachLeft = setup("/images/player/attack-left.png", gp.tileSize * 2, gp.tileSize);
         attachRight = setup("/images/player/attack-right.png", gp.tileSize * 2, gp.tileSize);
     }
+
     /**************************************************************************
      * Method: pickUpObject(int i)
      * Purpose: HANDLES OBJECT PICKUP LOGIC WHEN THE PLAYER COLLIDES WITH AN OBJECT.
@@ -333,6 +362,7 @@ public class Player extends Entity {
             }
         }
     }
+
     /**************************************************************************
      * Method: attaching()
      * Purpose: HANDLES THE ATTACK ANIMATION, TEMPORARILY EXPANDS ATTACK AREA,
@@ -408,6 +438,7 @@ public class Player extends Entity {
             alreadyHitTile = false; // RESET TILE HIT FLAG
         }
     }
+
     /**************************************************************************
      * Method: interactNPC()
      * Purpose: INITIATES INTERACTION WITH AN NPC IF THE PLAYER IS NEARBY AND PRESSES ENTER.
@@ -420,6 +451,7 @@ public class Player extends Entity {
             gp.npc[i].speak(); // CALL NPC SPEAK METHOD
         }
     }
+
     /**************************************************************************
      * Method: contactMonster()
      * Purpose: HANDLES DAMAGE TO PLAYER WHEN IN CONTACT WITH A MONSTER.
@@ -439,6 +471,7 @@ public class Player extends Entity {
             }
         }
     }
+
     /**************************************************************************
      * Method: handleAttack()
      * Purpose: INITIATES AN ATTACK WHEN THE ENTER KEY IS PRESSED AND THE PLAYER IS NOT CURRENTLY ATTACKING.
@@ -451,6 +484,7 @@ public class Player extends Entity {
             spriteCounter = 0; // RESET SPRITE COUNTER FOR ATTACK ANIMATION
         }
     }
+
     /**************************************************************************
      * Method: damageMonster()
      * Purpose: CALCULATES AND APPLIES DAMAGE TO A MONSTER IF IT IS NOT INVINCIBLE.
@@ -482,6 +516,7 @@ public class Player extends Entity {
             }
         }
     }
+
     /**************************************************************************
      * Method: damageInteractiveTile()
      * Purpose: DESTROYS AN INTERACTIVE TILE IF IT IS DESTRUCTIBLE AND PLAYER IS USING A VALID ITEM.
@@ -505,6 +540,7 @@ public class Player extends Entity {
             // CAN IMPLEMENT SPECIAL WEAPON DAMAGE MECHANICS HERE
         }
     }
+
     /**************************************************************************
      * Method: checkLevelUp()
      * Purpose: CHECKS IF PLAYER'S EXPERIENCE REACHES THE NEXT LEVEL THRESHOLD,
@@ -525,6 +561,7 @@ public class Player extends Entity {
                     "You feel stronger!";
         }
     }
+
     /**************************************************************************
      * Method: selectItem()
      * Purpose: SELECTS AN ITEM FROM THE INVENTORY BASED ON CURRENT UI SELECTION.
@@ -550,6 +587,7 @@ public class Player extends Entity {
             }
         }
     }
+
     /**************************************************************************
      * Method: draw(Graphics2D g2)
      * Purpose: DRAWS THE PLAYER CHARACTER ON SCREEN BASED ON CURRENT STATE AND DIRECTION.
@@ -627,5 +665,4 @@ public class Player extends Entity {
         g2.drawImage(image, tempScreenX, tempScreenY, null); // DRAW PLAYER SPRITE
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // RESET TRANSPARENCY
     }
-
 }
