@@ -19,18 +19,16 @@ import adventuregame.objects.OBJ_Shield_Wood;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Player extends Entity {
 
+    KeyHandler keyH;
     public final int screenX;              // PLAYER'S X POSITION ON SCREEN (CENTERED)
     public final int screenY;              // PLAYER'S Y POSITION ON SCREEN (CENTERED)
-    public final int maxInventorySize = 20; // MAXIMUM NUMBER OF ITEMS PLAYER CAN CARRY
+    int standCounter = 0;               // COUNTER FOR IDLE ANIMATION WHEN STANDING STILL
     public boolean attackCanceled = false;  // FLAG TO CANCEL ATTACK DURING NPC INTERACTION
     public boolean alreadyHitTile = false;  // PREVENT MULTIPLE HITS ON SAME TILE IN ONE ATTACK
-    public ArrayList<Entity> inventory = new ArrayList<>(); // PLAYER'S ITEM INVENTORY
-    KeyHandler keyH;                        // REFERENCE TO KEY HANDLER FOR INPUT
-    int standCounter = 0;                   // COUNTER FOR IDLE ANIMATION WHEN STANDING STILL
+
 
 
     /**************************************************************************
@@ -71,8 +69,8 @@ public class Player extends Entity {
      * Purpose: SETS DEFAULT PLAYER STATS, EQUIPMENT, AND POSITION IN THE WORLD.
      ***************************************************************************/
     public void setDefaultValues() {
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 22;
+        worldX = gp.tileSize * 16;
+        worldY = gp.tileSize * 20;
         speed = 4;
         direction = "down";
 
@@ -243,6 +241,8 @@ public class Player extends Entity {
 
         if (life <= 0) {
             gp.gameState = gp.gameOverState;
+            gp.ui.commandNumber = -1;
+            gp.stopMusic();
             gp.playSE(14);
         }
 
@@ -344,21 +344,21 @@ public class Player extends Entity {
             String text = "";
 
             // PICKUP-ONLY ITEMS (E.G. HEARTS, POWER-UPS)
-            if (gp.obj[i].type == type_pickUpOnly) {
-                gp.obj[i].use(this); // USE THE OBJECT IMMEDIATELY
-                gp.obj[i] = null; // REMOVE OBJECT FROM WORLD
+            if (gp.obj[gp.currentMap][i].type == type_pickUpOnly) {
+                gp.obj[gp.currentMap][i].use(this); // USE THE OBJECT IMMEDIATELY
+                gp.obj[gp.currentMap][i] = null; // REMOVE OBJECT FROM WORLD
             }
             // PICKUP ITEMS THAT GO TO INVENTORY
             else {
                 if (inventory.size() <= maxInventorySize) {
-                    inventory.add(gp.obj[i]); // ADD TO INVENTORY
+                    inventory.add(gp.obj[gp.currentMap][i]); // ADD TO INVENTORY
                     gp.playSE(2); // PLAY PICKUP SOUND
-                    text = "Got a " + gp.obj[i].name + "!";
+                    text = "Got a " + gp.obj[gp.currentMap][i].name + "!";
                 } else {
                     text = "Your inventory is full!"; // INVENTORY LIMIT REACHED
                 }
                 gp.ui.addMessage(text); // DISPLAY FEEDBACK TO PLAYER
-                gp.obj[i] = null; // REMOVE OBJECT FROM WORLD
+                gp.obj[gp.currentMap][i] = null; // REMOVE OBJECT FROM WORLD
             }
         }
     }
@@ -448,7 +448,7 @@ public class Player extends Entity {
         if (gp.keyH.enterPressed && i != 999) {
             attackCanceled = true; // CANCEL ATTACK IF INTERACTING
             gp.gameState = gp.dialogueState; // SWITCH TO DIALOGUE MODE
-            gp.npc[i].speak(); // CALL NPC SPEAK METHOD
+            gp.npc[gp.currentMap][i].speak(); // CALL NPC SPEAK METHOD
         }
     }
 
@@ -459,8 +459,8 @@ public class Player extends Entity {
      ***************************************************************************/
     public void contactMonster(int i) {
         if (i != 999) {
-            if (!invincible && gp.monster[i].dying == false) {
-                int damage = gp.monster[i].attack - defense; // CALCULATE DAMAGE
+            if (!invincible && gp.monster[gp.currentMap][i].dying == false) {
+                int damage = gp.monster[gp.currentMap][i].attack - defense; // CALCULATE DAMAGE
                 if (damage < 0) {
                     damage = 1; // MINIMUM DAMAGE OF 1
                 }
@@ -493,24 +493,24 @@ public class Player extends Entity {
      ***************************************************************************/
     public void damageMonster(int i, int attack) {
         if (i != 999) {
-            if (gp.monster[i].invincible == false) {
+            if (gp.monster[gp.currentMap][i].invincible == false) {
 
-                int damage = attack - gp.monster[i].defense; // CALCULATE DAMAGE
+                int damage = attack - gp.monster[gp.currentMap][i].defense; // CALCULATE DAMAGE
                 if (damage < 0) {
                     damage = 0; // ENSURE DAMAGE IS NOT NEGATIVE
                 }
 
-                gp.monster[i].life -= damage; // APPLY DAMAGE TO MONSTER
+                gp.monster[gp.currentMap][i].life -= damage; // APPLY DAMAGE TO MONSTER
                 gp.ui.addMessage(damage + " DAMAGE!"); // DISPLAY DAMAGE MESSAGE
-                gp.monster[i].invincible = true; // SET MONSTER TO TEMPORARILY INVINCIBLE
-                gp.monster[i].damageReaction(); // TRIGGER MONSTER'S DAMAGE REACTION
+                gp.monster[gp.currentMap][i].invincible = true; // SET MONSTER TO TEMPORARILY INVINCIBLE
+                gp.monster[gp.currentMap][i].damageReaction(); // TRIGGER MONSTER'S DAMAGE REACTION
 
-                if (gp.monster[i].life <= 0) {
+                if (gp.monster[gp.currentMap][i].life <= 0) {
                     gp.playSE(10); // PLAY MONSTER DEATH SOUND
-                    gp.monster[i].dying = true; // SET MONSTER TO DYING STATE
-                    gp.player.exp += gp.monster[i].exp; // GIVE PLAYER EXPERIENCE POINTS
-                    gp.ui.addMessage("KILLED THE " + gp.monster[i].name + "!"); // DISPLAY KILL MESSAGE
-                    gp.ui.addMessage("GAIN " + gp.monster[i].exp + " EXP!"); // DISPLAY EXP GAINED
+                    gp.monster[gp.currentMap][i].dying = true; // SET MONSTER TO DYING STATE
+                    gp.player.exp += gp.monster[gp.currentMap][i].exp; // GIVE PLAYER EXPERIENCE POINTS
+                    gp.ui.addMessage("KILLED THE " + gp.monster[gp.currentMap][i].name + "!"); // DISPLAY KILL MESSAGE
+                    gp.ui.addMessage("GAIN " + gp.monster[gp.currentMap][i].exp + " EXP!"); // DISPLAY EXP GAINED
                     checkLevelUp(); // CHECK IF PLAYER LEVELS UP
                 }
             }
@@ -524,17 +524,17 @@ public class Player extends Entity {
      * Inputs: i - INTERACTIVE TILE INDEX
      ***************************************************************************/
     public void damageInteractiveTile(int i) {
-        if (i != 999 && gp.iTile[i].destructible == true
-                && gp.iTile[i].isCurrentItem(this) == true && gp.iTile[i].invincible == false) {
+        if (i != 999 && gp.iTile[gp.currentMap][i].destructible == true
+                && gp.iTile[gp.currentMap][i].isCurrentItem(this) == true && gp.iTile[gp.currentMap][i].invincible == false) {
 
-            gp.iTile[i].playSE(); // PLAY TILE DESTRUCTION SOUND
-            gp.iTile[i].life--;
-            gp.iTile[i].invincible = true;
+            gp.iTile[gp.currentMap][i].playSE(); // PLAY TILE DESTRUCTION SOUND
+            gp.iTile[gp.currentMap][i].life--;
+            gp.iTile[gp.currentMap][i].invincible = true;
 
-            generatePartical(gp.iTile[i], gp.iTile[i]);
+            generatePartical(gp.iTile[gp.currentMap][i], gp.iTile[gp.currentMap][i]);
 
-            if (gp.iTile[i].life <= 0) {
-                gp.iTile[i] = gp.iTile[i].getDestroyedForm(); // REPLACE TILE WITH DESTROYED VERSION
+            if (gp.iTile[gp.currentMap][i].life <= 0) {
+                gp.iTile[gp.currentMap][i] = gp.iTile[gp.currentMap][i].getDestroyedForm(); // REPLACE TILE WITH DESTROYED VERSION
             }
 
             // CAN IMPLEMENT SPECIAL WEAPON DAMAGE MECHANICS HERE
@@ -568,7 +568,7 @@ public class Player extends Entity {
      *          EQUIPS WEAPONS, SHIELDS, OR USES CONSUMABLE ITEMS.
      ***************************************************************************/
     public void selectItem() {
-        int itemIndex = gp.ui.getItemIndexOnSlot();
+        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);
             if (selectedItem.type == type_sword || selectedItem.type == type_axe || selectedItem.type == type_spell) {

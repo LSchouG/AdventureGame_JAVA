@@ -17,6 +17,7 @@ import adventuregame.UtilityTool;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class  Entity {
     protected GamePanel gp;
@@ -76,6 +77,8 @@ public class  Entity {
     public Projectile projectile;
 
     // ITEM ATTRIBUTES
+    public ArrayList<Entity> inventory = new ArrayList<>(); // PLAYER'S ITEM INVENTORY
+    public final int maxInventorySize = 20; // MAXIMUM NUMBER OF ITEMS PLAYER CAN CARRY
     public int attackValue;
     public int  defenseValue;
     public int  restoreValue;
@@ -98,30 +101,11 @@ public class  Entity {
     public final int type_pickUpOnly = 8;
 
 
-    /**************************************************************************
-     * Constructor: Entity(GamePanel gp)
-     * Purpose: Initialize with reference to the game panel.
-     ***************************************************************************/
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
-    /**************************************************************************
-     * Method: setAction()
-     * Purpose: Placeholder for subclasses to define specific behavior.
-     * Notes: Empty in base class. Override in subclasses.
-     ***************************************************************************/
     public void setAction() {}
-    /**************************************************************************
-     * Method: damageReaction()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void damageReaction() {}
-    /**************************************************************************
-     * Method: speak()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void speak() {
 
         if (dialogues[dialogueIndex] == null) {
@@ -145,41 +129,19 @@ public class  Entity {
         }
 
     }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Inputs:
-     * Outputs:
-     ***************************************************************************/
     public void use(Entity entity) {}
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Inputs:
-     * Outputs:
-     ***************************************************************************/
     public void checkDrop() {}
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Inputs:
-     * Outputs:
-     ***************************************************************************/
     public void dropItem(Entity droppedItem) {
 
         for (int i = 0; i < gp.player.inventory.size(); i++) {
-            if (gp.obj[i] == null) {
-               gp.obj[i] = droppedItem;
-               gp.obj[i].worldX = worldX;
-               gp.obj[i].worldY = worldY;
+            if (gp.obj[gp.currentMap][i] == null) {
+               gp.obj[gp.currentMap][i] = droppedItem;
+               gp.obj[gp.currentMap][i].worldX = worldX; // dead monsters WorldX
+               gp.obj[gp.currentMap][i].worldY = worldY;
                break;
             }
         }
     }
-    /**************************************************************************
-     * Method: update()
-     * Purpose: Update logic (e.g., movement, collision). Called every frame.
-     ***************************************************************************/
     public void update() {
         setAction();
 
@@ -209,10 +171,16 @@ public class  Entity {
 
         // 4. Handle sprite animation timing
         spriteCounter++;
-        if (spriteCounter > 12) {
-            spriteNumber = (spriteNumber == 1) ? 2 : 1;
+        if (spriteCounter > 24) {
+            // Go to the next sprite
+            spriteNumber++;
+            if (spriteNumber > 2) { // 3 images a drawn
+                spriteNumber = 0;
+            }
+            // Reset counter
             spriteCounter = 0;
         }
+
         // this needs to be outside of key if statment
         if (invincible == true) {
             invincibleCounter++;
@@ -225,11 +193,6 @@ public class  Entity {
             shotAvailableCounter++;
         }
     }
-    /**************************************************************************
-     * Method: draw(Graphics2D g2)
-     * Purpose: Draws the entity to the screen with correct sprite based on direction.
-     * Inputs: g2 - the graphics context
-     ***************************************************************************/
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
@@ -309,12 +272,6 @@ public class  Entity {
             changeAlpha(g2, 1f);
         }
     }
-    /**************************************************************************
-     * Method: setup(String imagePath)
-     * Purpose: Load and scale an image for entity sprite.
-     * Inputs: imagePath - relative path to the image file
-     * Outputs: Scaled BufferedImage
-     ***************************************************************************/
     public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
@@ -331,12 +288,6 @@ public class  Entity {
 
         return scaledImage;
     }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Inputs:
-     * Outputs:
-     ***************************************************************************/
     public void  dyingAnimation(Graphics2D g2) {
         int i = 5;
         dyingCounter++;
@@ -350,12 +301,6 @@ public class  Entity {
         if (dyingCounter > i*7 && dyingCounter <= i*8) {changeAlpha(g2, 1f);}
         if (dyingCounter > i*8){alive = false;dyingCounter = 0;}
     }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Inputs:
-     * Outputs:
-     ***************************************************************************/
     public void  damageplayer(int attack){
         gp.playSE(9);
 
@@ -369,16 +314,9 @@ public class  Entity {
 
 
     }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Inputs:
-     * Outputs:
-     ***************************************************************************/
     public  void  changeAlpha(Graphics2D g2, float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
-
     public Color getParticalColor(){
         Color color = null;
         return color;

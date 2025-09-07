@@ -5,10 +5,10 @@ import adventuregame.entity.Entity;
 
 import java.util.Random;
 
-public class OBJ_Potion_blue extends Entity {
+public class OBJ_Potion_Blue extends Entity {
     GamePanel gp;
 
-    public OBJ_Potion_blue(GamePanel gp){
+    public OBJ_Potion_Blue(GamePanel gp){
     super(gp);
     this.gp = gp;
 

@@ -5,6 +5,7 @@
 package adventuregame.tiles;
 
 import java.awt.Graphics2D;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,88 +13,53 @@ import javax.imageio.ImageIO;
 import adventuregame.GamePanel;
 import adventuregame.UtilityTool;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 
 public final class TileManager {
 
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNumber[][];
+    public int mapTileNumber[][][];
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
         tile = new Tile[100];
-        mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNumber = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        loadMap("/images/tiles/worldMapNew.csv");
+        loadMap("/maps/worldMapNew.csv", 0);
+        loadMap("/maps/interiorHome.csv", 1);
+        loadMap("/maps/interiorSeller.csv", 2);
+        loadMap("/maps/cityMap.csv", 3);
+
     }
 
     public void getTileImage() {
 
         //GRASS
         setup(0, "grass", false);
-        setup(48, "grass-pit", false);
-        setup(50, "grass-teleport", false);
 
 
         //WALL
         setup(1, "wall", true);
-        //FLOOR
-        setup(2, "Floor", false);
-        setup(49, "bed", false);
-        //TREE AND BUSH
-        setup(3, "bush", true);
-        setup(4, "tree", true);
-        setup(5, "rock", true);
+        //interior
+        setup(2, "floor", false);
+        setup(3, "bed", false);
+        setup(4, "table", true);
+        // On GRASS
+        setup(5, "bush", true);
+        setup(6, "tree", true);
+        setup(7, "rock", true);
+        setup(8, "house", false);
+        setup(9, "grass-pit", false);
+        setup(10, "grass-teleport", false);
+        setup(11, "grass", false);
+
         //WATER
-        setup(6, "water", true);
-        setup(7, "waterToGrassDown", true);
-        setup(8, "waterToGrassLeft", true);
-        setup(9, "waterToGrassRight", true);
-        setup(10, "waterToGrassTop", true);
-        setup(11, "waterToGrassDownLeftIn", true);
-        setup(12, "waterToGrassDownLeftOut", true);
-        setup(13, "waterToGrassDownRightIn", true);
-        setup(14, "waterToGrassDownRightOut", true);
-        setup(15, "waterToGrassTopLeftIn", true);
-        setup(16, "waterToGrassTopLeftOut", true);
-        setup(17, "waterToGrassTopRightIn", true);
-        setup(18, "waterToGrassTopRightOut", true);
+        setup(11, "water", true);
         //SAND
-        setup(19, "sand", false);
-        setup(20, "sand-to-grass-down", false);
-        setup(21, "sand-to-grass-down-left", false);
-        setup(22, "sand-to-grass-down-out-left", false);
-        setup(23, "sand-to-grass-down-out-right", false);
-        setup(24, "sand-to-grass-down-right", false);
-        setup(25, "sand-to-grass-top", false);
-        setup(26, "sandToGrassTopLeft", false);
-        setup(27, "sandToGrassTopOutLeft", false);
-        setup(28, "sandToGrassTopOutRight", false);
-        setup(29, "sandToGrassTopRight", false);
-        setup(46, "sand-to-grass-right", false);
-        setup(47, "sand-to-grass-left", false);
-
-
-        setup(30, "sandToWaterDown1", true);
-        setup(31, "sandToWaterDown2", false);
-        setup(32, "sandToWaterDownLeft1", true);
-        setup(33, "sandToWaterDownLeft2", false);
-        setup(34, "sandToWaterDownRight1", true);
-        setup(35, "sandToWaterDownRight2", false);
-        setup(36, "sandToWaterLeft1", true);
-        setup(37, "sandToWaterLeft2", false);
-        setup(38, "sandToWaterRight1", true);
-        setup(39, "sandToWaterRight2", false);
-        setup(40, "sandToWaterTop1", true);
-        setup(41, "sandToWaterTop2", false);
-        setup(42, "sandToWaterTopLeft1", true);
-        setup(43, "sandToWaterTopLeft2", false);
-        setup(44, "sandToWaterTopRight1", true);
-        setup(45, "sandToWaterTopRight2", false);
-
+        setup(12, "sand", false);
+        setup(14, "sand", true);
+        // Black
+        setup(13, "black", true);
     }
 
     public void setup(int index, String imageName, boolean collision){
@@ -111,45 +77,35 @@ public final class TileManager {
     }
 
 
-    public void loadMap(String filePath) {
+    public void loadMap(String filePath, int map) {
     try {
         // Convert resource path to actual file path
-        String actualPath = "src/main/resources" + filePath;
-        File mapFile = new File(actualPath);
-        
-        if (!mapFile.exists()) {
-            System.err.println("ERROR: Could not find map file: " + actualPath);
-            return;
-        }
-        
-        BufferedReader br = new BufferedReader(new FileReader(mapFile));
+        InputStream mapFile = getClass().getResourceAsStream(filePath);
 
-        // Clear existing map data
-        for (int row = 0; row < gp.maxWorldRow; row++) {
-            for (int col = 0; col < gp.maxWorldCol; col++) {
-                mapTileNumber[col][row] = 0;
-            }
-        }
+        BufferedReader br = new BufferedReader(new InputStreamReader(mapFile));
 
+        int col = 0;
         int row = 0;
-        while (row < gp.maxWorldRow) {
+
+        while (row < gp.maxWorldRow && row < gp.maxWorldRow) {
             String line = br.readLine();
+
             if (line == null) break;
 
             String[] numbers = line.split(",");
 
-            for (int col = 0; col < gp.maxWorldCol && col < numbers.length; col++) {
+            for (col = 0; col < gp.maxWorldCol && col < numbers.length; col++) {
                 try {
                     String rawCol = numbers[col];
                     if (rawCol == null || rawCol.trim().isEmpty()) {
-                        mapTileNumber[col][row] = 0;
+                        mapTileNumber[map][col][row] = 0;
                     } else {
                         String cleaned = rawCol.trim().replaceAll("[^0-9]", "");
-                        mapTileNumber[col][row] = cleaned.isEmpty() ? 0 : Integer.parseInt(cleaned);
+                        mapTileNumber[map][col][row] = cleaned.isEmpty() ? 0 : Integer.parseInt(cleaned);
                     }
                 } catch(NumberFormatException nfe) {
                     System.err.println("Invalid value at row " + row + ", col " + col + ": '" + numbers[col] + "'");
-                    mapTileNumber[col][row] = 0;
+                    mapTileNumber[map][col][row] = 0;
                 }
             }
             row++;
@@ -170,7 +126,7 @@ public final class TileManager {
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
-            int tileNumber = mapTileNumber[worldCol][worldRow];
+            int tileNumber = mapTileNumber[gp.currentMap][worldCol][worldRow];
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;

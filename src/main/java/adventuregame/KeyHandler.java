@@ -83,12 +83,49 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.gameOverState) {
             gameOverState(code);
         }
-    }
 
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
+        // GAME OVER STATE
+        else if (gp.gameState == gp.shopState) {
+            shopState(code);
+        }
+    }
+    public void shopState(int code) {
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            enterPressed = true;
+        }
+
+        if(gp.ui.subState == 0){
+
+            if (code == KeyEvent.VK_W) {
+                gp.ui.commandNumber--;
+                if (gp.ui.commandNumber < 0) {
+                    gp.ui.commandNumber = 2;
+                }
+                gp.playSE(12);
+            }
+            if (code == KeyEvent.VK_S) {
+                gp.ui.commandNumber++;
+                if (gp.ui.commandNumber > 2) {
+                    gp.ui.commandNumber = 0;
+                }
+                gp.playSE(12);
+            }
+        }
+        if (gp.ui.subState == 1){
+            npcInventory(code);
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.ui.subState = 0;
+                gp.ui.commandNumber = 0;
+            }
+        }
+        if (gp.ui.subState == 2){
+            playerInventory(code);
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.ui.subState = 0;
+                gp.ui.commandNumber = 1;
+            }
+        }
+    }
     public void titleState(int code) {
         if (gp.ui.titleScreenState == 0) {
             if (code == KeyEvent.VK_W) {
@@ -96,12 +133,14 @@ public class KeyHandler implements KeyListener {
                 if (gp.ui.commandNumber < 0) {
                     gp.ui.commandNumber = 2;
                 }
+                gp.playSE(12);
             }
             if (code == KeyEvent.VK_S) {
                 gp.ui.commandNumber++;
                 if (gp.ui.commandNumber > 2) {
                     gp.ui.commandNumber = 0;
                 }
+                gp.playSE(12);
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                 if (gp.ui.commandNumber == 0) {
@@ -119,11 +158,6 @@ public class KeyHandler implements KeyListener {
 
 
     }
-
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
     public void playState(int code) {
         // Movement Controls (WASD)
         if (code == KeyEvent.VK_W) {
@@ -168,28 +202,19 @@ public class KeyHandler implements KeyListener {
         }
         // RELOAD MAP WITH R KEY
         if (code == KeyEvent.VK_R) {
-            gp.tileM.mapTileNumber = null;
-            gp.tileM.mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
-            gp.tileM.loadMap("/images/tiles/worldMapNew.csv");
-            gp.repaint();  // Force immediate repaint
+            switch (gp.currentMap) {
+                case 0: gp.tileM.loadMap("/images/maps/worldMapNew.csv", 0); break;
+                case 1: gp.tileM.loadMap("/images/maps/interior1.csv", 1); break;
+            }
+            gp.repaint(); // Force immediate repaint
         }
 
     }
-
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
     public void pauseState(int code) {
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
     }
-
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
     public void optionState(int code) {
 
         if (code == KeyEvent.VK_ESCAPE) {
@@ -295,11 +320,6 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
-
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
     public void gameOverState(int code){
             // Press up
             if (code == KeyEvent.VK_W) {
@@ -323,6 +343,7 @@ public class KeyHandler implements KeyListener {
                if(gp.ui.commandNumber == 0) {
                    gp.gameState = gp.playState;
                    gp.retry();
+                   gp.playMusic(0);
                } else if (gp.ui.commandNumber == 1) {
                    gp.gameState = gp.titleState;
                    gp.restart();
@@ -334,64 +355,20 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.titleState;
             }
     }
-
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
     public void dialogueState(int code) {
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
             gp.gameState = gp.playState;
         }
     }
-
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     ***************************************************************************/
     public void characterState(int code) {
-        if (code == KeyEvent.VK_C) {
+        if (code == KeyEvent.VK_C || code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
-
-        if (code == KeyEvent.VK_W) {
-            if (gp.ui.slotRow != 0) {
-                gp.ui.slotRow--;
-                gp.playSE(12);
-                System.out.println("Row: " + gp.ui.slotRow);
-            }
-
-        }
-        if (code == KeyEvent.VK_S) {
-            if (gp.ui.slotRow != 3) {
-                gp.ui.slotRow++;
-                gp.playSE(12);
-                System.out.println("Row: " + gp.ui.slotRow);
-            }
-        }
-        if (code == KeyEvent.VK_D) {
-            if (gp.ui.slotCol != 4) {
-                gp.ui.slotCol++;
-                gp.playSE(12);
-                System.out.println("Col: " + gp.ui.slotCol);
-            }
-        }
-        if (code == KeyEvent.VK_A) {
-            if (gp.ui.slotCol != 0) {
-                gp.ui.slotCol--;
-                gp.playSE(12);
-                System.out.println("Col: " + gp.ui.slotCol);
-            }
-        }
+        playerInventory(code);
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
             gp.player.selectItem();
         }
     }
-
-    /**************************************************************************
-     * Method: keyReleased(KeyEvent e)
-     * Purpose: Responds to key release events to stop movement.
-     ***************************************************************************/
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
@@ -415,4 +392,65 @@ public class KeyHandler implements KeyListener {
             shotKeyPressed = false;
         }
     }
+    public void playerInventory(int code){
+        if (code == KeyEvent.VK_W && gp.ui.playerSlotRow > 0) {
+            gp.ui.playerSlotRow--;
+            gp.playSE(12);
+            System.out.println("Row: " + gp.ui.playerSlotRow);
+        }
+        if (code == KeyEvent.VK_S && gp.ui.playerSlotRow < 3) {
+            gp.ui.playerSlotRow++;
+            gp.playSE(12);
+            System.out.println("Row: " + gp.ui.playerSlotRow);
+        }
+        if (code == KeyEvent.VK_D && gp.ui.playerSlotCol < 6) {
+            gp.ui.playerSlotCol++;
+            gp.playSE(12);
+            System.out.println("Col: " + gp.ui.playerSlotCol);
+        }
+        if (code == KeyEvent.VK_A && gp.ui.playerSlotCol > 0) {
+            gp.ui.playerSlotCol--;
+            gp.playSE(12);
+            System.out.println("Col: " + gp.ui.playerSlotCol);
+        }
+    }
+    public void npcInventory(int code){
+        // UP
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.npcSlotRow > 0) {
+                gp.ui.npcSlotRow--;
+                gp.playSE(12);
+                System.out.println("Row: " + gp.ui.npcSlotRow);
+            }
+        }
+
+        // DOWN
+        if (code == KeyEvent.VK_S) {
+            if (gp.ui.npcSlotRow < 3) { // max row = 3
+                gp.ui.npcSlotRow++;
+                gp.playSE(12);
+                System.out.println("Row: " + gp.ui.npcSlotRow);
+            }
+        }
+
+        // RIGHT
+        if (code == KeyEvent.VK_D) {
+            if (gp.ui.npcSlotCol < 6) { // max col = 6
+                gp.ui.npcSlotCol++;
+                gp.playSE(12);
+                System.out.println("Col: " + gp.ui.npcSlotCol);
+            }
+        }
+
+        // LEFT
+        if (code == KeyEvent.VK_A) {
+            if (gp.ui.npcSlotCol > 0) {
+                gp.ui.npcSlotCol--;
+                gp.playSE(12);
+                System.out.println("Col: " + gp.ui.npcSlotCol);
+            }
+        }
+    }
+
+
 }
