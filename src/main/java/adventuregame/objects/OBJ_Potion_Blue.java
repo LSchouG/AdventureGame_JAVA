@@ -15,13 +15,10 @@ public class OBJ_Potion_Blue extends Entity {
         name = "Blue Potion";
         type = type_consumable;
         restoreValue = 2;
-        buyPrice = 10;
-        sellPrice = 3;
+        Price = 10;
         down1 = setup("/images/objects_pickup/small-blue-potion.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_pickup/big-blue-potion.png", gp.tileSize, gp.tileSize);
         itemTitle = "[" + name + "]";
-        itemBuyPrice = "[Gold] " + buyPrice;
-        itemSellPrice = "[Gold] " + sellPrice;
         itemDescription = "A mana restoring potion. \nRestores " + restoreValue + " HP.";
     }
     public void use(Entity entity) {

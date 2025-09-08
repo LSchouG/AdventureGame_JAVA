@@ -87,7 +87,7 @@ public class Player extends Entity {
         magic = 1;
         exp = 0;
         nextLevelExp = 5;
-        gold = 0;
+        gold = 500;
 
         // SET DEFAULT EQUIPMENT
         currentWeapon = new OBJ_Axe(gp);

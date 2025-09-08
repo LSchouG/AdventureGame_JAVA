@@ -96,6 +96,12 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(12);
             }
         }
+        if (gp.ui.subState == 0){
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.gameState = gp.playState;
+                gp.ui.commandNumber = 0;
+            }
+        }
         if (gp.ui.subState == 1){
             npcInventory(code);
             if(code == KeyEvent.VK_ESCAPE){
@@ -110,6 +116,7 @@ public class KeyHandler implements KeyListener {
                 gp.ui.commandNumber = 1;
             }
         }
+
     }
     public void titleState(int code) {
         if (gp.ui.titleScreenState == 0) {

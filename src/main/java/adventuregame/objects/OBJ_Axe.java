@@ -14,11 +14,8 @@ public class OBJ_Axe extends Entity {
         attackValue = 2;
         attackArea.width = 30;
         attackArea.height = 30;
-        buyPrice = 10;
-        sellPrice = 3;
+        Price = 10;
         itemTitle = "[" + name + "]";
-        itemBuyPrice = "[Gold] " + buyPrice;
-        itemSellPrice = "[Gold] " + sellPrice;
         itemDescription = "An old Axe." +
                 "\nAttack Value: " + attackValue + "\nAttack range: " + attackArea.width;
     }

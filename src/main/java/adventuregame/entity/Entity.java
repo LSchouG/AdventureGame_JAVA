@@ -71,8 +71,7 @@ public class  Entity {
     public  int exp;
     public int nextLevelExp;
     public int  gold;
-    public int  buyPrice;
-    public int  sellPrice;
+    public int Price;
     public Entity user;
     public Entity currentWeapon;
     public Entity currentShield;
