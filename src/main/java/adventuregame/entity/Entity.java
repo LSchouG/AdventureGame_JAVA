@@ -71,6 +71,8 @@ public class  Entity {
     public  int exp;
     public int nextLevelExp;
     public int  gold;
+    public int  buyPrice;
+    public int  sellPrice;
     public Entity user;
     public Entity currentWeapon;
     public Entity currentShield;
@@ -83,6 +85,9 @@ public class  Entity {
     public int  defenseValue;
     public int  restoreValue;
     public String itemDescription = "";
+    public String itemTitle = "";
+    public String itemSellPrice = "";
+    public String itemBuyPrice = "";
     public int useCost; //
     public int value;
     public String lockKeyType;

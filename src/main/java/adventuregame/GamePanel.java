@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldCol = 150;
     public final int maxWorldRow = 100;
     public final int maxMap = 10;
-    public int currentMap = 1;
+    public int currentMap = 2;
     /***************************** SCREEN SETTINGS ****************************/
     final int originalTileSize = 16; // original 16x16 tiles
     final int scale = 3;

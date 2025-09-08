@@ -18,7 +18,13 @@ public class OBJ_Boots extends Entity {
     public OBJ_Boots(GamePanel gp) {
         super(gp);
         name = "Boots";
+        buyPrice = 10;
+        sellPrice = 3;
         down1 = setup("/images/objects_pickup/boots.png", gp.tileSize, gp.tileSize);
-        itemDescription = "[" + name + "]" + " \nA par of old boots.";
+        speed = 1;
+        itemTitle = "[" + name + "]";
+        itemBuyPrice = "[Gold] " + buyPrice;
+        itemSellPrice = "[Gold] " + sellPrice;
+        itemDescription = "A par of old boots. \nSpeed Value: " + speed ;
     }
 }

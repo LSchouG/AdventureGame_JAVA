@@ -23,9 +23,9 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
 
     KeyHandler keyH;
-    public final int screenX;              // PLAYER'S X POSITION ON SCREEN (CENTERED)
-    public final int screenY;              // PLAYER'S Y POSITION ON SCREEN (CENTERED)
-    int standCounter = 0;               // COUNTER FOR IDLE ANIMATION WHEN STANDING STILL
+    public final int screenX;               // PLAYER'S X POSITION ON SCREEN (CENTERED)
+    public final int screenY;               // PLAYER'S Y POSITION ON SCREEN (CENTERED)
+    int standCounter = 0;                   // COUNTER FOR IDLE ANIMATION WHEN STANDING STILL
     public boolean attackCanceled = false;  // FLAG TO CANCEL ATTACK DURING NPC INTERACTION
     public boolean alreadyHitTile = false;  // PREVENT MULTIPLE HITS ON SAME TILE IN ONE ATTACK
 
@@ -70,7 +70,7 @@ public class Player extends Entity {
      ***************************************************************************/
     public void setDefaultValues() {
         worldX = gp.tileSize * 16;
-        worldY = gp.tileSize * 20;
+        worldY = gp.tileSize * 22;
         speed = 4;
         direction = "down";
 

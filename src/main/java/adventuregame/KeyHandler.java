@@ -23,28 +23,13 @@ public class KeyHandler implements KeyListener {
     // Debugging
     public boolean showDebugText = false;
     GamePanel gp;
-
-    /**************************************************************************
-     * Constructor: KeyHandler(GamePanel gp)
-     * Purpose: Initializes the key handler with reference to the game panel.
-     ***************************************************************************/
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
-
-    /**************************************************************************
-     * Method: keyTyped(KeyEvent e)
-     * Purpose: Required by KeyListener but not used here.
-     ***************************************************************************/
     @Override
     public void keyTyped(KeyEvent e) {
         // Not used
     }
-
-    /**************************************************************************
-     * Method: keyPressed(KeyEvent e)
-     * Purpose: Responds to key press events for movement, pause, and debug.
-     ***************************************************************************/
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
@@ -396,22 +381,18 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_W && gp.ui.playerSlotRow > 0) {
             gp.ui.playerSlotRow--;
             gp.playSE(12);
-            System.out.println("Row: " + gp.ui.playerSlotRow);
         }
         if (code == KeyEvent.VK_S && gp.ui.playerSlotRow < 3) {
             gp.ui.playerSlotRow++;
             gp.playSE(12);
-            System.out.println("Row: " + gp.ui.playerSlotRow);
         }
-        if (code == KeyEvent.VK_D && gp.ui.playerSlotCol < 6) {
+        if (code == KeyEvent.VK_D && gp.ui.playerSlotCol < 4) {
             gp.ui.playerSlotCol++;
             gp.playSE(12);
-            System.out.println("Col: " + gp.ui.playerSlotCol);
         }
         if (code == KeyEvent.VK_A && gp.ui.playerSlotCol > 0) {
             gp.ui.playerSlotCol--;
             gp.playSE(12);
-            System.out.println("Col: " + gp.ui.playerSlotCol);
         }
     }
     public void npcInventory(int code){
@@ -420,7 +401,6 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.npcSlotRow > 0) {
                 gp.ui.npcSlotRow--;
                 gp.playSE(12);
-                System.out.println("Row: " + gp.ui.npcSlotRow);
             }
         }
 
@@ -429,16 +409,14 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.npcSlotRow < 3) { // max row = 3
                 gp.ui.npcSlotRow++;
                 gp.playSE(12);
-                System.out.println("Row: " + gp.ui.npcSlotRow);
             }
         }
 
         // RIGHT
         if (code == KeyEvent.VK_D) {
-            if (gp.ui.npcSlotCol < 6) { // max col = 6
+            if (gp.ui.npcSlotCol < 4) { // max col = 4
                 gp.ui.npcSlotCol++;
                 gp.playSE(12);
-                System.out.println("Col: " + gp.ui.npcSlotCol);
             }
         }
 
@@ -447,7 +425,6 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.npcSlotCol > 0) {
                 gp.ui.npcSlotCol--;
                 gp.playSE(12);
-                System.out.println("Col: " + gp.ui.npcSlotCol);
             }
         }
     }

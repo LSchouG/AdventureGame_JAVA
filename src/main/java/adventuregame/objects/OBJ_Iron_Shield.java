@@ -12,7 +12,12 @@ public class OBJ_Iron_Shield extends Entity{
          defenseValue = 2;
          attackArea.width = 36;
          attackArea.height = 36;
-         itemDescription = "[" + name + "]" + " \nAn Iron shield. \nDefense Value: " + defenseValue ;
+         buyPrice = 10;
+         sellPrice = 3;
+         itemTitle = "[" + name + "]";
+         itemBuyPrice = "[Gold] " + buyPrice;
+         itemSellPrice = "[Gold] " + sellPrice;
+         itemDescription = "An Iron shield. \nDefense Value: " + defenseValue ;
      }
 
 }

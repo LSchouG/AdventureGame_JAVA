@@ -1,8 +1,7 @@
 package adventuregame.entity;
 
 import adventuregame.GamePanel;
-import adventuregame.objects.OBJ_Potion_Red;
-import adventuregame.objects.OBJ_Potion_Blue;
+import adventuregame.objects.*;
 
 public class NPC_Seller extends Entity{
     /**************************************************************************
@@ -16,7 +15,7 @@ public class NPC_Seller extends Entity{
         solidArea.x = 0;// goes 0 pixel in from the side
         solidArea.y = 16;// goes 16 pixel down from the top
         solidArea.width = 48;// the space left, 48 - 0  = 48
-        solidArea.height = 32;// the space left, 48 - 16 = 32
+        solidArea.height = 32; // the space left, 48 - 16 = 32
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         getImages();
@@ -46,5 +45,10 @@ public class NPC_Seller extends Entity{
 
         inventory.add(new OBJ_Potion_Blue(gp));
         inventory.add(new OBJ_Potion_Red(gp));
+        inventory.add(new OBJ_Sword_Normal(gp));
+        inventory.add(new OBJ_Shield_Wood(gp));
+        inventory.add(new OBJ_Boots(gp));
+        inventory.add(new OBJ_Iron_Shield(gp));
+        inventory.add(new OBJ_Axe(gp));
     }
 }

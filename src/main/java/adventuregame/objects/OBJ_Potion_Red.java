@@ -15,9 +15,14 @@ public class OBJ_Potion_Red extends Entity{
         name = "Red Potion";
         type = type_consumable;
         restoreValue = 5;
+        buyPrice = 1022;
+        sellPrice = 3;
         down1 = setup("/images/objects_pickup/small-red-potion.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_pickup/big-red-potion.png", gp.tileSize, gp.tileSize);
-        itemDescription = "[" + name + "]" + " \nA healing potion. \nRestores " + restoreValue + " HP.";
+        itemTitle = "[" + name + "]";
+        itemBuyPrice = "[Gold] " + buyPrice;
+        itemSellPrice = "[Gold] " + sellPrice;
+        itemDescription = "A healing potion. \nRestores " + restoreValue + " HP.";
     }
     public void use(Entity entity) {
         gp.gameState = gp.dialogueState;
