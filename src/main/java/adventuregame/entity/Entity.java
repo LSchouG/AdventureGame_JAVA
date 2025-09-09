@@ -43,6 +43,8 @@ public class  Entity {
     public boolean dying = false;
     boolean hpBarOn = false;
     public boolean onPath = false;
+    public boolean knockback = false;
+
 
     /** COUNTER **/
     public int spriteCounter = 0;
@@ -52,10 +54,11 @@ public class  Entity {
     int dyingCounter = 0;
     int hpBarCounter = 0;
     int coolDownMagicCounter = 100;
+    int knockbackCounter;
 
     /** CHARACTER ATTRIBUTES **/
     public String name; // Object name identifier
-    public int chosenClass;// 0 = fighter, 1 = Theif, 2 = Sorcerer
+    public int defaultSpeed;
     public int speed;
     public int  maxLife;
     public  int  maxMana;
@@ -91,6 +94,7 @@ public class  Entity {
     public int useCost; //
     public int value;
     public String lockKeyType;
+    public int knockBackPower = 0;
 
     // TYPE
     public int type;// 0 = player, 1 = npc, 2 = monster
@@ -103,13 +107,34 @@ public class  Entity {
     public final int type_spell = 6;
     public final int type_consumable = 7;
     public final int type_pickUpOnly = 8;
+    public final int type_obstacle = 9;
+
 
 
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
+    public int getLeftX(){
+        return worldX + solidArea.x;
+    }
+    public int getRightX(){
+        return worldX + solidArea.x + solidArea.width;
+    }
+    public int getTopY(){
+        return worldY + solidArea.y;
+    }
+    public int getRBottomY(){
+        return worldY + solidArea.y + solidArea.height;
+    }
+    public int getCol(){
+        return (worldX + solidArea.x)/ gp.tileSize;
+    }
+    public int getRow(){
+        return (worldY + solidArea.y)/ gp.tileSize;
+    }
     public void setAction() {}
     public void damageReaction() {}
+    public void interact(){}
     public void speak() {
 
         if (dialogues[dialogueIndex] == null) {
@@ -133,7 +158,7 @@ public class  Entity {
         }
 
     }
-    public void use(Entity entity) {}
+    public boolean use(Entity entity) { return false;}
     public void checkDrop() {}
     public void dropItem(Entity droppedItem) {
 
@@ -162,29 +187,65 @@ public class  Entity {
         }
     }
     public void update() {
-        setAction();
 
-        checkCollision();
+        if (knockback == true){
 
-        // 3. Move player if no collision
-        if (!collisionOn) {
-            switch (direction) {
-                case "up" -> worldY -= speed;
-                case "down" -> worldY += speed;
-                case "left" -> worldX -= speed;
-                case "right" -> worldX += speed;
+            checkCollision();
+            if (collisionOn == true){
+                knockbackCounter = 0;
+                knockback = false;
+                speed = defaultSpeed;
             }
+            else if(collisionOn == false){
+                switch (gp.player.direction){
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                }
+                knockbackCounter++;
+                if(knockbackCounter == 10){
+                    knockbackCounter = 0;
+                    knockback = false;
+                    speed = defaultSpeed;
+                }
+            }
+
         }
+        else {
+            setAction();
+            checkCollision();
+
+            // 3. Move player if no collision
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                }
+            }
+
+
+        }
+
 
         // 4. Handle sprite animation timing
         spriteCounter++;
+
         if (spriteCounter > 24) {
-            // Go to the next sprite
             spriteNumber++;
-            if (spriteNumber > 2) { // 3 images a drawn
-                spriteNumber = 0;
+            if (downStill == null) {
+                // Two-image cycle: spriteNumber cycles between 1 and 2
+                if (spriteNumber > 2) {
+                    spriteNumber = 1;
+                }
+            } else {
+                // Three-image cycle: spriteNumber cycles between 0 and 2
+                if (spriteNumber > 2) {
+                    spriteNumber = 0;
+                }
             }
-            // Reset counter
             spriteCounter = 0;
         }
 
@@ -422,11 +483,40 @@ public class  Entity {
                 }
             }
             // if reached the goal, stop the pathfinder
-            int nextCol = gp.pfinder.pathList.get(0).col;
-            int nextRow = gp.pfinder.pathList.get(0).row;
-            if (nextCol == goalCol && nextRow == goalRow){
-                onPath = false;
+//            int nextCol = gp.pfinder.pathList.get(0).col;
+//            int nextRow = gp.pfinder.pathList.get(0).row;
+//            if (nextCol == goalCol && nextRow == goalRow){
+//                onPath = false;
+//            }
+        }
+    }
+    public int getDetected(Entity user,Entity target[][], String targetName ){
+
+        int index = 999;
+
+        // check the sureounding object
+        int nextWorldX = user.getLeftX();
+        int nextWorldY = user.getTopY();
+
+        switch(user.direction){
+            case "up": nextWorldY = user.getTopY()-1;break;
+            case "down": nextWorldY = user.getRBottomY()+1;break;
+            case "left": nextWorldX = user.getLeftX()-1;break;
+            case "right": nextWorldX = user.getRightX()+1;break;
+        }
+        int col = nextWorldX/gp.tileSize;
+        int row = (nextWorldY/gp.tileSize)-1;
+
+        for (int i = 0; i < target[1].length; i++){
+            if(target[gp.currentMap][i] != null){
+                if(target[gp.currentMap][i].getCol() == col &&
+                        target[gp.currentMap][i].getRow() == row &&
+                        target[gp.currentMap][i].name.equals(targetName)){
+                    index = i;
+                    break;
+                }
             }
         }
+        return index;
     }
 }

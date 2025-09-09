@@ -14,7 +14,8 @@ public class MON_RedSlime extends Entity {
         super(gp);
         type = type_monster;
         name = "Red Slime";
-        speed = 1;
+        defaultSpeed = 1;
+        speed = defaultSpeed;
         maxLife = 10;
         life = maxLife;
         attack = 5;
@@ -53,46 +54,71 @@ public class MON_RedSlime extends Entity {
      * Notes:
      ***************************************************************************/
     public void setAction(){
-        actionLockCounter++;
-        if (actionLockCounter > 120) {
-            Random random = new Random();
-            int i = random.nextInt(100) + 1; // Generate number between 1–100
+        if (onPath == true){
+            // GOAL TO WALK
+            //int goalCol = 67; Walk strait to the goal
+            //int goalRow = 23; Walk strait to the goal
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize; // player follow
+            int goalRow = (gp.player.worldY + gp.player.solidArea.x) / gp.tileSize; // player follow
+            // SIMPLE AI BEHAVIOR FOR ATTACK PROJECTILE
+            int i = new Random().nextInt(200)+1;
+            if (i > 197 && projectile.alive == false && shotAvailableCounter > 30){
 
-            if (i <= 25) {
-                direction = "up";
-            } else if (i <= 50) {
-                direction = "down";
-            } else if (i <= 75) {
-                direction = "left";
-            } else {
-                direction = "right";
+                projectile.set(worldX, worldY, direction, true, this);
+                //gp.projectileList.add(projectile);
+                // ADD PROJECTILES TO LIST
+                for (int j = 0; j < gp.projectile[1].length; j++) {
+                    if (gp.projectile[gp.currentMap][j] == null) {
+                        gp.projectile[gp.currentMap][j] = projectile;
+                        break;
+                    }
+                }
+                shotAvailableCounter = 0;
             }
-            actionLockCounter = 0;
+            searchPath(goalCol,goalRow);
+
+        } else {
+            actionLockCounter++;
+            if (actionLockCounter > 120) {
+                Random random = new Random();
+                int i = random.nextInt(100) + 1; // Generate number between 1–100
+
+                if (i <= 25) {
+                    direction = "up";
+                } else if (i <= 50) {
+                    direction = "down";
+                } else if (i <= 75) {
+                    direction = "left";
+                } else {
+                    direction = "right";
+                }
+                actionLockCounter = 0;
+            }
         }
-
-        // SIMPLE AI BEHAVIOR FOR ATTACK PROJECTILE
-        int i = new Random().nextInt(100)+1;
-        if (i > 99 && projectile.alive == false && shotAvailableCounter > 30){
-
-            projectile.set(worldX, worldY, direction, true, this);
-            gp.projectileList.add(projectile);
-            shotAvailableCounter = 0;
-
-        }
-
     }
-    /**************************************************************************
-     * Method: damageReaction()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
+    public void update(){
+        super.update();
+
+        // calculate the distance from monster to player
+        int xDistance = Math.abs(worldX - gp.player.worldX);
+        int yDistance = Math.abs(worldY - gp.player.worldY);
+        int tileDistance = (xDistance + yDistance)/gp.tileSize;
+
+        if (onPath == false && tileDistance < 5){
+            // adding a bit random here too
+            int i = new Random().nextInt(100)+1;
+            if(i > 50)
+            {
+                onPath = true;
+            }
+        }
+        if(onPath == true && tileDistance > 20){
+            onPath = false;
+        }
+    }
     public void damageReaction() {
-
-        actionLockCounter = 0;
-
-        // Monster moves away from player when attacked
+        /* Monster moves away from player when attacked
         //direction = gp.player.direction;
-
         //Monster move towards the player when attacked
         switch (direction){
             case "up":    direction = "down";  break;
@@ -100,13 +126,12 @@ public class MON_RedSlime extends Entity {
             case "left":  direction = "right"; break;
             case "right": direction = "left";  break;
         }
+        */
 
+        // New pathfinder walk to the player
+        actionLockCounter = 0;
+        onPath = true;
     }
-    /**************************************************************************
-     * Method: damageReaction()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void checkDrop(){
         // CAST A DIE
         int i = new Random().nextInt(100)+1;

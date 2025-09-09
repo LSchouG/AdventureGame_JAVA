@@ -21,7 +21,7 @@ public class OBJ_Potion_Blue extends Entity {
         itemTitle = "[" + name + "]";
         itemDescription = "A mana restoring potion. \nRestores " + restoreValue + " HP.";
     }
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.gameState = gp.dialogueState;
 
         if (gp.player.mana < gp.player.maxMana) {
@@ -53,8 +53,10 @@ public class OBJ_Potion_Blue extends Entity {
             }
 
             gp.playSE(1);
+            return true;
         } else {
             gp.ui.currentDialogue = "You're already at full Mana.\nSave the juice for a real magical emergency.";
-        }
+
+            return false; }
     }
 }

@@ -16,10 +16,12 @@ import adventuregame.entity.Entity;
 public class OBJ_Door extends Entity {
     public OBJ_Door(GamePanel gp) {
         super(gp);
+        this.gp = gp;
         name = "Door";
         down1 = setup("/images/objects_interactive/door.png", gp.tileSize, gp.tileSize);
         collision = true;
         lockKeyType = "common";
+        type = type_obstacle;
 
 
         solidArea.x = 0;// goes 0 pixel in from the side
@@ -28,5 +30,9 @@ public class OBJ_Door extends Entity {
         solidArea.height = 32;// the space left, 48 - 16 = 32
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+    }
+    public void interact(){
+        gp.gameState = gp.dialogueState;
+        gp.ui.currentDialogue = "you need the key to open this!";
     }
 }

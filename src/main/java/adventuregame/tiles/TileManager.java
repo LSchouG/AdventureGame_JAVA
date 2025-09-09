@@ -4,7 +4,7 @@
  */
 package adventuregame.tiles;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +19,7 @@ public final class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNumber[][][];
+    boolean drawpath = true;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -29,6 +30,7 @@ public final class TileManager {
         loadMap("/maps/interiorHome.csv", 1);
         loadMap("/maps/interiorSeller.csv", 2);
         loadMap("/maps/cityMap.csv", 3);
+        loadMap("/maps/bossMap.csv", 4);
 
     }
 
@@ -144,6 +146,19 @@ public final class TileManager {
             if (worldCol == gp.maxWorldCol) {
                 worldCol = 0;
                 worldRow++;
+            }
+        }
+        if (drawpath = true){
+            g2.setColor(new Color(255,0,0,70));
+
+            for(int i = 0; i < gp.pfinder.pathList.size(); i++){
+
+                int worldX = gp.pfinder.pathList.get(i).col * gp.tileSize;
+                int worldY = gp.pfinder.pathList.get(i).row * gp.tileSize;
+                int screenX = worldX - gp.player.worldX + gp.player.screenX;
+                int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+                g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
             }
         }
 

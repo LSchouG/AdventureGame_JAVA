@@ -20,7 +20,7 @@ public class OBJ_Crystal extends Entity {
         image3 = setup("/images/objects_pickup/full-crystal.png", gp.tileSize, gp.tileSize);
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.gameState = gp.dialogueState;
         String text = "";
         Random random = new Random();
@@ -45,5 +45,7 @@ public class OBJ_Crystal extends Entity {
         gp.ui.currentDialogue = text;
         entity.maxMana += value;
         gp.playSE(1);
+        return true;
+
     }
     }

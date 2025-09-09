@@ -21,7 +21,7 @@ public class OBJ_Potion_Red extends Entity{
         itemTitle = "[" + name + "]";
         itemDescription = "A healing potion. \nRestores " + restoreValue + " HP.";
     }
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.gameState = gp.dialogueState;
 
         if (gp.player.life < gp.player.maxLife) {
@@ -53,9 +53,11 @@ public class OBJ_Potion_Red extends Entity{
             }
 
             gp.playSE(1);
+            return true;
         } else {
             gp.ui.currentDialogue = "You consider drinking the potion...\n" +
                     "But decide not to waste good juice on a healthy body.";
+            return false;
         }
     }
 }

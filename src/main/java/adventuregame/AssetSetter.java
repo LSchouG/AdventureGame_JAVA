@@ -23,19 +23,9 @@ public class AssetSetter {
 
     GamePanel gp;
 
-    /**************************************************************************
-     * Constructor: AssetSetter(GamePanel gp)
-     * Purpose: Assigns GamePanel reference to allow asset placement in world.
-     ***************************************************************************/
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
-
-    /**************************************************************************
-     * Method: setObject()
-     * Purpose: Instantiates and places objects in the game world.
-     * Notes: Currently empty – expand to add objects like keys, chests, etc.
-     ***************************************************************************/
     public void setObject() {
 
         // PLACE OBJECTS ON MAP 0
@@ -44,16 +34,16 @@ public class AssetSetter {
         int mapNum = 0;
 
         gp.obj[mapNum][i] = new OBJ_Key(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 20;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 19;
+        gp.obj[mapNum][i].worldX = gp.tileSize * 60;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
         i++;
         gp.obj[mapNum][i] = new OBJ_Door(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 22; // 22
-        gp.obj[mapNum][i].worldY = gp.tileSize * 24; // 25
+        gp.obj[mapNum][i].worldX = gp.tileSize * 65;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 19;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Potion_Red(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 21;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 29;
+        gp.obj[mapNum][i] = new OBJ_Chest(gp, new OBJ_Key(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 57;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
         i++;
         gp.obj[mapNum][i] = new OBJ_Crystal(gp);
         gp.obj[mapNum][i].worldX = gp.tileSize * 22;
@@ -91,12 +81,6 @@ public class AssetSetter {
 
 
     }
-
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void setNPC() {
 
         // PLACE NPC ON MAP 0
@@ -184,11 +168,6 @@ public class AssetSetter {
          */
 
     }
-    /**************************************************************************
-     * Method:
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void setInteractiveTiles() {
 
         // PLACE InteractiveTiles ON MAP 0

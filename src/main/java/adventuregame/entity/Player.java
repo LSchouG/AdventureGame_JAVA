@@ -15,6 +15,7 @@ import adventuregame.GamePanel;
 import adventuregame.KeyHandler;
 import adventuregame.objects.OBJ_Axe;
 import adventuregame.objects.OBJ_FireBall;
+import adventuregame.objects.OBJ_Key;
 import adventuregame.objects.OBJ_Shield_Wood;
 
 import java.awt.*;
@@ -31,11 +32,6 @@ public class Player extends Entity {
 
 
 
-    /**************************************************************************
-     * Constructor: Player(GamePanel gp, KeyHandler keyH)
-     * Purpose: INITIALIZES THE PLAYER OBJECT, DEFINES SCREEN POSITION, COLLISION AREAS,
-     *          DEFAULT VALUES, SPRITES, AND STARTING EQUIPMENT.
-     ***************************************************************************/
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         type = type_player;
@@ -63,15 +59,11 @@ public class Player extends Entity {
         getPlayerAttachImages();  // LOAD ATTACK SPRITE IMAGES
         setItems();               // ADD STARTING ITEMS TO INVENTORY
     }
-
-    /**************************************************************************
-     * Method: setDefaultValues()
-     * Purpose: SETS DEFAULT PLAYER STATS, EQUIPMENT, AND POSITION IN THE WORLD.
-     ***************************************************************************/
     public void setDefaultValues() {
-        worldX = gp.tileSize * 20;
-        worldY = gp.tileSize * 22;
-        speed = 4;
+        worldX = gp.tileSize * 60;
+        worldY = gp.tileSize * 20;
+        defaultSpeed = 4;
+        speed = defaultSpeed;
         direction = "down";
 
         // PLAYER STATUS
@@ -98,12 +90,6 @@ public class Player extends Entity {
         defense = getDefense(); // CALCULATE INITIAL DEFENSE VALUE
         coolDownMagicCounter = 100; // TIME BETWEEN PROJECTILE USE
     }
-
-    /**************************************************************************
-     * Method: update()
-     * Purpose: UPDATES PLAYER STATE, MOVEMENT, COLLISIONS, ATTACKING, SHOOTING,
-     *          INVINCIBILITY, AND ANIMATION ON EACH GAME LOOP TICK.
-     ***************************************************************************/
     public void update() {
 
         // HANDLE ATTACKING
@@ -210,7 +196,13 @@ public class Player extends Entity {
 
             projectile.set(worldX, worldY, direction, true, this); // INITIALIZE PROJECTILE
             projectile.subtractResource(this);                     // DEDUCT COST (MANA/AMMO)
-            gp.projectileList.add(projectile);                     // ADD TO ACTIVE PROJECTILES
+            // ADD PROJECTILES TO LIST
+            for (int i = 0; i < gp.projectile[1].length; i++) {
+                if (gp.projectile[gp.currentMap][i] == null) {
+                    gp.projectile[gp.currentMap][i] = projectile;
+                    break;
+                }
+            }                  // ADD TO ACTIVE PROJECTILES
             shotAvailableCounter = 0;                              // RESET COOLDOWN
             gp.playSE(13);                                         // PLAY SHOOT SOUND
         }
@@ -247,7 +239,6 @@ public class Player extends Entity {
         }
 
     }
-
     public void setDefaultPositions(){
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 22;
@@ -255,46 +246,25 @@ public class Player extends Entity {
         invincible = false;
         invincibleCounter = 0;
     }
-
     public void restoreLifeAndMana(){
         life = maxLife;
         mana = maxMana;
         invincible = false;
         invincibleCounter = 0;
     }
-    /**************************************************************************
-     * Method: setItems()
-     * Purpose: ADDS STARTING ITEMS (WEAPON AND SHIELD) TO PLAYER INVENTORY.
-     ***************************************************************************/
     public void setItems() {
         inventory.clear();
         inventory.add(currentWeapon); // ADD STARTING WEAPON
         inventory.add(currentShield); // ADD STARTING SHIELD
+        inventory.add(new OBJ_Key(gp));
     }
-
-    /**************************************************************************
-     * Method: getAttack()
-     * Purpose: CALCULATES PLAYER ATTACK BASED ON STRENGTH AND EQUIPPED WEAPON.
-     ***************************************************************************/
     public int getAttack() {
         attackArea = currentWeapon.attackArea; // SET ATTACK AREA BASED ON WEAPON
         return attack = strength * currentWeapon.attackValue; // RETURN CALCULATED ATTACK VALUE
     }
-
-    /**************************************************************************
-     * Method: getDefense()
-     * Purpose: CALCULATES THE PLAYER'S DEFENSE VALUE BASED ON THEIR DEXTERITY
-     *          AND THE CURRENTLY EQUIPPED SHIELD'S DEFENSE VALUE.
-     ***************************************************************************/
     public int getDefense() {
         return defense = dexterity * currentShield.defenseValue; // CALCULATE TOTAL DEFENSE
     }
-
-    /**************************************************************************
-     * Method: getPlayerImages()
-     * Purpose: LOAD AND ASSIGN ALL BASE MOVEMENT SPRITE IMAGES FOR THE PLAYER
-     *          INCLUDING ALL DIRECTIONS AND WALKING FRAMES.
-     ***************************************************************************/
     public void getPlayerImages() {
         downStill = setup("/images/player/player-down-still.png", gp.tileSize, gp.tileSize);
         down1 = setup("/images/player/player-down-1.png", gp.tileSize, gp.tileSize);
@@ -309,12 +279,6 @@ public class Player extends Entity {
         right1 = setup("/images/player/player-right-1.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/player/player-right-2.png", gp.tileSize, gp.tileSize);
     }
-
-    /**************************************************************************
-     * Method: getPlayerAttachImages()
-     * Purpose: LOADS THE PLAYER'S ATTACK SPRITE IMAGES BASED ON DIRECTION.
-     *          CURRENTLY LOADS UNIVERSAL SWING IMAGES FOR ALL WEAPONS.
-     ***************************************************************************/
     public void getPlayerAttachImages() {
 
         /** IF USING SWORD-SPECIFIC IMAGES
@@ -332,13 +296,6 @@ public class Player extends Entity {
         attachLeft = setup("/images/player/attack-left.png", gp.tileSize * 2, gp.tileSize);
         attachRight = setup("/images/player/attack-right.png", gp.tileSize * 2, gp.tileSize);
     }
-
-    /**************************************************************************
-     * Method: pickUpObject(int i)
-     * Purpose: HANDLES OBJECT PICKUP LOGIC WHEN THE PLAYER COLLIDES WITH AN OBJECT.
-     *          USES PICKUP-ONLY ITEMS IMMEDIATELY OR ADDS TO INVENTORY IF SPACE.
-     * Inputs: i - INDEX OF THE OBJECT COLLIDED WITH
-     ***************************************************************************/
     public void pickUpObject(int i) {
         if (i != 999) {
             String text = "";
@@ -347,6 +304,13 @@ public class Player extends Entity {
             if (gp.obj[gp.currentMap][i].type == type_pickUpOnly) {
                 gp.obj[gp.currentMap][i].use(this); // USE THE OBJECT IMMEDIATELY
                 gp.obj[gp.currentMap][i] = null; // REMOVE OBJECT FROM WORLD
+            }
+            // OBSTCLE
+            else if (gp.obj[gp.currentMap][i].type == type_obstacle){
+                if(keyH.enterPressed == true){
+                    attackCanceled = true;
+                    gp.obj[gp.currentMap][i].interact();
+                }
             }
             // PICKUP ITEMS THAT GO TO INVENTORY
             else {
@@ -362,22 +326,15 @@ public class Player extends Entity {
             }
         }
     }
-
-    /**************************************************************************
-     * Method: attaching()
-     * Purpose: HANDLES THE ATTACK ANIMATION, TEMPORARILY EXPANDS ATTACK AREA,
-     *          AND CHECKS FOR COLLISIONS WITH MONSTERS AND INTERACTIVE TILES.
-     * Inputs: NONE (USES INSTANCE VARIABLES FOR STATE AND DIRECTION)
-     ***************************************************************************/
     public void attaching() {
+
         spriteCounter++; // INCREMENT SPRITE COUNTER EACH FRAME
 
-        if (spriteCounter >= 3) {
-            spriteNumber = 1; // FIRST ATTACK FRAME
+        if (spriteCounter <= 5) {
+            spriteNumber = 1;
         }
-
-        if (spriteCounter > 3 && spriteCounter < 12) {
-            spriteNumber = 2; // SECOND ATTACK FRAME
+        if (spriteCounter > 5 && spriteCounter < 25) {
+            spriteNumber = 2;
 
             // SAVE THE CURRENT POSITION AND COLLISION AREA
             int currentWorldX = worldX;
@@ -387,33 +344,24 @@ public class Player extends Entity {
 
             // SHIFT PLAYER POSITION TEMPORARILY TO ATTACK AREA BASED ON DIRECTION
             switch (direction) {
-                case "up":
-                    worldY -= attackArea.height;
-                    break;
-                case "down":
-                    worldY += attackArea.height;
-                    break;
-                case "left":
-                    worldX -= attackArea.width;
-                    break;
-                case "right":
-                    worldX += attackArea.width;
-                    break;
+                case "up":worldY -= attackArea.height;break;
+                case "down": worldY += attackArea.height; break;
+                case "left": worldX -= attackArea.width; break;
+                case "right":  worldX += attackArea.width; break;
             }
-
             // TEMPORARILY REPLACE COLLISION AREA WITH ATTACK AREA
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
 
             // CHECK IF ATTACK AREA HITS A MONSTER
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, attack);
+            damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
 
             // CHECK IF ATTACK AREA HITS AN INTERACTIVE TILE (ONCE PER ATTACK)
             int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
             if (!alreadyHitTile && iTileIndex != 999) {
                 damageInteractiveTile(iTileIndex);
-                alreadyHitTile = true; // PREVENT MULTIPLE HITS IN ONE ATTACK CYCLE
+                alreadyHitTile = true;
             }
 
             // RESTORE ORIGINAL POSITION AND COLLISION AREA
@@ -422,6 +370,10 @@ public class Player extends Entity {
             solidArea.width = solidAreaWidth;
             solidArea.height = solidAreaHeight;
         }
+
+        int projectileIndex = gp.collisionChecker.checkEntity(this, gp.projectile);
+        damageProjectile(projectileIndex);
+
 
         if (spriteCounter >= 12 && spriteCounter < 15) {
             spriteNumber = 1; // ATTACK COOLDOWN FRAME
@@ -438,12 +390,13 @@ public class Player extends Entity {
             alreadyHitTile = false; // RESET TILE HIT FLAG
         }
     }
-
-    /**************************************************************************
-     * Method: interactNPC()
-     * Purpose: INITIATES INTERACTION WITH AN NPC IF THE PLAYER IS NEARBY AND PRESSES ENTER.
-     * Inputs: i - NPC INDEX
-     ***************************************************************************/
+    public void damageProjectile(int index){
+        if (index != 999){
+            Entity projectile = gp.projectile[gp.currentMap][index];
+            projectile.alive = false;
+            generatePartical(projectile,projectile);
+        }
+    }
     public void interactNPC(int i) {
         if (gp.keyH.enterPressed && i != 999) {
             attackCanceled = true; // CANCEL ATTACK IF INTERACTING
@@ -451,12 +404,6 @@ public class Player extends Entity {
             gp.npc[gp.currentMap][i].speak(); // CALL NPC SPEAK METHOD
         }
     }
-
-    /**************************************************************************
-     * Method: contactMonster()
-     * Purpose: HANDLES DAMAGE TO PLAYER WHEN IN CONTACT WITH A MONSTER.
-     * Inputs: i - MONSTER INDEX
-     ***************************************************************************/
     public void contactMonster(int i) {
         if (i != 999) {
             if (!invincible && gp.monster[gp.currentMap][i].dying == false) {
@@ -471,30 +418,25 @@ public class Player extends Entity {
             }
         }
     }
-
-    /**************************************************************************
-     * Method: handleAttack()
-     * Purpose: INITIATES AN ATTACK WHEN THE ENTER KEY IS PRESSED AND THE PLAYER IS NOT CURRENTLY ATTACKING.
-     * Inputs: NONE (USES INPUT HANDLER AND PLAYER STATE)
-     ***************************************************************************/
     public void handleAttack() {
-        if (gp.keyH.enterPressed && !attacking) {
+        if (gp.keyH.enterPressed && !attackCanceled) {
             gp.playSE(9); // PLAY ATTACK SOUND EFFECT
             attacking = true; // SET PLAYER TO ATTACKING STATE
             spriteCounter = 0; // RESET SPRITE COUNTER FOR ATTACK ANIMATION
         }
     }
-
-    /**************************************************************************
-     * Method: damageMonster()
-     * Purpose: CALCULATES AND APPLIES DAMAGE TO A MONSTER IF IT IS NOT INVINCIBLE.
-     *          HANDLES MONSTER DEATH, EXP GAIN, AND LEVEL-UP CHECK.
-     * Inputs: i - MONSTER INDEX; attack - PLAYER'S ATTACK VALUE
-     ***************************************************************************/
-    public void damageMonster(int i, int attack) {
+    public void knockback(Entity entity, int knockBackPower){
+        entity.direction = direction;
+        entity.speed += knockBackPower;
+        entity.knockback = true;
+    }
+    public void damageMonster(int i, int attack, int knockBackPower) {
         if (i != 999) {
             if (gp.monster[gp.currentMap][i].invincible == false) {
 
+                if (knockBackPower > 0){
+                    knockback(gp.monster[gp.currentMap][i], knockBackPower);
+                }
                 int damage = attack - gp.monster[gp.currentMap][i].defense; // CALCULATE DAMAGE
                 if (damage < 0) {
                     damage = 0; // ENSURE DAMAGE IS NOT NEGATIVE
@@ -516,13 +458,6 @@ public class Player extends Entity {
             }
         }
     }
-
-    /**************************************************************************
-     * Method: damageInteractiveTile()
-     * Purpose: DESTROYS AN INTERACTIVE TILE IF IT IS DESTRUCTIBLE AND PLAYER IS USING A VALID ITEM.
-     *          PLAYS SOUND, REPLACES WITH DESTROYED FORM, AND LOGS TILE STATE TO CONSOLE.
-     * Inputs: i - INTERACTIVE TILE INDEX
-     ***************************************************************************/
     public void damageInteractiveTile(int i) {
         if (i != 999 && gp.iTile[gp.currentMap][i].destructible == true
                 && gp.iTile[gp.currentMap][i].isCurrentItem(this) == true && gp.iTile[gp.currentMap][i].invincible == false) {
@@ -540,12 +475,6 @@ public class Player extends Entity {
             // CAN IMPLEMENT SPECIAL WEAPON DAMAGE MECHANICS HERE
         }
     }
-
-    /**************************************************************************
-     * Method: checkLevelUp()
-     * Purpose: CHECKS IF PLAYER'S EXPERIENCE REACHES THE NEXT LEVEL THRESHOLD,
-     *          THEN LEVELS UP PLAYER STATS, UPDATES ATTACK/DEFENSE, AND PLAYS SOUND.
-     ***************************************************************************/
     public void checkLevelUp() {
         if (gp.player.exp >= gp.player.nextLevelExp) {
             gp.player.level++;
@@ -561,12 +490,6 @@ public class Player extends Entity {
                     "You feel stronger!";
         }
     }
-
-    /**************************************************************************
-     * Method: selectItem()
-     * Purpose: SELECTS AN ITEM FROM THE INVENTORY BASED ON CURRENT UI SELECTION.
-     *          EQUIPS WEAPONS, SHIELDS, OR USES CONSUMABLE ITEMS.
-     ***************************************************************************/
     public void selectItem() {
         int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
@@ -581,18 +504,14 @@ public class Player extends Entity {
                 getDefense(); // UPDATE DEFENSE
                 getPlayerAttachImages(); // UPDATE BLOCK ANIMATION
             }
-            if (selectedItem.type == type_consumable) {
-                selectedItem.use(this); // USE CONSUMABLE ITEM
-                inventory.remove(itemIndex); // REMOVE USED ITEM
+            if (selectedItem.type == type_consumable ) {
+                if(selectedItem.use(this) == true){
+                    inventory.remove(itemIndex);
+                }
             }
         }
     }
 
-    /**************************************************************************
-     * Method: draw(Graphics2D g2)
-     * Purpose: DRAWS THE PLAYER CHARACTER ON SCREEN BASED ON CURRENT STATE AND DIRECTION.
-     * Inputs: g2 - THE GRAPHICS CONTEXT FOR RENDERING.
-     ***************************************************************************/
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 

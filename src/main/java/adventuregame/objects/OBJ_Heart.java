@@ -19,7 +19,7 @@ public class OBJ_Heart extends Entity {
         image2 = setup("/images/objects_pickup/half-heart.png", gp.tileSize, gp.tileSize);
         image3 = setup("/images/objects_pickup/blank-heart.png", gp.tileSize, gp.tileSize);
     }
-    public void use(Entity entity){
+    public boolean use(Entity entity){
     gp.gameState = gp.dialogueState;
     String text = "";
     Random random = new Random();
@@ -48,6 +48,7 @@ public class OBJ_Heart extends Entity {
 
 
         gp.playSE(1);
+        return true;
 
     }
 }

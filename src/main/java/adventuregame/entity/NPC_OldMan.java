@@ -18,16 +18,11 @@ import adventuregame.GamePanel;
 import java.util.Random;
 
 public class NPC_OldMan extends Entity {
-
-    /**************************************************************************
-     * Constructor: NPC_OldMan(GamePanel gp)
-     * Purpose: Initializes the old man NPC with a default direction and speed.
-     ***************************************************************************/
     public NPC_OldMan(GamePanel gp) {
         super(gp);
         type = type_npc;
         direction = "down"; // default facing direction
-        speed = 1;           // slower than player
+        speed = 3;           // slower than player
         solidArea.x = 0;// goes 0 pixel in from the side
         solidArea.y = 16;// goes 16 pixel down from the top
         solidArea.width = 48;// the space left, 48 - 0  = 48
@@ -38,11 +33,6 @@ public class NPC_OldMan extends Entity {
         setDialogue();
 
     }
-
-    /**************************************************************************
-     * Method: getImages()
-     * Purpose: Loads all sprite images for this NPC (idle and walking).
-     ***************************************************************************/
     public void getImages() {
         downStill = setup("/images/npc/old-man-down-still.png", gp.tileSize, gp.tileSize);
         down1 = setup("/images/npc/old-man-down-1.png", gp.tileSize, gp.tileSize);
@@ -57,7 +47,6 @@ public class NPC_OldMan extends Entity {
         right1 = setup("/images/npc/old-man-right-1.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/npc/old-man-right2.png", gp.tileSize, gp.tileSize);
     }
-
     public void setDialogue() {
 
         dialogues[0] = "Hallo,  lad. ";
@@ -66,21 +55,15 @@ public class NPC_OldMan extends Entity {
         dialogues[3] = "If you save our children \nYou can keep the treasure.";
         dialogues[4] = "Well...\nGood luck to you young man.";
     }
-
-    /**************************************************************************
-     * Method: setAction()
-     * Purpose: Defines simple idle movement using random direction changes.
-     * Notes: Called by Entity's update() method.
-     ***************************************************************************/
     public void setAction() {
 
         if (onPath == true){
            // GOAL TO WALK
-            int goalCol = 67;
-            int goalRow = 23;
-
+            //int goalCol = 67; Walk strait to the goal
+            //int goalRow = 23; Walk strait to the goal
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize; // player follow
+            int goalRow = (gp.player.worldY + gp.player.solidArea.x) / gp.tileSize; // player follow
             searchPath(goalCol,goalRow);
-
         } else {
             actionLockCounter++;
             if (actionLockCounter > 120) {
@@ -100,7 +83,6 @@ public class NPC_OldMan extends Entity {
             }
         }
     }
-
     public void speak() {
         // Do this charctar specific stuff here
 

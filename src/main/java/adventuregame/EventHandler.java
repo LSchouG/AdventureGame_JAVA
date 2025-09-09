@@ -108,6 +108,8 @@ public class EventHandler {
             else if (hit(3,19, 28, "any")) {teleport( 2, 16, 27);} // from city to seller
             else if (hit(3,21, 40, "any")) {teleport( 0, 12, 36);} // from City to map
             else if (hit(0,12, 36, "any")) {teleport( 3, 21, 40);} // from map to City
+            else if (hit(0,65, 18, "any")) {teleport( 4, 19, 45);} // from map to bossMap
+            else if (hit(4,19, 45, "any")) {teleport( 0, 65, 18);} // from bossMap to map
 
             else if (hit(2,16, 22, "any")) {speak(gp.npc[2][0]);} // from map to City
         }
