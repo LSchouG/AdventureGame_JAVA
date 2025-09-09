@@ -69,7 +69,7 @@ public class Player extends Entity {
      * Purpose: SETS DEFAULT PLAYER STATS, EQUIPMENT, AND POSITION IN THE WORLD.
      ***************************************************************************/
     public void setDefaultValues() {
-        worldX = gp.tileSize * 16;
+        worldX = gp.tileSize * 20;
         worldY = gp.tileSize * 22;
         speed = 4;
         direction = "down";

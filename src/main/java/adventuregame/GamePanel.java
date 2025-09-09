@@ -24,6 +24,7 @@ import adventuregame.entity.Entity;
 import adventuregame.entity.Player;
 import adventuregame.tile_interactive.InteractiveTile;
 import adventuregame.tiles.TileManager;
+import ai.PathFinder;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -33,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldCol = 150;
     public final int maxWorldRow = 100;
     public final int maxMap = 10;
-    public int currentMap = 2;
+    public int currentMap = 0;
     /***************************** SCREEN SETTINGS ****************************/
     final int originalTileSize = 16; // original 16x16 tiles
     final int scale = 3;
@@ -73,7 +74,8 @@ public class GamePanel extends JPanel implements Runnable {
     /********************************* FPS ************************************/
     int FPS = 60;
     /******************************* SYSTEM ***********************************/
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
+    public PathFinder pfinder = new PathFinder(this);
     Config config = new Config(this);
     Thread gameThread;
     ArrayList<Entity> entityList = new ArrayList<>();
@@ -323,6 +325,8 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("WorldY: " + player.worldY, x, y);
             y += lineHeight;
             g2.drawString("Col: " + colLabel, x, y); // Column shown as letters
+            y += lineHeight;
+            g2.drawString("World MAP Number: " + currentMap , x, y);
             y += lineHeight;
             g2.drawString("WorldX - Col: " + (col), x, y);
             y += lineHeight;

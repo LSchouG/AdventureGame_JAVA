@@ -42,6 +42,7 @@ public class  Entity {
     public boolean alive = true;
     public boolean dying = false;
     boolean hpBarOn = false;
+    public boolean onPath = false;
 
     /** COUNTER **/
     public int spriteCounter = 0;
@@ -92,7 +93,6 @@ public class  Entity {
     public String lockKeyType;
 
     // TYPE
-
     public int type;// 0 = player, 1 = npc, 2 = monster
     public final int type_player = 0;
     public final int type_npc = 1;
@@ -146,9 +146,7 @@ public class  Entity {
             }
         }
     }
-    public void update() {
-        setAction();
-
+    public void checkCollision(){
         // Reset collision status before checking again
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
@@ -162,6 +160,11 @@ public class  Entity {
         if (this.type == type_monster && contactPlayer == true && gp.player.invincible == false){
             damageplayer(attack);
         }
+    }
+    public void update() {
+        setAction();
+
+        checkCollision();
 
         // 3. Move player if no collision
         if (!collisionOn) {
@@ -356,5 +359,74 @@ public class  Entity {
         gp.particleList.add(p2);
         gp.particleList.add(p3);
         gp.particleList.add(p4);
+    }
+    public void searchPath(int goalCol, int goalRow){
+        int startCol = (worldX + solidArea.x)/gp.tileSize;
+        int startRow = (worldY + solidArea.y)/gp.tileSize;
+
+        System.out.println("gp.pfinder.setNodes(startCol, startRow, goalCol,goalRow, this);"+startCol + startRow + goalCol + goalRow );
+        gp.pfinder.setNodes(startCol, startRow, goalCol,goalRow, this);
+        System.out.println("goes inside");
+        if (gp.pfinder.search() == true){
+            //next worldX & worldY
+            int nextX = gp.pfinder.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pfinder.pathList.get(0).row * gp.tileSize;
+
+            // ENTITY SolidArea Position
+            int enLeftX = worldX + solidArea.x;
+            int enRight = enLeftX + solidArea.width;
+            int enTopY = worldY + solidArea.y;
+            int enBottomY = enTopY + solidArea.height;
+
+            // Check if ok to go up down left right,
+            if(enTopY > nextY && enLeftX >= nextX && enRight < nextX + gp.tileSize){
+                direction = "up";
+            }
+            else if(enTopY < nextY && enLeftX >= nextX && enRight < nextX + gp.tileSize){
+                direction = "down";
+            }
+            else if(enTopY >= nextY && enBottomY < nextY + gp.tileSize){
+                if(enLeftX > nextX){
+                    direction = "left";
+                }
+                if (enLeftX < nextX){
+                    direction = "right";
+                }
+            } else if (enTopY > nextY && enLeftX > nextX) {
+                // up or left
+                direction = "up";
+                checkCollision();
+                if (collisionOn ==true){
+                    direction = "left";
+                }
+            } else if (enTopY > nextY && enLeftX < nextX) {
+                // up or right
+                direction = "up";
+                checkCollision();
+                if (collisionOn == true){
+                    direction = "right";
+                }
+            } else if (enTopY < nextY && enLeftX > nextX) {
+                //down or left
+                direction = "down";
+                checkCollision();
+                if (collisionOn == true){
+                    direction = "left";
+                }
+            } else if (enTopY < nextY && enLeftX < nextX) {
+                //down or right
+                direction = "down";
+                checkCollision();
+                if (collisionOn == true){
+                    direction = "right";
+                }
+            }
+            // if reached the goal, stop the pathfinder
+            int nextCol = gp.pfinder.pathList.get(0).col;
+            int nextRow = gp.pfinder.pathList.get(0).row;
+            if (nextCol == goalCol && nextRow == goalRow){
+                onPath = false;
+            }
+        }
     }
 }
