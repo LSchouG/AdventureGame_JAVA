@@ -17,7 +17,6 @@ public class OBJ_Tent extends Entity {
         itemDescription = "An old tent\nSleep anywhere" ;
     }
     public boolean use(Entity entity){
-        System.out.println( "Use is called in the tent class");
         gp.gameState = gp.sleepState;
         gp.playSE(16);
         gp.playSE(15);
