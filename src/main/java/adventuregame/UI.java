@@ -131,19 +131,18 @@ public class UI {
                     gp.gameState = gp.dialogueState;
                     currentDialogue = "You need more gold to buy that";
                     drawDialogueScreen();
-                }
-                else if (gp.player.inventory.size() >= gp.player.maxInventorySize){
-                    subState = 0;
-                    gp.gameState = gp.dialogueState;
-                    currentDialogue = "You inventory is full";
-                    drawDialogueScreen();
-                } else {
-                    gp.player.gold -= npc.inventory.get(itemIndex).Price;
-                    gp.player.inventory.add(npc.inventory.get(itemIndex));
-                    npc.inventory.remove(itemIndex);
+                } else
+                {
+                    if(gp.player.canObtainItem(npc.inventory.get(itemIndex)) == true){
+                        gp.player.gold -= npc.inventory.get(itemIndex).Price;
+                    } else {
+                        subState = 0;
+                        gp.gameState = gp.dialogueState;
+                        currentDialogue = "You inventory is full";
+                        drawDialogueScreen();
+                    }
                 }
             }
-
         }
     }
     public void trade_sell(){
@@ -196,10 +195,14 @@ public class UI {
                     gp.gameState = gp.dialogueState;
                     currentDialogue = "You cannot sell an equipped item";
                 } else {
-                    gp.player.inventory.remove(itemIndex);
-                    gp.player.gold += price;
+                    if(gp.player.inventory.get(itemIndex).amount > 1){
+                        gp.player.inventory.get(itemIndex).amount--;
+                        gp.player.gold += price;
+                    } else{
+                        gp.player.inventory.remove(itemIndex);
+                        gp.player.gold += price;
+                    }
                 }
-
             }
         }
     }
@@ -347,6 +350,25 @@ public class UI {
             }
 
             g2.drawImage(entity.inventory.get(i).down1, slotX, slotY, null);
+
+            // DISPLAY AMOUNT ON STACKABLE
+            if(entity.inventory.get(i).amount > 1){
+                g2.setFont(g2.getFont().deriveFont(23f));
+                int amountX = 0;
+                int amountY = 0;
+
+                String s = "" + entity.inventory.get(i).amount;
+                amountX = getXForAlignTextToRight(s, slotX + 44);
+                amountY = slotY + gp.tileSize;
+
+                // SHADOW
+                g2.setColor(new Color(60,60,60));
+                g2.drawString(s, amountX, amountY);
+                // NUMBER
+                g2.setColor(Color.white);
+                g2.drawString(s, amountX-3, amountY-3);
+
+            }
 
             slotX += slotSizeX;
 

@@ -16,6 +16,7 @@ public class OBJ_Potion_Red extends Entity{
         type = type_consumable;
         restoreValue = 5;
         Price = 22;
+        stackable = true;
         down1 = setup("/images/objects_pickup/small-red-potion.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_pickup/big-red-potion.png", gp.tileSize, gp.tileSize);
         itemTitle = "[" + name + "]";
