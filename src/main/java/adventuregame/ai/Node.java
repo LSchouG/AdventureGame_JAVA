@@ -1,4 +1,4 @@
-package ai;
+package adventuregame.ai;
 
 public class Node {
 

@@ -79,6 +79,7 @@ public class  Entity {
     public Entity user;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Entity currentLight;
     public Projectile projectile;
 
     // ITEM ATTRIBUTES
@@ -97,6 +98,7 @@ public class  Entity {
     public int knockBackPower = 0;
     public boolean stackable = false;
     public int amount = 1;
+    public int lightRadius;
 
     // TYPE
     public int type;// 0 = player, 1 = npc, 2 = monster
@@ -110,6 +112,7 @@ public class  Entity {
     public final int type_consumable = 7;
     public final int type_pickUpOnly = 8;
     public final int type_obstacle = 9;
+    public final int  type_light = 10;
 
 
 

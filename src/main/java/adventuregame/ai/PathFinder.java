@@ -1,4 +1,4 @@
-package ai;
+package adventuregame.ai;
 
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;

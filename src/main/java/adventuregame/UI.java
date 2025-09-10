@@ -82,6 +82,76 @@ public class UI {
 
 
     }
+    public void draw(Graphics2D g2) {
+        this.g2 = g2;
+        g2.setFont(dialogueFont);
+        g2.setColor(menuAndDialogFontColor);
+
+        //TITLE STATE
+        if (gp.gameState == gp.titleState) {
+            drawTitleScreen(gp);
+        }
+        // PLAY STATE
+        if (gp.gameState == gp.playState) {
+            drawPlayerLifeAndMana();
+            drawMessage();
+        }
+        // PAUSE STATE
+        if (gp.gameState == gp.pauseState) {
+            drawPlayerLifeAndMana();
+            drawPauseScreen();
+        }
+        // DIALOGUE STATE
+        if (gp.gameState == gp.dialogueState) {
+            drawDialogueScreen();
+        }
+        // CHARACTER STATE
+        if (gp.gameState == gp.characterState) {
+            drawCharacterAttributes();
+            drawInventory(gp.player, true);
+        }
+        // OPTION STATE
+        if (gp.gameState == gp.optionState) {
+            drawOptionMenuScreen();
+        }
+        // GAME OVER STATE
+        if (gp.gameState == gp.gameOverState) {
+            drawGameOverScreen();
+        }
+        // TRANSITION STATE
+        if (gp.gameState == gp.transitionState) {
+            drawTransition();
+        }
+        // SHOP STATE
+        if (gp.gameState == gp.shopState) {
+            drawShopScreen();
+        }
+        // SLEEP STATE
+        if(gp.gameState == gp.sleepState){
+            drawSleepScreen();
+        }
+    }
+    public void drawSleepScreen(){
+        counter++;
+
+        if (counter < 120){
+            gp.eManager.lighting.filterAlpha += 0.01f;
+            if (gp.eManager.lighting.filterAlpha > 1f){
+                gp.eManager.lighting.filterAlpha = 1f;
+            }
+        }
+        if (counter >= 120){
+            gp.eManager.lighting.filterAlpha -=0.01f;
+            if (gp.eManager.lighting.filterAlpha <= 0f){
+                gp.eManager.lighting.filterAlpha = 0f;
+                gp.eManager.lighting.dayState = gp.eManager.lighting.day;
+                gp.eManager.lighting.dayCounter = 0;
+                gp.player.getPlayerImages();
+                counter = 0;
+                gp.gameState = gp.playState;
+            }
+        }
+    }
     public void addMessage(String text) {
         message.add(text);
         messageCounter.add(0);
@@ -206,51 +276,6 @@ public class UI {
             }
         }
     }
-    public void draw(Graphics2D g2) {
-        this.g2 = g2;
-        g2.setFont(dialogueFont);
-        g2.setColor(menuAndDialogFontColor);
-
-        //TITLE STATE
-        if (gp.gameState == gp.titleState) {
-            drawTitleScreen(gp);
-        }
-        // PLAY STATE
-        if (gp.gameState == gp.playState) {
-            drawPlayerLifeAndMana();
-            drawMessage();
-        }
-        // PAUSE STATE
-        if (gp.gameState == gp.pauseState) {
-            drawPlayerLifeAndMana();
-            drawPauseScreen();
-        }
-        // DIALOGUE STATE
-        if (gp.gameState == gp.dialogueState) {
-            drawDialogueScreen();
-        }
-        // CHARACTER STATE
-        if (gp.gameState == gp.characterState) {
-            drawCharacterAttributes();
-            drawInventory(gp.player, true);
-        }
-        // OPTION STATE
-        if (gp.gameState == gp.optionState) {
-            drawOptionMenuScreen();
-        }
-        // GAME OVER STATE
-        if (gp.gameState == gp.gameOverState) {
-            drawGameOverScreen();
-        }
-        // TRANSITION STATE
-        if (gp.gameState == gp.transitionState) {
-            drawTransition();
-        }
-        // SHOP STATE
-        if (gp.gameState == gp.shopState) {
-            drawShopScreen();
-        }
-    }
     public void drawShopScreen(){
 
         switch (subState) {
@@ -344,7 +369,9 @@ public class UI {
         for (int i = 0; i < entity.inventory.size(); i++) {
 
             // EQUIP CURSOR
-            if (entity.inventory.get(i) == entity.currentWeapon || entity.inventory.get(i) == entity.currentShield) {
+            if (entity.inventory.get(i) == entity.currentWeapon ||
+                    entity.inventory.get(i) == entity.currentShield ||
+                    entity.inventory.get(i) == entity.currentLight) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRoundRect(slotX, slotY, slotSizeX, slotSizeY, 10, 10);
             }

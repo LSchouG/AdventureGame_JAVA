@@ -13,10 +13,7 @@ package adventuregame.entity;
 
 import adventuregame.GamePanel;
 import adventuregame.KeyHandler;
-import adventuregame.objects.OBJ_Axe;
-import adventuregame.objects.OBJ_FireBall;
-import adventuregame.objects.OBJ_Key;
-import adventuregame.objects.OBJ_Shield_Wood;
+import adventuregame.objects.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -29,6 +26,7 @@ public class Player extends Entity {
     int standCounter = 0;                   // COUNTER FOR IDLE ANIMATION WHEN STANDING STILL
     public boolean attackCanceled = false;  // FLAG TO CANCEL ATTACK DURING NPC INTERACTION
     public boolean alreadyHitTile = false;  // PREVENT MULTIPLE HITS ON SAME TILE IN ONE ATTACK
+    public  boolean lightUpdated = false;
 
 
 
@@ -89,6 +87,15 @@ public class Player extends Entity {
         attack = getAttack();   // CALCULATE INITIAL ATTACK VALUE
         defense = getDefense(); // CALCULATE INITIAL DEFENSE VALUE
         coolDownMagicCounter = 100; // TIME BETWEEN PROJECTILE USE
+    }
+    public void setItems() {
+        inventory.clear();
+        inventory.add(currentWeapon); // ADD STARTING WEAPON
+        inventory.add(currentShield); // ADD STARTING SHIELD
+        inventory.add(new OBJ_Lantern(gp));
+        OBJ_Tent tent = new OBJ_Tent(gp);
+        tent.amount = 5;
+        inventory.add(tent);
     }
     public void update() {
 
@@ -252,12 +259,6 @@ public class Player extends Entity {
         invincible = false;
         invincibleCounter = 0;
     }
-    public void setItems() {
-        inventory.clear();
-        inventory.add(currentWeapon); // ADD STARTING WEAPON
-        inventory.add(currentShield); // ADD STARTING SHIELD
-        inventory.add(new OBJ_Key(gp));
-    }
     public int getAttack() {
         attackArea = currentWeapon.attackArea; // SET ATTACK AREA BASED ON WEAPON
         return attack = strength * currentWeapon.attackValue; // RETURN CALCULATED ATTACK VALUE
@@ -295,6 +296,20 @@ public class Player extends Entity {
         attachDown = setup("/images/player/attack-down.png", gp.tileSize, gp.tileSize * 2);
         attachLeft = setup("/images/player/attack-left.png", gp.tileSize * 2, gp.tileSize);
         attachRight = setup("/images/player/attack-right.png", gp.tileSize * 2, gp.tileSize);
+    }
+    public void getSleepingImages(BufferedImage image){
+        downStill = image;
+        down1 = image;
+        down2 = image;
+        upStill = image;
+        up1 = image;
+        up2 = image;
+        leftStill = image;
+        left1 = image;
+        left2 = image;
+        rightStill = image;
+        right1 = image;
+        right2 = image;
     }
     public void pickUpObject(int i) {
         if (i != 999) {
@@ -511,6 +526,14 @@ public class Player extends Entity {
                         inventory.remove(itemIndex);
                     }
                 }
+            }
+            if (selectedItem.type == type_light) {
+                    if (currentLight == selectedItem){
+                        currentLight = null;
+                    }else {
+                        currentLight = selectedItem;
+                    }
+                    lightUpdated = true;
             }
         }
     }

@@ -22,9 +22,10 @@ import javax.swing.JPanel;
 
 import adventuregame.entity.Entity;
 import adventuregame.entity.Player;
+import adventuregame.environment.EnvironmentManager;
 import adventuregame.tile_interactive.InteractiveTile;
 import adventuregame.tiles.TileManager;
-import ai.PathFinder;
+import adventuregame.ai.PathFinder;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -71,12 +72,14 @@ public class GamePanel extends JPanel implements Runnable {
     public final int gameOverState = 6;
     public final int transitionState = 7;
     public final int shopState = 8;
+    public final int sleepState = 9;
 
     /********************************* FPS ************************************/
     int FPS = 60;
     /******************************* SYSTEM ***********************************/
     public TileManager tileM = new TileManager(this);
     public PathFinder pfinder = new PathFinder(this);
+    EnvironmentManager eManager = new EnvironmentManager(this);
     Config config = new Config(this);
     Thread gameThread;
     ArrayList<Entity> entityList = new ArrayList<>();
@@ -95,6 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         aSetter.setInteractiveTiles();
+        eManager.setup();
         // playMusic(0); // play background music track 0
         //stopMusic();  // optionally stop it immediately
         gameState = titleState;
@@ -190,6 +194,7 @@ public class GamePanel extends JPanel implements Runnable {
                     iTile[currentMap][i].update();
                 }
             }
+            eManager.update();
         } else if (gameState == pauseState) {
             // pause logic here if needed
         }
@@ -267,6 +272,8 @@ public class GamePanel extends JPanel implements Runnable {
             // EMPTY LIST
             entityList.clear();
 
+            // Environment
+            eManager.draw(g2);
 
             // 5. Draw UI
             ui.draw(g2);

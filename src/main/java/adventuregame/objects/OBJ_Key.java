@@ -24,7 +24,7 @@ public class OBJ_Key extends Entity {
         lockKeyType = "common";
         stackable = true;
         down1 = setup("/images/objects_pickup/key.png", gp.tileSize, gp.tileSize);
-        itemDescription = "[" + name + "]\nA common key.";
+        itemDescription = "A common key.";
     }
     public boolean use(Entity entity){
 
