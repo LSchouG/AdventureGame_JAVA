@@ -24,6 +24,8 @@ import adventuregame.entity.Entity;
 import adventuregame.entity.Player;
 import adventuregame.environment.EnvironmentManager;
 import adventuregame.tile_interactive.InteractiveTile;
+import adventuregame.tiles.Map;
+import adventuregame.tiles.Tile;
 import adventuregame.tiles.TileManager;
 import adventuregame.ai.PathFinder;
 
@@ -32,8 +34,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
     /****************************** WORLD SETTINGS ****************************/
-    public final int maxWorldCol = 150;
-    public final int maxWorldRow = 100;
+    public final int maxWorldCol = 95;
+    public final int maxWorldRow = 80;
     public final int maxMap = 10;
     public int currentMap = 0;
     /***************************** SCREEN SETTINGS ****************************/
@@ -73,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int transitionState = 7;
     public final int shopState = 8;
     public final int sleepState = 9;
+    public final int mapState = 10;
 
     /********************************* FPS ************************************/
     int FPS = 60;
@@ -80,6 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileM = new TileManager(this);
     public PathFinder pfinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
+    Map map = new Map(this);
     Config config = new Config(this);
     Thread gameThread;
     ArrayList<Entity> entityList = new ArrayList<>();
@@ -210,6 +214,10 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == titleState) {
             ui.draw(g2);
         }
+        // MAP SCREEN
+        else if (gameState == mapState){
+            map.drawFullMapScreen(g2);
+        }
         // OTHERS
         else {
             // Tiles
@@ -274,6 +282,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             // Environment
             eManager.draw(g2);
+
+            // MINI MAP
+            map.drawMiniMap(g2);
 
             // 5. Draw UI
             ui.draw(g2);

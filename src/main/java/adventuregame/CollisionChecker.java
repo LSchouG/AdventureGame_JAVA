@@ -18,20 +18,9 @@ public class CollisionChecker {
 
     GamePanel gp;
 
-    /**************************************************************************
-     * Constructor: CollisionChecker(GamePanel gp)
-     * Purpose: Initializes the collision checker with reference to the game panel.
-     ***************************************************************************/
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
-
-    /**************************************************************************
-     * Method: checkTile(Entity entity)
-     * Purpose: Checks for collision between the entity and map tiles.
-     * Inputs: entity - the entity whose position and direction is checked
-     * Notes: Sets entity.collisionOn = true if a solid tile is detected ahead
-     ***************************************************************************/
     public void checkTile(Entity entity) {
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
         int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
@@ -45,7 +34,14 @@ public class CollisionChecker {
 
         int tileNumber1, tileNumber2;
 
-        switch (entity.direction) {
+        // Use a temporal direction when it is being knockback
+        String direction = entity.direction;
+        if(entity.knockback == true){
+            direction = entity.knockbackDirection;
+        }
+
+
+        switch (direction) {
             case "up":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
                 tileNumber1 = gp.tileM.mapTileNumber[gp.currentMap][entityLeftCol][entityTopRow];
@@ -86,18 +82,6 @@ public class CollisionChecker {
                 break;
         }
     }
-
-    /**************************************************************************
-     * Method: checkObject(Entity entity, boolean player)
-     * Purpose: Checks if an entity collides with an object in the game world.
-     * Inputs:
-     *   - entity: The entity to check (e.g., player or NPC)
-     *   - player: Boolean flag; if true, allows object pickup (returns index)
-     * Output:
-     *   - Returns index of collided object if player and intersected, otherwise 999
-     * Notes:
-     *   - Sets entity.collisionOn = true if object blocks movement
-     ***************************************************************************/
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
 
@@ -137,15 +121,14 @@ public class CollisionChecker {
             }
         return index;
     }
-
-    /**************************************************************************
-     * Method: checkPlayer(Entity entity)
-     * Purpose: Checks for collision between the player to entity.
-     * Inputs: entity - the entity whose position and direction is checked
-     * Notes: Sets entity.collisionOn = true if a solid tile is detected ahead
-     ***************************************************************************/
     public int checkEntity(Entity entity, Entity[][] target) {
         int index = 999;
+
+        // Use a temporal direction when it is being knockback
+        String direction = entity.direction;
+        if(entity.knockback == true){
+            direction = entity.knockbackDirection;
+        }
 
         for (int i = 0; i < target[1].length; i++) {
             if (target[gp.currentMap][i] != null) {
@@ -159,7 +142,7 @@ public class CollisionChecker {
                 target[gp.currentMap][i].solidArea.y = target[gp.currentMap][i].worldY + target[gp.currentMap][i].solidArea.y;
 
                 // Simulate future position based on movement direction
-                switch (entity.direction) {
+                switch (direction) {
                     case "up":
                         entity.solidArea.y -= entity.speed;
                         break;
@@ -188,13 +171,6 @@ public class CollisionChecker {
         }
         return index;
     }
-
-    /**************************************************************************
-     * Method: checkEntity(Entity entity)
-     * Purpose: Checks for collision between the entity to player.
-     * Inputs: entity - the entity whose position and direction is checked
-     * Notes: Sets entity.collisionOn = true if a solid tile is detected ahead
-     ***************************************************************************/
     public boolean checkPlayer(Entity entity) {
 
         boolean contactPlayer = false;

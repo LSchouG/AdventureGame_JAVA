@@ -19,7 +19,9 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     // Movement keys
-    public boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false, enterPressed = false, shotKeyPressed = false;
+    public boolean upPressed = false, downPressed = false, leftPressed = false,
+            rightPressed = false, enterPressed = false, shotKeyPressed = false,
+            qPress = false;
     // Debugging
     public boolean showDebugText = false;
     GamePanel gp;
@@ -38,40 +40,78 @@ public class KeyHandler implements KeyListener {
         if (gp.gameState == gp.titleState) {
             titleState(code);
         }
-
         // PLAY STATE
         else if (gp.gameState == gp.playState) {
             playState(code);
         }
-
         // PAUSE STATE
         else if (gp.gameState == gp.pauseState) {
             pauseState(code);
         }
-
         // DIALOGUE STATE
         else if (gp.gameState == gp.dialogueState) {
             dialogueState(code);
         }
-
         // CHARACTER STATE
         else if (gp.gameState == gp.characterState) {
             characterState(code);
         }
-
         // OPTION STATE
         else if (gp.gameState == gp.optionState) {
             optionState(code);
         }
-
         // GAME OVER STATE
         else if (gp.gameState == gp.gameOverState) {
             gameOverState(code);
         }
-
-        // GAME OVER STATE
+        // SHOP STATE
         else if (gp.gameState == gp.shopState) {
             shopState(code);
+        }
+        // MAP STATE
+        else if(gp.gameState == gp.mapState){
+            mapState(code);
+        }
+
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int code = e.getKeyCode();
+
+        if (code == KeyEvent.VK_W) {
+            upPressed = false;
+        }
+        if (code == KeyEvent.VK_S) {
+            downPressed = false;
+        }
+        if (code == KeyEvent.VK_A) {
+            leftPressed = false;
+        }
+        if (code == KeyEvent.VK_D) {
+            rightPressed = false;
+        }
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            enterPressed = false;
+        }
+        if (code == KeyEvent.VK_E) {
+            shotKeyPressed = false;
+        }
+        if (code == KeyEvent.VK_Q) {
+            qPress = false;
+        }
+
+        // MINI MAP STATE
+        else if(code == KeyEvent.VK_N){
+            if(gp.map.minMapOn == false){
+                gp.map.minMapOn = true;
+            } else {
+                gp.map.minMapOn = false;
+            }
+        }
+    }
+    public void mapState(int code){
+        if (code == KeyEvent.VK_M){
+            gp.gameState = gp.playState;
         }
     }
     public void shopState(int code) {
@@ -181,6 +221,12 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_E) {
             shotKeyPressed = true;
+        }
+        if (code == KeyEvent.VK_Q) {
+            qPress = true;
+        }
+        if (code == KeyEvent.VK_M) {
+            gp.gameState = gp.mapState;
         }
 
         // DEBUG AND TESTING
@@ -359,29 +405,6 @@ public class KeyHandler implements KeyListener {
         playerInventory(code);
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
             gp.player.selectItem();
-        }
-    }
-    @Override
-    public void keyReleased(KeyEvent e) {
-        int code = e.getKeyCode();
-
-        if (code == KeyEvent.VK_W) {
-            upPressed = false;
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = false;
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = false;
-        }
-        if (code == KeyEvent.VK_D) {
-            rightPressed = false;
-        }
-        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-            enterPressed = false;
-        }
-        if (code == KeyEvent.VK_E) {
-            shotKeyPressed = false;
         }
     }
     public void playerInventory(int code){

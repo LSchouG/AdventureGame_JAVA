@@ -15,6 +15,7 @@ import adventuregame.entity.NPC_OldMan;
 import adventuregame.entity.NPC_Seller;
 import adventuregame.monster.MON_GreenSlime;
 import adventuregame.monster.MON_RedSlime;
+import adventuregame.monster.MON_Skeleton;
 import adventuregame.objects.*;
 import adventuregame.tile_interactive.IT_DryTree;
 import adventuregame.tile_interactive.IT_Trunk;
@@ -154,6 +155,11 @@ public class AssetSetter {
         gp.monster[mapNum][i] = new MON_RedSlime(gp);
         gp.monster[mapNum][i].worldX = gp.tileSize * 25;
         gp.monster[mapNum][i].worldY = gp.tileSize * 30;
+        i++;
+        gp.monster[mapNum][i] = new MON_Skeleton(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 58;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 23;
+
 
         // PLACE MONSTERS ON MAP 1
         /*

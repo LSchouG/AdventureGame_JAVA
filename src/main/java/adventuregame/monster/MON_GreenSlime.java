@@ -20,6 +20,9 @@ public class MON_GreenSlime extends Entity {
         defense = 0;
         collision = true;
         exp = 2;
+        shotInterval = 30;
+        distanceToChase = 2; // Distance before chasing
+        rate = 10; // 1 = 100% 3 = 33%  5 = 20% 10 = 10%
 
         solidArea.x = 3; // goes 3 pixel in from the side
         solidArea.y = 18;// goes 3 pixel down from the top
@@ -29,13 +32,6 @@ public class MON_GreenSlime extends Entity {
         solidAreaDefaultY = solidArea.y;
         getImage();
     }
-
-
-    /**************************************************************************
-     * Method: damageReaction()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void getImage(){
 
         up1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
@@ -47,41 +43,29 @@ public class MON_GreenSlime extends Entity {
         right1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
     }
-    /**************************************************************************
-     * Method: damageReaction()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void setAction(){
-        actionLockCounter++;
-        if (actionLockCounter > 120) {
-            Random random = new Random();
-            int i = random.nextInt(100) + 1; // Generate number between 1–100
+        if (onPath == true){
+            // CHECK IF STOP CHASING. Distance to play
+            checkStopChasingOrNot(gp.player, distanceToChase, rate);
 
-            if (i <= 25) {
-                direction = "up";
-            } else if (i <= 50) {
-                direction = "down";
-            } else if (i <= 75) {
-                direction = "left";
-            } else {
-                direction = "right";
-            }
-            actionLockCounter = 0;
+            // GOAL TO WALK
+            searchPath(getGoalCol(gp.player),getGoalRow(gp.player));
+
+            // SIMPLE AI BEHAVIOR FOR ATTACK PROJECTILE
+            //checkShootOrNot(chanceOfChasing, shotInterval);
+        }
+        else
+        {
+            // if player a within distance to monster start chasing
+            checkStartChasingOrNot(gp.player, distanceToChase, rate);
+
+            // GET a random direction if not chasing
+            getRandomDirection();
         }
     }
-    /**************************************************************************
-     * Method: damageReaction()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void damageReaction() {
-
-        actionLockCounter = 0;
-
-        // Monster moves away from player when attacked
+        /* Monster moves away from player when attacked
         //direction = gp.player.direction;
-
         //Monster move towards the player when attacked
         switch (direction){
             case "up":    direction = "down";  break;
@@ -89,13 +73,12 @@ public class MON_GreenSlime extends Entity {
             case "left":  direction = "right"; break;
             case "right": direction = "left";  break;
         }
+        */
 
+        // New pathfinder walk to the player
+        actionLockCounter = 0;
+        onPath = true;
     }
-    /**************************************************************************
-     * Method: damageReaction()
-     * Purpose:
-     * Notes:
-     ***************************************************************************/
     public void checkDrop(){
         // CAST A DIE
         int i = new Random().nextInt(100)+1;
@@ -109,4 +92,5 @@ public class MON_GreenSlime extends Entity {
             dropItem(new OBJ_Crystal(gp));
         }
     }
+
 }

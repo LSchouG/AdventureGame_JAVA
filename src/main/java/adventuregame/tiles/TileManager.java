@@ -14,7 +14,7 @@ import adventuregame.GamePanel;
 import adventuregame.UtilityTool;
 
 
-public final class TileManager {
+public class TileManager {
 
     GamePanel gp;
     public Tile[] tile;

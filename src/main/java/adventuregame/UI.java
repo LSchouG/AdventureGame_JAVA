@@ -48,10 +48,6 @@ public class UI {
     ArrayList<String> message = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
 
-    /**************************************************************************
-     * Constructor: UI(GamePanel gp)
-     * Purpose: Initializes fonts and sets reference to the main game panel.
-     ***************************************************************************/
     public UI(GamePanel gp) {
         this.gp = gp;
         // FONTS
@@ -146,7 +142,7 @@ public class UI {
                 gp.eManager.lighting.filterAlpha = 0f;
                 gp.eManager.lighting.dayState = gp.eManager.lighting.day;
                 gp.eManager.lighting.dayCounter = 0;
-                gp.player.getPlayerImages();
+                gp.player.getImages();
                 counter = 0;
                 gp.gameState = gp.playState;
             }
