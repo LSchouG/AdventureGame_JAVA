@@ -182,6 +182,10 @@ public class KeyHandler implements KeyListener {
 
                 } else if (gp.ui.commandNumber == 1) {
                     // ADD LATER Load GAME save
+                    gp.saveLoad.load();
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+
                 } else if (gp.ui.commandNumber == 2) {
                     System.exit(0);
                 }
@@ -380,11 +384,11 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                if(gp.ui.commandNumber == 0) {
                    gp.gameState = gp.playState;
-                   gp.retry();
+                   gp.resetGame(false);
                    gp.playMusic(0);
                } else if (gp.ui.commandNumber == 1) {
                    gp.gameState = gp.titleState;
-                   gp.restart();
+                   gp.resetGame(true);
                }
             }
 

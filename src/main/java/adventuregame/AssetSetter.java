@@ -42,7 +42,10 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldX = gp.tileSize * 65;
         gp.obj[mapNum][i].worldY = gp.tileSize * 19;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp, new OBJ_Key(gp));
+        gp.obj[mapNum][i] = new OBJ_Chest(gp);
+        OBJ_Potion_Red potion = new OBJ_Potion_Red(gp);
+        potion.amount = 5;
+        gp.obj[mapNum][i].setLoot(potion);
         gp.obj[mapNum][i].worldX = gp.tileSize * 57;
         gp.obj[mapNum][i].worldY = gp.tileSize * 20;
         i++;
@@ -69,17 +72,27 @@ public class AssetSetter {
 
 
         // PLACE OBJECTS ON MAP 0
-        /*
 
-        int mapNum = 1;
+
+        mapNum = 3;
         i = 0;
 
-        gp.obj[mapNum][i] = new OBJ_Coin_Bronze(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 26;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 29;
-
-         */
-
+        gp.obj[mapNum][i] = new OBJ_Chest(gp);
+        OBJ_Potion_Red potionRed = new OBJ_Potion_Red(gp);
+        potionRed.amount = 5;
+        gp.obj[mapNum][i].setLoot(potionRed);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 20;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 31;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Chest(gp);
+        gp.obj[mapNum][i].setLoot(new OBJ_Tent(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 21;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 31;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Chest(gp);
+        gp.obj[mapNum][i].setLoot(new OBJ_Key(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 19;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 31;
 
     }
     public void setNPC() {

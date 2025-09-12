@@ -19,7 +19,7 @@ public class OBJ_Key extends Entity {
         super(gp);
         this.gp = gp;
 
-        name = "Key";
+        name = "Common Key";
         type = type_consumable;
         lockKeyType = "common";
         stackable = true;

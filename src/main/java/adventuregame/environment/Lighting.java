@@ -18,10 +18,10 @@ public class Lighting {
     public final int dawn = 3;
     public int dayState = day;
     // DURATION IN FRAMES (assuming 60 FPS)
-    final int DAY_DURATION   = 36000; // 10 min
-    final int DUSK_DURATION  = 10800; // 3 min
-    final int NIGHT_DURATION = 7200;  // 2 min
-    final int DAWN_DURATION  = 10800; // 3 min
+    final int DAY_DURATION   = 36000; // 1 min
+    final int DUSK_DURATION  = 36000;// 1 min
+    final int NIGHT_DURATION = 36000; // 1 min
+    final int DAWN_DURATION  = 36000; // 1 min
 
 
 
@@ -117,6 +117,10 @@ public class Lighting {
                     dayState = day;
                 }
             }
+    }
+    public void resetDay(){
+        dayState = day;
+        filterAlpha = 0f;
     }
     public void draw(Graphics2D g2){
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));

@@ -19,6 +19,7 @@ public class MON_Skeleton extends Entity {
         life = maxLife;
         attack = 10;
         defense = 2;
+        knockBackPower = 5;
         collision = true;
         exp = 10;
         shotInterval = 0;
@@ -34,8 +35,8 @@ public class MON_Skeleton extends Entity {
         solidAreaDefaultY = solidArea.y;
         attackArea.width = 40;
         attackArea.height = 40;
-        motion1_duration = 30;
-        motion2_duration = 65;
+        motion1_duration = 40;
+        motion2_duration = 75;
 
         getImage();
         getAttackImages();

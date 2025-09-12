@@ -24,10 +24,6 @@ public class EventHandler {
     boolean canTouchEvent = true;
     int tempMap, tempCol, tempRow;
 
-    /**************************************************************************
-     * Constructor: EventHandler(GamePanel gp)
-     * Purpose: Initializes trigger rectangles and stores default positions.
-     ***************************************************************************/
     public EventHandler(GamePanel gp) {
         this.gp = gp;
 
@@ -85,10 +81,6 @@ public class EventHandler {
             }
         }
     }
-    /**************************************************************************
-     * Method: checkEvent()
-     * Purpose: Triggers specific game events based on player's tile position.
-     ***************************************************************************/
     public void checkEvent() {
         // check if player is more than one tile away from last event
         int xDistance = Math.abs(gp.player.worldX - previousEventX);
@@ -100,28 +92,28 @@ public class EventHandler {
         }
         // create event for intaeractiv
         if (canTouchEvent){
-            if (hit(0,23, 28, "any")) {damagePit( gp.dialogueState);}
-            else if (interact(23, 19, "any")) {healingBed(gp.dialogueState);}
-            else if (hit(1,16, 27, "any")) {teleport( 3, 15, 31);} // from home to City
+
+            // TELEPORT
+
+            if (hit(1,16, 27, "any")) {teleport( 3, 15, 31);} // from home to City
             else if (hit(3,15, 31, "any")) {teleport( 1,16, 27);} // from City to home
             else if (hit(2, 16, 27, "any")) {teleport( 3,19, 28);} // from Seller to City
             else if (hit(3,19, 28, "any")) {teleport( 2, 16, 27);} // from city to seller
             else if (hit(3,21, 40, "any")) {teleport( 0, 12, 36);} // from City to map
             else if (hit(0,12, 36, "any")) {teleport( 3, 21, 40);} // from map to City
-            else if (hit(0,65, 18, "any")) {teleport( 4, 19, 45);} // from map to bossMap
-            else if (hit(4,19, 45, "any")) {teleport( 0, 65, 18);} // from bossMap to map
-
+            else if (hit(0,65, 18, "any")) {teleport( 5, 46, 66);} // from map to dungeon
+            else if (hit(5,46, 66, "any")) {teleport( 0, 65, 18);} // from dungeon to map
+            else if (hit(5,82, 39, "any")) {teleport( 4, 28, 43);} // from dungeon to bossMap
+            else if (hit(4,28, 43, "any")) {teleport( 5, 82, 39);} // from bossMap to dungeon
             else if (hit(2,16, 22, "any")) {speak(gp.npc[2][0]);} // from map to City
+
+
+            // TILE EVENTS LIKE BED OR PIT
+
+            else if (hit(0,23, 28, "any")) {damagePit( gp.dialogueState);}
+            else if (hit(1,17, 20, "any")) {healingBed(gp.dialogueState);}
         }
     }
-    /**************************************************************************
-     * Method: hit(int eventCol, int eventRow, String reqDirection)
-     * Purpose: Detects collision with a small event zone.
-     * Inputs:
-     *   - eventCol/eventRow: tile coordinates of the event
-     *   - reqDirection: direction required to trigger (or "any")
-     * Output: true if player hits the trigger
-     ***************************************************************************/
     public boolean hit(int map, int col, int row, String reqDirection) {
         boolean hit = false;
 
@@ -150,40 +142,36 @@ public class EventHandler {
         }
         return hit;
     }
-    /**************************************************************************
-     * Method: interact(int eventCol, int eventRow, String reqDirection)
-     * Purpose: Detects interaction with a larger area (e.g., beds).
-     * Inputs and logic same as hit()
-     ***************************************************************************/
-    public boolean interact(int col, int row, String reqDirection) {
+    public boolean interact(int map, int col, int row, String reqDirection) {
         boolean interact = false;
 
-        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+        if (gp.currentMap == map) {  // Add explicit map check to prevent index errors
+            // Translate solid area to world coordinates
+            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
+            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
 
-        eventRect2[gp.currentMap][col][row].x = col * gp.tileSize + eventRect2[gp.currentMap][col][row].x;
-        eventRect2[gp.currentMap][col][row].y = row * gp.tileSize + eventRect2[gp.currentMap][col][row].y;
+            // Translate event rectangle to world position
+            eventRect2[gp.currentMap][col][row].x = col * gp.tileSize + eventRect2[gp.currentMap][col][row].x;
+            eventRect2[gp.currentMap][col][row].y = row * gp.tileSize + eventRect2[gp.currentMap][col][row].y;
 
-        if (gp.player.solidArea.intersects(eventRect2[gp.currentMap][col][row]) && eventRect2[gp.currentMap][col][row].eventDone == false) {
-            if (gp.player.direction.equals(reqDirection) || reqDirection.equals("any")) {
-                interact = true;
-                previousEventX = gp.player.worldX;
-                previousEventY = gp.player.worldY;
+            if (gp.player.solidArea.intersects(eventRect2[gp.currentMap][col][row]) && !eventRect2[gp.currentMap][col][row].eventDone) {
+                if (gp.player.direction.equals(reqDirection) || "any".equals(reqDirection)) {
+                    interact = true;
+                    previousEventX = gp.player.worldX;
+                    previousEventY = gp.player.worldY;
+                    // Optional: System.out.println("Interaction triggered at col " + col + ", row " + row);
+                }
             }
-        }
 
-        gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-        gp.player.solidArea.y = gp.player.solidAreaDefaultY;
-        eventRect2[gp.currentMap][col][row].x = eventRect2[gp.currentMap][col][row].eventRectDefaultX;
-        eventRect2[gp.currentMap][col][row].y = eventRect2[gp.currentMap][col][row].eventRectDefaultY;
+            // Reset positions
+            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
+            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            eventRect2[gp.currentMap][col][row].x = eventRect2[gp.currentMap][col][row].eventRectDefaultX;
+            eventRect2[gp.currentMap][col][row].y = eventRect2[gp.currentMap][col][row].eventRectDefaultY;
+        }  // Implicit false if map mismatch
 
         return interact;
     }
-    /**************************************************************************
-     * Method: damagePit(int gameState)
-     * Purpose: Simulates falling into a pit and decreases player health.
-     * Inputs: gameState - the dialogue state to switch to
-     ***************************************************************************/
     public void damagePit( int gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You are falling into a pit!";
@@ -191,25 +179,17 @@ public class EventHandler {
        // eventRect1[col][row].eventDone = true;
         canTouchEvent = false;
     }
-    /**************************************************************************
-     * Method: healingBed(int gameState)
-     * Purpose: Heals the player to full health when interacting with a bed.
-     * Inputs: gameState - the dialogue state to switch to
-     ***************************************************************************/
     public void healingBed( int gameState) {
+        System.out.println("bed");
         if (gp.keyH.enterPressed) {
         gp.gameState = gameState;
         gp.player.attackCanceled = true;
-        gp.ui.currentDialogue = "You took a nap and feel better!";
         gp.player.life = gp.player.maxLife;
         gp.player.mana = gp.player.maxMana;
         gp.aSetter.setMonster();
+        gp.saveLoad.save();
+        gp.ui.currentDialogue = "You took a nap and feel better! \n\n(The Game have been saved)";
     }}
-    /**************************************************************************
-     * Method: teleport(int gameState)
-     * Purpose:
-     * Inputs:
-     ***************************************************************************/
     public void teleport(int map, int col, int row) {
 
         gp.gameState = gp.transitionState;

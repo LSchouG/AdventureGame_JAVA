@@ -20,14 +20,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.JPanel;
 
+import adventuregame.data.SaveLoad;
 import adventuregame.entity.Entity;
 import adventuregame.entity.Player;
 import adventuregame.environment.EnvironmentManager;
 import adventuregame.tile_interactive.InteractiveTile;
 import adventuregame.tiles.Map;
-import adventuregame.tiles.Tile;
 import adventuregame.tiles.TileManager;
 import adventuregame.ai.PathFinder;
+
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -85,6 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
     EnvironmentManager eManager = new EnvironmentManager(this);
     Map map = new Map(this);
     Config config = new Config(this);
+    SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
     ArrayList<Entity> entityList = new ArrayList<>();
     BufferedImage tempScreen;
@@ -347,21 +349,39 @@ public class GamePanel extends JPanel implements Runnable {
         screenHeight2 = AdventureGame.window.getHeight();
         System.out.println("Fullscreen dimensions: " + screenWidth2 + "x" + screenHeight2);
     }
-    public void retry(){
+    public void resetGame(boolean restart){
+        if (restart) {
+            // Switch to interiorHome map  1
+            currentMap = 1;
 
-        player.setDefaultPositions();
-        player.restoreLifeAndMana();
+            aSetter.setObject();
+            aSetter.setInteractiveTiles();
+            aSetter.setNPC();
+            aSetter.setMonster();
+            eManager.lighting.resetDay();
+
+            player.setDefaultValues();
+            player.setItems();
+            player.setDefaultPositions();
+        } else {
+
+            player.setDefaultPositions();
+            player.restoreStatus();
+
+            aSetter.setNPC();
+            aSetter.setMonster();
+        }
+        /*player.setDefaultPositions();
+        player.restoreStatus();
         aSetter.setNPC();
         aSetter.setMonster();
-    }
-    public void restart(){
-
-        player.setDefaultValues();
-        player.setItems();
-        aSetter.setObject();
-        aSetter.setNPC();
-        aSetter.setMonster();
-        aSetter.setInteractiveTiles();
+        if (restart == true){
+            player.setDefaultValues();
+            player.setItems();
+            aSetter.setObject();
+            aSetter.setInteractiveTiles();
+            eManager.lighting.resetDay();;
+        }*/
     }
     public String convertToColumnLabel(int colNumber) {
         StringBuilder colName = new StringBuilder();

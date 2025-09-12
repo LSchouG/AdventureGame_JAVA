@@ -14,6 +14,8 @@ package adventuregame.entity;
 
 import adventuregame.GamePanel;
 import adventuregame.UtilityTool;
+import adventuregame.objects.OBJ_Potion_Red;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -51,7 +53,9 @@ public class  Entity {
     public String knockbackDirection;
     public boolean guarding = false;
     public boolean transparent = false;
-
+    public boolean offBalance = false;
+    public Entity loot;
+    public boolean opened = false;
 
     /** COUNTER **/
     public int spriteCounter = 0;
@@ -62,6 +66,8 @@ public class  Entity {
     int hpBarCounter = 0;
     int coolDownMagicCounter = 100;
     int knockbackCounter;
+    int guardCounter = 0;
+    int offBalanceCounter = 0;
 
     /** CHARACTER ATTRIBUTES **/
     public String name; // Object name identifier
@@ -163,6 +169,9 @@ public class  Entity {
         int tileDistance = ((getXDistance(target) + getYDistance(target)) / gp.tileSize);
         return tileDistance;
     }
+    public void setLoot(){
+
+    }
     public String getOppositeDirection(String direction){
 
         String OppositeDirection = "";
@@ -220,10 +229,10 @@ public class  Entity {
         int nextWorldY = user.getTopY();
 
         switch(user.direction){
-            case "up": nextWorldY = user.getTopY()-1;break;
-            case "down": nextWorldY = user.getRBottomY()+1;break;
-            case "left": nextWorldX = user.getLeftX()-1;break;
-            case "right": nextWorldX = user.getRightX()+1;break;
+            case "up": nextWorldY = user.getTopY()-gp.player.speed;break;
+            case "down": nextWorldY = user.getRBottomY()+gp.player.speed;break;
+            case "left": nextWorldX = user.getLeftX()-gp.player.speed;break;
+            case "right": nextWorldX = user.getRightX()+gp.player.speed;break;
         }
         int col = nextWorldX/gp.tileSize;
         int row = (nextWorldY/gp.tileSize)-1;
@@ -246,9 +255,8 @@ public class  Entity {
     }
     public void setKnockback(Entity target, Entity attacker, int knockBackPower){
         this.attacker = attacker;
-
         target.knockbackDirection = attacker.direction;
-        target.speed += knockBackPower;
+        target.speed += attacker.knockBackPower;
         target.knockback = true;
     }
     public void setAction() {}
@@ -338,46 +346,12 @@ public class  Entity {
             damagePlayer(attack);
         }
     }
-    public void damageReaction() {}
-    public void damagePlayer(int attack) {
-        int damage = 0;
-        if (gp.player.invincible == false)
-        {
-            damage = attack - gp.player.defense;
-
-            String canGuardDirection = getOppositeDirection(direction);
-
-            if (gp.player.guarding == true && gp.player.direction.equals(canGuardDirection))
-            {
-                damage /= 3;
-                if (gp.player.currentShield.type == type_shield) { gp.playSE(18);}
-                else {gp.playSE(17);}
-                if (damage < 0) {
-                    damage = 0;
-                }
-            }
-            else
-            {
-                if (damage < 1) { damage = 1; }
-                gp.playSE(9);
-            }
-            gp.player.life -= damage;  // Single life deduction
-            gp.player.invincible = true;
-            if (damage > 0) {
-                gp.player.transparent = true;
-            }
-        }
-        else
-        {
-            gp.player.invincibleCounter = 0;  // Reset counter to maintain duration
-        }
-    }
     public void update() {
 
         if (knockback == true){
-
-            checkCollision();
-
+            if (knockbackCounter > 4){
+                checkCollision();
+            }
             if (collisionOn == true){
                 knockbackCounter = 0;
                 knockback = false;
@@ -445,6 +419,14 @@ public class  Entity {
         }
         if(shotAvailableCounter < coolDownMagicCounter){
             shotAvailableCounter++;
+        }
+        if(offBalance == true ){
+            offBalanceCounter++;
+            if (offBalanceCounter > 60){
+                offBalance = false;
+                offBalanceCounter = 0;
+
+            }
         }
     }
     public void draw(Graphics2D g2) {
@@ -549,6 +531,46 @@ public class  Entity {
             changeAlpha(g2, 1f);
         }
     }
+    public void damageReaction() {}
+    public void damagePlayer(int attack) {
+
+        if (gp.player.invincible == false)
+        {
+           int  damage = attack - gp.player.defense;
+
+            if (gp.player.guarding == true && gp.player.direction.equals(getOppositeDirection(direction))){
+                // parry
+                if (gp.player.guardCounter < 15){
+                    System.out.println("parry");
+                    damage = 0;
+                    setKnockback(this, gp.player, gp.player.currentShield.knockBackPower);
+                    offBalance = true;
+                    spriteCounter =- 60;
+                    gp.playSE(17);
+                } else {
+                    System.out.println("normal Guard");
+                    // normal Guard
+                    damage /= 3;
+                    if (damage < 0) {damage = 0;}
+                    gp.playSE(18);
+                }
+            }
+            else
+            {   // not guarding
+                gp.playSE(9);
+                if (damage < 1) {
+                    damage = 1;
+                }
+            }
+            if (damage != 0) {
+                gp.player.transparent = true;
+                setKnockback(gp.player,this,knockBackPower);
+            }
+
+            gp.player.life -= damage;
+            gp.player.invincible = true;
+        }
+    }
     public void interact(){}
     public void speak() {
 
@@ -646,7 +668,7 @@ public class  Entity {
             else {
                 // CHECK IF ATTACK AREA HITS A MONSTER
                 int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-                gp.player.damageMonster(monsterIndex,this, attack, currentWeapon.knockBackPower);
+                gp.player.damageMonster(monsterIndex,this, attack, gp.player.currentWeapon.knockBackPower);
 
                 // CHECK IF ATTACK AREA HITS AN INTERACTIVE TILE (ONCE PER ATTACK)
                 int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
@@ -755,5 +777,8 @@ public class  Entity {
 //                onPath = false;
 //            }
         }
+    }
+
+    public void setLoot(Entity loot) {
     }
 }

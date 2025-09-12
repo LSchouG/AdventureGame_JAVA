@@ -15,7 +15,7 @@ public class OBJ_Axe extends Entity {
         attackArea.width = 30;
         attackArea.height = 30;
         Price = 10;
-        knockBackPower = 10;
+        knockBackPower = 100;
         motion1_duration = 10;
         motion2_duration = 35;
         itemTitle = "[" + name + "]";

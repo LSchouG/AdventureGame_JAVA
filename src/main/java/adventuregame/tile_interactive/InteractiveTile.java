@@ -24,7 +24,6 @@ public class InteractiveTile extends Entity{
         InteractiveTile tile = null;
         return tile;
     }
-
     public void update(){
         if (invincible == true) {
             invincibleCounter++;

@@ -31,9 +31,9 @@ public class TileManager {
         loadMap("/maps/interiorSeller.csv", 2);
         loadMap("/maps/cityMap.csv", 3);
         loadMap("/maps/bossMap.csv", 4);
+        loadMap("/maps/dungeon.csv", 5);
 
     }
-
     public void getTileImage() {
 
         //GRASS
@@ -63,7 +63,6 @@ public class TileManager {
         // Black
         setup(13, "black", true);
     }
-
     public void setup(int index, String imageName, boolean collision){
 
         UtilityTool uTool = new UtilityTool();
@@ -77,8 +76,6 @@ public class TileManager {
             e.printStackTrace();
         }
     }
-
-
     public void loadMap(String filePath, int map) {
     try {
         // Convert resource path to actual file path
@@ -121,7 +118,6 @@ public class TileManager {
         e.printStackTrace();
     }
 }
-
     public void draw(Graphics2D g2) {
         int worldCol = 0;
         int worldRow = 0;
