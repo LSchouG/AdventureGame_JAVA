@@ -34,14 +34,15 @@ public class  Entity {
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
-    String dialogues[] = new String[20];
+    public String dialogues[][] = new String[20][20];
     public Entity attacker;
 
     /** STATE **/
     public int worldX, worldY;
     public String direction = "down";
     public int spriteNumber = 1;
-    int dialogueIndex = 0;
+    public  int dialogueIndex = 0;
+    public int dialogueSet = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;
     public boolean attacking = false;
@@ -260,6 +261,18 @@ public class  Entity {
         target.knockback = true;
     }
     public void setAction() {}
+    public void resetCounter(){
+        /** COUNTER **/
+        spriteCounter = 0;
+        actionLockCounter = 0;
+        invincibleCounter = 0;
+        shotAvailableCounter = 0;
+        dyingCounter = 0;
+        hpBarCounter = 0;
+        knockbackCounter = 0;
+        guardCounter = 0;
+        offBalanceCounter = 0;
+    }
     public void checkStartChasingOrNot(Entity target, int distance, int rate) {
         if (getTileDistance(target) < distance){
             int i = new Random().nextInt(rate);
@@ -573,27 +586,20 @@ public class  Entity {
     }
     public void interact(){}
     public void speak() {
-
-        if (dialogues[dialogueIndex] == null) {
-            dialogueIndex = 0;
-        }
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
+    }
+    public void facePlayer(){
         switch (gp.player.direction) {
-            case "up":
-                direction = "down";
-                break;
-            case "down":
-                direction = "up";
-                break;
-            case "left":
-                direction = "right";
-                break;
-            case "right":
-                direction = "left";
-
+            case "up":direction = "down"; break;
+            case "down":direction = "up"; break;
+            case "left":  direction = "right"; break;
+            case "right": direction = "left";
         }
-
+    }
+    public void startDialogue(Entity entity, int setNum){
+        gp.previousState = gp.gameState;
+        gp.gameState = gp.dialogueState;
+        gp.ui.npc = entity;
+        dialogueSet = setNum;
     }
     public boolean use(Entity entity) { return false;}
     public void checkDrop() {}

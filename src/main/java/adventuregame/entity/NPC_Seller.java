@@ -22,11 +22,6 @@ public class NPC_Seller extends Entity{
         setDialogue();
         setItems();
     }
-
-    /**************************************************************************
-     * Method: getImages()
-     * Purpose: Loads all sprite images for this NPC (idle and walking).
-     ***************************************************************************/
     public void getImages() {
         downStill = setup("/images/npc/seller1.png", gp.tileSize, gp.tileSize);
         down1 = setup("/images/npc/seller2.png", gp.tileSize, gp.tileSize);
@@ -34,10 +29,19 @@ public class NPC_Seller extends Entity{
     }
 
     public void setDialogue() {
-        dialogues[0] = "Welcome to my Shop, Care to have a look at my goods?";
+        dialogues[0][0] = "Welcome to my Shop, Care to have a look at my goods?";
+
+        dialogues[1][0] ="Come Again soon lad";
+
+        dialogues[2][0] = "You need more gold to buy that";
+
+        dialogues[3][0] = "You inventory is full";
+
+        dialogues[4][0] = "You cannot sell an equipped item";
     }
     public void speak() {
-        super.speak();
+        facePlayer();
+        startDialogue(this, 0);
         gp.gameState = gp.shopState;
         gp.ui.npc = this;
     }

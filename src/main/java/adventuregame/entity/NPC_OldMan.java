@@ -49,11 +49,19 @@ public class NPC_OldMan extends Entity {
     }
     public void setDialogue() {
 
-        dialogues[0] = "Hallo,  lad. ";
-        dialogues[1] = "Uhh our villages is DOOMED \nA band of goblins have taken our children \nAnd all our treasures.";
-        dialogues[2] = "I used to be strong enough to defend us \nBut now...  \nI'm just a old man";
-        dialogues[3] = "If you save our children \nYou can keep the treasure.";
-        dialogues[4] = "Well...\nGood luck to you young man.";
+        dialogues[0][0] = "Greetings, young adventurer!";
+        dialogues[0][1] = "Dark times have fallen upon us.\nA band of goblins has stolen our children\nand stripped us of all our treasures.";
+        dialogues[0][2] = "Once, I was strong enough to defend this village...\nBut now, I am only an old man.";
+        dialogues[0][3] = "If you can bring our children home,\nthe treasure is yours to keep.";
+        dialogues[0][4] = "Rest in your bed whenever you must.\nIt will restore your strength and save your journey...";
+        dialogues[0][5] = "But beware, lad...\nWhen you rest, the monsters regain their strength as well.";
+        dialogues[0][6] = "Go now, brave one...\nMay fortune guide your path.";
+
+        dialogues[1][0] = "Listen well, adventurer!";
+        dialogues[1][1] = "You cannot reach the wizard across the waters as you are now.";
+        dialogues[1][2] = "Seek out the magic boots, hidden deep in the forest.";
+        dialogues[1][3] = "They will grant you the power to cross rivers and seas\nand reach the island where the wizard dwells.";
+        dialogues[1][4] = "Without them, your journey cannot continue.";
     }
     public void setAction() {
 
@@ -84,10 +92,7 @@ public class NPC_OldMan extends Entity {
         }
     }
     public void speak() {
-        // Do this charctar specific stuff here
-
-        super.speak();
-
-        onPath = true;
+        facePlayer();
+        startDialogue(this, dialogueSet);
     }
 }

@@ -97,11 +97,11 @@ public class Player extends Entity {
     }
     public void setDefaultValues() {
         //setDefaultPositions() Change to this when the game is finished
-        worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
-        worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
-       // worldX = gp.tileSize * 60;  // manually set the start position, remove when the game is finished
-        //worldY = gp.tileSize * 20;  // manually set the start position, remove when the game is finished
-        gp.currentMap = 1;            //  manually set the start map, remove when the game is finished
+        //worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
+      //  worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
+       worldX = gp.tileSize * 16;  // manually set the start position, remove when the game is finished
+        worldY = gp.tileSize * 22;  // manually set the start position, remove when the game is finished
+        gp.currentMap = 2;             //  Bed 1 manually set the start map, remove when the game is finished
         defaultSpeed = 4;
         speed = defaultSpeed;
         direction = "down";
@@ -136,6 +136,7 @@ public class Player extends Entity {
         getAttackImages();  // LOAD ATTACK SPRITE IMAGES
         getGuardImages(); // LOAD GUARD SPRITE IMAGES
         setItems();               // ADD STARTING ITEMS TO INVENTORY
+        setDialogue();
     }
     public void setDefaultPositions() {
         switch (gp.currentMap) {
@@ -554,7 +555,6 @@ public class Player extends Entity {
     public void interactNPC(int i) {
         if (gp.keyH.enterPressed && i != 999) {
             attackCanceled = true; // CANCEL ATTACK IF INTERACTING
-            gp.gameState = gp.dialogueState; // SWITCH TO DIALOGUE MODE
             gp.npc[gp.currentMap][i].speak(); // CALL NPC SPEAK METHOD
         }
     }
@@ -648,9 +648,11 @@ public class Player extends Entity {
             defense = getDefense(); // UPDATE DEFENSE BASED ON NEW STATS
             gp.playSE(11); // PLAY LEVEL-UP SOUND
             gp.gameState = gp.dialogueState;
-            gp.ui.currentDialogue = "You are level " + gp.player.level + " now! \n" +
-                    "You feel stronger!";
+            startDialogue(this,0);
         }
+    }
+    public void setDialogue() {
+        dialogues[0][0] = "You are level " + level + " now! \nYou feel stronger!";
     }
     public void selectItem() {
         int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);

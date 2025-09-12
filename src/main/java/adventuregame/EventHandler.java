@@ -19,6 +19,7 @@ public class EventHandler {
 
     EventRect eventRect1[][][];
     EventRect eventRect2[][][];
+    Entity eventMaster;
 
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
@@ -26,6 +27,8 @@ public class EventHandler {
 
     public EventHandler(GamePanel gp) {
         this.gp = gp;
+
+        eventMaster = new Entity(gp);
 
         // Define a small collision area (tight trigger)
         eventRect1 = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
@@ -80,6 +83,12 @@ public class EventHandler {
                 }
             }
         }
+        setDialogue();
+    }
+    public void setDialogue() {
+        eventMaster.dialogues[0][0] = "You are falling into a pit!";
+
+        eventMaster.dialogues[1][0] = "You took a nap and feel better! \n\n(The Game have been saved)";
     }
     public void checkEvent() {
         // check if player is more than one tile away from last event
@@ -174,13 +183,12 @@ public class EventHandler {
     }
     public void damagePit( int gameState) {
         gp.gameState = gameState;
-        gp.ui.currentDialogue = "You are falling into a pit!";
+        eventMaster.startDialogue(eventMaster,0);
         gp.player.life--;
        // eventRect1[col][row].eventDone = true;
         canTouchEvent = false;
     }
     public void healingBed( int gameState) {
-        System.out.println("bed");
         if (gp.keyH.enterPressed) {
         gp.gameState = gameState;
         gp.player.attackCanceled = true;
@@ -188,7 +196,7 @@ public class EventHandler {
         gp.player.mana = gp.player.maxMana;
         gp.aSetter.setMonster();
         gp.saveLoad.save();
-        gp.ui.currentDialogue = "You took a nap and feel better! \n\n(The Game have been saved)";
+            eventMaster.startDialogue(eventMaster,1);
     }}
     public void teleport(int map, int col, int row) {
 

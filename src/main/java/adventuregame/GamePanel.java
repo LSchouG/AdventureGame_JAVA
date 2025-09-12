@@ -66,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList<Entity> particleList = new ArrayList<>();
     /**************************** GAME STATE **********************************/
     public int gameState;
+    public int previousState;
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
@@ -351,23 +352,21 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void resetGame(boolean restart){
         if (restart) {
-            // Switch to interiorHome map  1
+            // Switch to Home map 1
             currentMap = 1;
 
+            player.resetCounter();
             aSetter.setObject();
             aSetter.setInteractiveTiles();
             aSetter.setNPC();
             aSetter.setMonster();
             eManager.lighting.resetDay();
-
             player.setDefaultValues();
             player.setItems();
             player.setDefaultPositions();
         } else {
-
             player.setDefaultPositions();
             player.restoreStatus();
-
             aSetter.setNPC();
             aSetter.setMonster();
         }
