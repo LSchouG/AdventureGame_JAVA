@@ -8,11 +8,13 @@ import java.util.Random;
 public class OBJ_Potion_Blue extends Entity {
     GamePanel gp;
 
+    public static final String objName =  "Blue Potion";
+
     public OBJ_Potion_Blue(GamePanel gp){
     super(gp);
     this.gp = gp;
 
-        name = "Blue Potion";
+        name = objName;
         type = type_consumable;
         restoreValue = 2;
         Price = 10;

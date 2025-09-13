@@ -3,10 +3,13 @@ package adventuregame.objects;
 import adventuregame.entity.Entity;
 
 public class OBJ_Iron_Shield extends Entity{
-     public OBJ_Iron_Shield(adventuregame.GamePanel gp){
+
+    public static final String objName =  "Iron Shield";
+
+    public OBJ_Iron_Shield(adventuregame.GamePanel gp){
          super(gp);
 
-         name = "Iron Shield";
+         name = objName;
          type = type_shield;
          down1 = setup("/images/objects_pickup/shield-iron.png", gp.tileSize, gp.tileSize);
          defenseValue = 2;

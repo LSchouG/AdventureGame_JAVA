@@ -4,11 +4,14 @@ import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
 public class OBJ_Axe extends Entity {
+
+    public static final String objName = "Axe";
+
     public OBJ_Axe(GamePanel gp) {
         super(gp);
 
 
-        name = "Axe";
+        name = objName;
         type = type_axe;
         down1 = setup("/images/objects_pickup/axe.png", gp.tileSize, gp.tileSize);
         attackValue = 2;

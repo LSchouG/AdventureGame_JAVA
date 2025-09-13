@@ -37,6 +37,9 @@ public class UI {
     int subState = 0; // subState 0 = option menu, 1 = full screen notification 2 = control 3 = end game confirmation
     int counter = 0;
     public Entity npc;
+    int charIndex = 0;
+    String combinedText = "";
+
 
     // UI States
     GamePanel gp;
@@ -277,7 +280,7 @@ public class UI {
             gp.player.worldY = gp.tileSize * gp.eventHandler.tempRow;
             gp.eventHandler.previousEventX = gp.player.worldX;
             gp.eventHandler.previousEventY = gp.player.worldY;
-
+            gp.changeArea();
         }
 
     }
@@ -540,8 +543,24 @@ public class UI {
         y += gp.tileSize;
 
         if(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null){
-            currentDialogue = npc.dialogues[npc.dialogueSet][npc.dialogueIndex];
+
+            // show text medially
+            //currentDialogue = npc.dialogues[npc.dialogueSet][npc.dialogueIndex];
+
+            // show text letter by letter
+            char characters[] = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
+            if (charIndex < characters.length){
+                gp.playSE(19);
+                String s = String.valueOf(characters[charIndex]);
+                combinedText = combinedText + s;
+                currentDialogue = combinedText;
+                charIndex++;
+            }
+
             if(gp.keyH.enterPressed == true){
+                charIndex = 0;
+                combinedText = "";
+
                 if(gp.gameState == gp.dialogueState){
                     npc.dialogueIndex++;
                     gp.keyH.enterPressed = false;

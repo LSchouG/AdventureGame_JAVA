@@ -34,14 +34,19 @@ public class MON_GreenSlime extends Entity {
     }
     public void getImage(){
 
-        up1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/monster/green-slime-1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/monster/green-slime-2.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/monster/green-slime-up1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/monster/green-slime-up2.png", gp.tileSize, gp.tileSize);
+        upStill = setup("/images/monster/green-slime-up-still.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/monster/green-slime-down1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/monster/green-slime-down2.png", gp.tileSize, gp.tileSize);
+        downStill = setup("/images/monster/green-slime-down-still.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/monster/green-slime-left1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/monster/green-slime-left2.png", gp.tileSize, gp.tileSize);
+        leftStill = setup("/images/monster/green-slime-left-still.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/monster/green-slime-right1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/monster/green-slime-right2.png", gp.tileSize, gp.tileSize);
+        rightStill = setup("/images/monster/green-slime-right-still.png", gp.tileSize, gp.tileSize);
+        dead = setup("/images/monster/green-slime-dead.png", gp.tileSize, gp.tileSize);
     }
     public void setAction(){
         if (onPath == true){

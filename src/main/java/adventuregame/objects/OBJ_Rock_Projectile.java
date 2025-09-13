@@ -7,12 +7,14 @@ import adventuregame.entity.Projectile;
 import java.awt.*;
 
 public class OBJ_Rock_Projectile extends Projectile {
-
     GamePanel gp;
+
+    public static final String objName = "Rock";
+
     public OBJ_Rock_Projectile(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        name = "Rock";
+        name = objName;
         speed = 8;
         maxLife = 20;
         life = maxLife;

@@ -14,7 +14,6 @@ package adventuregame.entity;
 
 import adventuregame.GamePanel;
 import adventuregame.UtilityTool;
-import adventuregame.objects.OBJ_Potion_Red;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -26,7 +25,7 @@ public class  Entity {
     protected GamePanel gp;
 
     public BufferedImage downStill, down1, down2, upStill, up1, up2, leftStill, left1, left2, rightStill,
-                          right1, right2;
+                          right1, right2, dead;
     public BufferedImage attackUp1, attackDown1, attackLeft1, attackRight1, attackUp2, attackDown2, attackLeft2,
                          attackRight2, guardUp, guardDown, guardRight, guardLeft ;
     public BufferedImage image1, image2, image3;      // Object image/sprite
@@ -134,6 +133,7 @@ public class  Entity {
     public final int type_pickUpOnly = 8;
     public final int type_obstacle = 9;
     public final int  type_light = 10;
+    public final int type_pickaxe = 11;
 
 
 

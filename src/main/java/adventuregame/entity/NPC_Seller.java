@@ -46,7 +46,6 @@ public class NPC_Seller extends Entity{
         gp.ui.npc = this;
     }
     public void setItems() {
-
         inventory.add(new OBJ_Potion_Blue(gp));
         inventory.add(new OBJ_Potion_Red(gp));
         inventory.add(new OBJ_Sword_Normal(gp));

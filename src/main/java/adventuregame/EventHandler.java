@@ -104,16 +104,17 @@ public class EventHandler {
 
             // TELEPORT
 
-            if (hit(1,16, 27, "any")) {teleport( 3, 15, 31);} // from home to City
-            else if (hit(3,15, 31, "any")) {teleport( 1,16, 27);} // from City to home
-            else if (hit(2, 16, 27, "any")) {teleport( 3,19, 28);} // from Seller to City
-            else if (hit(3,19, 28, "any")) {teleport( 2, 16, 27);} // from city to seller
-            else if (hit(3,21, 40, "any")) {teleport( 0, 12, 36);} // from City to map
-            else if (hit(0,12, 36, "any")) {teleport( 3, 21, 40);} // from map to City
-            else if (hit(0,65, 18, "any")) {teleport( 5, 46, 66);} // from map to dungeon
-            else if (hit(5,46, 66, "any")) {teleport( 0, 65, 18);} // from dungeon to map
-            else if (hit(5,82, 39, "any")) {teleport( 4, 28, 43);} // from dungeon to bossMap
-            else if (hit(4,28, 43, "any")) {teleport( 5, 82, 39);} // from bossMap to dungeon
+            if (hit(1,16, 27, "any")) {teleport( 3,gp.outSide, 15, 31);} // from home to City
+            else if (hit(3,15, 31, "any")) {teleport( 1,gp.indoor,16, 27);} // from City to home
+            else if (hit(2, 16, 27, "any")) {teleport( 3,gp.outSide,19, 28);} // from Seller to City
+            else if (hit(3,19, 28, "any")) {teleport( 2,gp.indoor, 16, 27);} // from city to seller
+            else if (hit(3,21, 40, "any")) {teleport( 0,gp.outSide, 12, 36);} // from City to map
+            else if (hit(0,12, 36, "any")) {teleport( 3,gp.outSide, 21, 40);} // from map to City
+            else if (hit(0,67, 18, "any")) {teleport( 5,gp.dungeon, 41, 60);} // from map to dungeon
+            else if (hit(5,41, 60, "any")) {teleport( 0,gp.outSide, 67, 18);} // from dungeon to map
+            else if (hit(5,81, 40 ,"any")) {teleport( 4,gp.dungeon, 27, 46);} // from dungeon to bossMap
+            else if (hit(4,27, 46, "any")) {teleport( 5,gp.dungeon, 81, 40);} // from bossMap to dungeon
+
             else if (hit(2,16, 22, "any")) {speak(gp.npc[2][0]);} // from map to City
 
 
@@ -190,17 +191,17 @@ public class EventHandler {
     }
     public void healingBed( int gameState) {
         if (gp.keyH.enterPressed) {
-        gp.gameState = gameState;
         gp.player.attackCanceled = true;
         gp.player.life = gp.player.maxLife;
         gp.player.mana = gp.player.maxMana;
         gp.aSetter.setMonster();
         gp.saveLoad.save();
-            eventMaster.startDialogue(eventMaster,1);
+        eventMaster.startDialogue(eventMaster,1);
     }}
-    public void teleport(int map, int col, int row) {
+    public void teleport(int map,int area, int col, int row) {
 
         gp.gameState = gp.transitionState;
+        gp.nextArea = area;
         tempMap = map;
         tempCol = col;
         tempRow = row;

@@ -123,8 +123,15 @@ public class Lighting {
         filterAlpha = 0f;
     }
     public void draw(Graphics2D g2){
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-        g2.drawImage(darknessFilter,0,0 ,null);
+        // ADD FILTER IF OUTSIDE
+        if (gp.currentArea == gp.outSide){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
+        }
+        // ADD DARKNESS IF DUNGEON
+        if (gp.currentArea == gp.outSide || gp.currentArea == gp.dungeon){
+            g2.drawImage(darknessFilter,0,0 ,null);
+        }
+        // DRAW
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         // DEBUG

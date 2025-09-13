@@ -88,6 +88,16 @@ public class Player extends Entity {
             attackRight1 = setup("/images/player/attack-axe-right1.png", gp.tileSize * 2, gp.tileSize);
             attackRight2 = setup("/images/player/attack-axe-right2.png", gp.tileSize * 2, gp.tileSize);
         }
+        if (currentWeapon.type == type_pickaxe) {
+            attackUp1 = setup("/images/player/pickaxe-up1.png", gp.tileSize, gp.tileSize * 2);
+            attackUp2 = setup("/images/player/pickaxe-up2.png", gp.tileSize, gp.tileSize * 2);
+            attackDown1 = setup("/images/player/pickaxe-down1.png", gp.tileSize, gp.tileSize * 2);
+            attackDown2 = setup("/images/player/pickaxe-down2.png", gp.tileSize, gp.tileSize * 2);
+            attackLeft1 = setup("/images/player/pickaxe-left1.png", gp.tileSize * 2, gp.tileSize);
+            attackLeft2 = setup("/images/player/pickaxe-left2.png", gp.tileSize * 2, gp.tileSize);
+            attackRight1 = setup("/images/player/pickaxe-right1.png", gp.tileSize * 2, gp.tileSize);
+            attackRight2 = setup("/images/player/pickaxe-right2.png", gp.tileSize * 2, gp.tileSize);
+        }
     }
     public void getGuardImages() {
         guardUp = setup("/images/player/guard-up.png", gp.tileSize, gp.tileSize);
@@ -99,22 +109,22 @@ public class Player extends Entity {
         //setDefaultPositions() Change to this when the game is finished
         //worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
       //  worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
-       worldX = gp.tileSize * 16;  // manually set the start position, remove when the game is finished
-        worldY = gp.tileSize * 22;  // manually set the start position, remove when the game is finished
-        gp.currentMap = 2;             //  Bed 1 manually set the start map, remove when the game is finished
-        defaultSpeed = 4;
+       worldX = gp.tileSize * 28;  // manually set the start position, remove when the game is finished
+        worldY = gp.tileSize * 42;  // manually set the start position, remove when the game is finished
+        gp.currentMap = 5;             //  Bed 1 manually set the start map, remove when the game is finished
+        defaultSpeed = 10;
         speed = defaultSpeed;
         direction = "down";
 
         // PLAYER STATUS
-        maxLife = 6;
+        maxLife = 600000;
         life = maxLife;
         maxMana = 6;
         mana = maxMana;
         maxAmmo = 20;
         ammo = 5;
         level = 1;
-        strength = 1;
+        strength = 100;
         dexterity = 5;
         magic = 1;
         exp = 0;
@@ -191,9 +201,8 @@ public class Player extends Entity {
         inventory.add(currentWeapon); // ADD STARTING WEAPON
         inventory.add(currentShield); // ADD STARTING SHIELD
         inventory.add(new OBJ_Lantern(gp));
-        OBJ_Tent tent = new OBJ_Tent(gp);
-        tent.amount = 5;
-        inventory.add(tent);
+        inventory.add(new OBJ_Pickaxe(gp));
+        inventory.add(new OBJ_BossKey(gp));
         inventory.add(new OBJ_Axe(gp));
     }
     public void update() {
@@ -631,6 +640,7 @@ public class Player extends Entity {
             generatePartical(gp.iTile[gp.currentMap][i], gp.iTile[gp.currentMap][i]);
 
             if (gp.iTile[gp.currentMap][i].life <= 0) {
+                // gp.iTile[gp.currentMap][i].checkDrop();  CAN BE USE TO MAKE THE OBJ DROP A ITEM
                 gp.iTile[gp.currentMap][i] = gp.iTile[gp.currentMap][i].getDestroyedForm(); // REPLACE TILE WITH DESTROYED VERSION
             }
 
@@ -648,17 +658,19 @@ public class Player extends Entity {
             defense = getDefense(); // UPDATE DEFENSE BASED ON NEW STATS
             gp.playSE(11); // PLAY LEVEL-UP SOUND
             gp.gameState = gp.dialogueState;
+            setDialogue();
             startDialogue(this,0);
         }
     }
     public void setDialogue() {
         dialogues[0][0] = "You are level " + level + " now! \nYou feel stronger!";
+        gp.gameState = gp.playState;
     }
     public void selectItem() {
         int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);
-            if (selectedItem.type == type_sword || selectedItem.type == type_axe || selectedItem.type == type_spell) {
+            if (selectedItem.type == type_sword || selectedItem.type == type_axe || selectedItem.type == type_spell || selectedItem.type == type_pickaxe) {
                 currentWeapon = selectedItem; // EQUIP NEW WEAPON
                 getAttack(); // UPDATE ATTACK
                 getAttackImages(); // UPDATE ATTACK ANIMATION
@@ -701,22 +713,23 @@ public class Player extends Entity {
     public boolean canObtainItem(Entity item) {
 
         boolean canObtain = false;
+        Entity newItem = gp.eGenerator.getObject(item.name);
 
         // CHECK IF STACKABLE
-        if (item.stackable == true) {
-            int index = searchItemInInventory(item.name);
+        if (newItem.stackable == true) {
+            int index = searchItemInInventory(newItem.name);
             if (index != 999) { // the item can be stack on another item
                 inventory.get(index).amount++;
                 canObtain = true;
             } else {// there is no other item in the inventory to stack on so a new slot is used
                 if (inventory.size() != maxInventorySize) {
-                    inventory.add(item);
+                    inventory.add(newItem);
                     canObtain = true;
                 }
             }
         } else { // item is not stackable
             if (inventory.size() != maxInventorySize) {
-                inventory.add(item);
+                inventory.add(newItem);
                 canObtain = true;
             }
         }

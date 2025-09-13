@@ -57,11 +57,11 @@ public class GamePanel extends JPanel implements Runnable {
     public EventHandler eventHandler = new EventHandler(this);
     /************************* ENTITY AND OBJECTS *****************************/
     public Player player = new Player(this, keyH);
-    public Entity obj[][] = new Entity[maxMap][30];
-    public Entity npc[][] = new Entity[maxMap][10];
-    public Entity monster[][] = new Entity[maxMap][20];
+    public Entity obj[][] = new Entity[maxMap][50];
+    public Entity npc[][] = new Entity[maxMap][15];
+    public Entity monster[][] = new Entity[maxMap][50];
     public Entity projectile[][] = new Entity[maxMap][20];
-    public InteractiveTile iTile[][] = new InteractiveTile[maxMap][5];
+    public InteractiveTile iTile[][] = new InteractiveTile[maxMap][50];
     //public ArrayList<Entity> projectileList = new ArrayList<>();
     public ArrayList<Entity> particleList = new ArrayList<>();
     /**************************** GAME STATE **********************************/
@@ -78,6 +78,13 @@ public class GamePanel extends JPanel implements Runnable {
     public final int shopState = 8;
     public final int sleepState = 9;
     public final int mapState = 10;
+    // AREA
+    public final int outSide = 50;
+    public final int indoor = 51;
+    public final int dungeon = 52;
+    public int currentArea;
+    public int nextArea;
+
 
     /********************************* FPS ************************************/
     int FPS = 60;
@@ -85,6 +92,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileM = new TileManager(this);
     public PathFinder pfinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
+    public EntityGenerator eGenerator = new EntityGenerator(this);
     Map map = new Map(this);
     Config config = new Config(this);
     SaveLoad saveLoad = new SaveLoad(this);
@@ -109,6 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
         // playMusic(0); // play background music track 0
         //stopMusic();  // optionally stop it immediately
         gameState = titleState;
+        currentArea = indoor;
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
@@ -402,5 +411,17 @@ public class GamePanel extends JPanel implements Runnable {
     public void playSE(int i) {
         se.setFile(i);
         se.play();
+    }
+    public void changeArea(){
+        if (nextArea != currentArea){
+             stopMusic();
+             switch (nextArea){
+                 case outSide: playMusic(0);break;
+                 case indoor: playMusic(0);break;
+                 case dungeon: playMusic(20);break;
+             }
+        }
+        currentArea = nextArea;
+        aSetter.setMonster();
     }
 }

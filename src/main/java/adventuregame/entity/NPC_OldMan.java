@@ -31,6 +31,7 @@ public class NPC_OldMan extends Entity {
         solidAreaDefaultY = solidArea.y;
         getImages();         // load sprite images
         setDialogue();
+        dialogueSet = -1;
 
     }
     public void getImages() {
@@ -94,5 +95,12 @@ public class NPC_OldMan extends Entity {
     public void speak() {
         facePlayer();
         startDialogue(this, dialogueSet);
+
+        // Change the Dialogue Change later if want different logic
+
+        dialogueSet++;
+        if(dialogues[dialogueSet][0] == null){
+            dialogueSet = 0;
+        }
     }
 }

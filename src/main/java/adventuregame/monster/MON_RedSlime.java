@@ -36,14 +36,19 @@ public class MON_RedSlime extends Entity {
         getImage();
     }
     public void getImage(){
-        up1 = setup("/images/monster/red-slime-1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/monster/red-slime-2.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/monster/red-slime-1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/monster/red-slime-2.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/monster/red-slime-1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/monster/red-slime-2.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/monster/red-slime-1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/monster/red-slime-2.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/monster/red-slime-up1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/monster/red-slime-up2.png", gp.tileSize, gp.tileSize);
+        upStill = setup("/images/monster/red-slime-up-still.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/monster/red-slime-down1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/monster/red-slime-down2.png", gp.tileSize, gp.tileSize);
+        downStill = setup("/images/monster/red-slime-down-still.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/monster/red-slime-left1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/monster/red-slime-left2.png", gp.tileSize, gp.tileSize);
+        leftStill = setup("/images/monster/red-slime-left-still.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/monster/red-slime-right1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/monster/red-slime-right2.png", gp.tileSize, gp.tileSize);
+        rightStill = setup("/images/monster/red-slime-right-still.png", gp.tileSize, gp.tileSize);
+        dead = setup("/images/monster/red-slime-dead.png", gp.tileSize, gp.tileSize);
     }
     public void setAction(){
         if (onPath == true){

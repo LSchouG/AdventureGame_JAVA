@@ -15,11 +15,14 @@ import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
 public class OBJ_Key extends Entity {
+
+    public static final String objName = "Common Key";
+
     public OBJ_Key(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Common Key";
+        name = objName;
         type = type_consumable;
         lockKeyType = "common";
         stackable = true;

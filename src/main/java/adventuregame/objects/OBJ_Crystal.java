@@ -7,10 +7,12 @@ import java.util.Random;
 
 public class OBJ_Crystal extends Entity {
     GamePanel gp;
+    public static final String objName = "Crystal";
+
     public OBJ_Crystal(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        name = "Crystal";
+        name = objName;
         value = 2;
         type = type_pickUpOnly;
         useCost = 1;

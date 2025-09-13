@@ -5,10 +5,12 @@ import adventuregame.entity.Entity;
 
 public class OBJ_Sword_Normal extends Entity {
 
+    public static final String objName =  "Iron Sword";
+
    public OBJ_Sword_Normal(GamePanel gp) {
        super(gp);
 
-       name = "Iron Sword";
+       name = objName;
        type = type_sword;
        down1 = setup("/images/objects_pickup/sword-old.png", gp.tileSize, gp.tileSize);
        attackValue = 1;

@@ -59,9 +59,16 @@ public class TileManager {
         setup(11, "water", true);
         //SAND
         setup(12, "sand", false);
-        setup(14, "sand", true);
+        setup(14, "sand", false);
         // Black
         setup(13, "black", true);
+        // dungeon
+        setup(14, "stairs-down-left", false);
+        setup(15, "dirt", false);
+        setup(16, "stairs-down-right", false);
+        setup(17, "stairs-up-left", false);
+        setup(18, "stairs-up-right", false);
+
     }
     public void setup(int index, String imageName, boolean collision){
 

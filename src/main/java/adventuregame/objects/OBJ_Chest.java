@@ -16,12 +16,15 @@ import adventuregame.entity.Entity;
 
 public class OBJ_Chest extends Entity {
     GamePanel gp;
+
+    public static final String objName = "Chest";
+
     public OBJ_Chest(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         type = type_obstacle;
-        name = "Chest";
+        name = objName;
         image1 = setup("/images/objects_interactive/chest-closed.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_interactive/chest-open.png", gp.tileSize, gp.tileSize);
         down1 = image1;

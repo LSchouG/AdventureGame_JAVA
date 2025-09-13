@@ -4,11 +4,14 @@ import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
 public class OBJ_Tent extends Entity {
+
+    public static final String objName =  "Tent";
+
     public OBJ_Tent(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Tent";
+        name = objName;
         type = type_consumable;
         down1 = setup("/images/objects_pickup/tent.png", gp.tileSize, gp.tileSize);
         Price = 300;

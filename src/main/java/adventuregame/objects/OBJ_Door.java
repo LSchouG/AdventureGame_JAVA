@@ -14,10 +14,13 @@ import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
 public class OBJ_Door extends Entity {
+
+    public static final String objName = "Door";
+
     public OBJ_Door(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        name = "Door";
+        name = objName;
         down1 = setup("/images/objects_interactive/door.png", gp.tileSize, gp.tileSize);
         collision = true;
         lockKeyType = "common";

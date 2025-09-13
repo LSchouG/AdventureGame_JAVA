@@ -8,11 +8,13 @@ import java.util.Random;
 public class OBJ_Coin_Bronze extends Entity {
     GamePanel gp;
 
+    public static final String objName ="Bronze Coin";
+
     public OBJ_Coin_Bronze(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Bronze Coin";
+        name = objName;
         type = type_pickUpOnly;
         value = 1;
         down1 = setup("/images/objects_pickup/coin-bronze.png", gp.tileSize, gp.tileSize);
