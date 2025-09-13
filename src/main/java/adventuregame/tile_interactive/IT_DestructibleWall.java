@@ -34,7 +34,8 @@ public class IT_DestructibleWall extends InteractiveTile{
     public void playSE(){
         // TO DO
         // IMPLEMENT SOUND EFFECTS FOR TREES
-        //  EXAMPLE  gp.playSE(1);
+        //  EXAMPLE
+        gp.playSE(22);
     }
 
     public InteractiveTile getDestroyedForm(){

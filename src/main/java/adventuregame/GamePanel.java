@@ -216,27 +216,28 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void drawToTempScreen() {
-        // DEBUG - Start draw time measurement
-        long drawStart = 0;
-        if (keyH.showDebugText) {
-            drawStart = System.nanoTime();
-        }
+        // ... (debug start unchanged)
 
         // TITLE SCREEN
         if (gameState == titleState) {
             ui.draw(g2);
         }
         // MAP SCREEN
-        else if (gameState == mapState){
+        else if (gameState == mapState) {
             map.drawFullMapScreen(g2);
         }
         // OTHERS
         else {
             // Tiles
             tileM.draw(g2);
-
-            // Interactiv Tiles
-            for (int i = 0; i < iTile[1].length; i++) {
+            // ADD NPC TO LIST
+            for (int i = 0; i < npc[currentMap].length; i++) {  // Fixed: Use currentMap
+                if (npc[currentMap][i] != null) {
+                    entityList.add(npc[currentMap][i]);
+                }
+            }
+            // Interactive Tiles
+            for (int i = 0; i < iTile[currentMap].length; i++) {  // Fixed: Use currentMap
                 if (iTile[currentMap][i] != null) {
                     iTile[currentMap][i].draw(g2);
                 }
@@ -245,43 +246,37 @@ public class GamePanel extends JPanel implements Runnable {
             // ADD PLAYER TO LIST
             entityList.add(player);
 
-            // ADD NPC TI LIST
-            for (int i = 0; i < npc[1].length; i++) {
-                if (npc[currentMap][i] != null) {
-                    entityList.add(npc[currentMap][i]);
-                }
-            }
+
             // ADD OBJ TO LIST
-            for (int i = 0; i < obj[1].length; i++) {
+            for (int i = 0; i < obj[currentMap].length; i++) {  // Fixed: Use currentMap
                 if (obj[currentMap][i] != null) {
                     entityList.add(obj[currentMap][i]);
                 }
             }
             // ADD MONSTER TO LIST
-            for (int i = 0; i < monster[1].length; i++) {
+            for (int i = 0; i < monster[currentMap].length; i++) {  // Fixed: Use currentMap
                 if (monster[currentMap][i] != null) {
                     entityList.add(monster[currentMap][i]);
                 }
             }
             // ADD PROJECTILES TO LIST
-            for (int i = 0; i < projectile[1].length; i++) {
+            for (int i = 0; i < projectile[currentMap].length; i++) {  // Fixed: Use currentMap
                 if (projectile[currentMap][i] != null) {
                     entityList.add(projectile[currentMap][i]);
                 }
             }
-            // ADD PARTICALE TO LIST
-            for (int i = 0; i < particleList.size(); i++) {
-                if (particleList.get(i) != null) {
-                    entityList.add(particleList.get(i));
+            // ADD PARTICLE TO LIST (simplified null check)
+            for (Entity particle : particleList) {  // Enhanced: Use enhanced for-loop for clarity
+                if (particle.alive) {  // Fixed: Check alive flag directly (more efficient)
+                    entityList.add(particle);
                 }
             }
 
-            //SORT
+            // SORT (unchanged; correct for y-sorting)
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
                 public int compare(Entity e1, Entity e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
+                    return Integer.compare(e1.worldY, e2.worldY);
                 }
             });
 
@@ -300,11 +295,11 @@ public class GamePanel extends JPanel implements Runnable {
 
             // 5. Draw UI
             ui.draw(g2);
-        }
-
 
         // DEBUG - End draw time measurement
         if (keyH.showDebugText) {
+            long drawStart = 0;
+            drawStart = System.nanoTime();
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
 
@@ -330,6 +325,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("WorldX - Col: " + (col), x, y);
             y += lineHeight;
             g2.drawString("WorldY - Row: " + (row ), x, y);
+        }
         }
     }
     public void drawToScreen() {
@@ -420,6 +416,7 @@ public class GamePanel extends JPanel implements Runnable {
                  case indoor: playMusic(0);break;
                  case dungeon: playMusic(20);break;
              }
+             aSetter.setNPC();
         }
         currentArea = nextArea;
         aSetter.setMonster();

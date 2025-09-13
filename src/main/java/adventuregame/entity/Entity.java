@@ -18,6 +18,7 @@ import adventuregame.UtilityTool;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -35,6 +36,7 @@ public class  Entity {
     public boolean collision = false;
     public String dialogues[][] = new String[20][20];
     public Entity attacker;
+    public Entity linkedEntity;
 
     /** STATE **/
     public int worldX, worldY;
@@ -170,9 +172,6 @@ public class  Entity {
         int tileDistance = ((getXDistance(target) + getYDistance(target)) / gp.tileSize);
         return tileDistance;
     }
-    public void setLoot(){
-
-    }
     public String getOppositeDirection(String direction){
 
         String OppositeDirection = "";
@@ -249,10 +248,6 @@ public class  Entity {
             }
         }
         return index;
-    }
-    public int getParticalLife(){
-        int life = 0;
-        return life;
     }
     public void setKnockback(Entity target, Entity attacker, int knockBackPower){
         this.attacker = attacker;
@@ -698,7 +693,8 @@ public class  Entity {
             attacking = false; // EXIT ATTACK STATE
         }
     }
-    public  void  changeAlpha(Graphics2D g2, float alphaValue) {
+    public  void move(String direction){}
+    public  void changeAlpha(Graphics2D g2, float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
     public void generatePartical(Entity generator, Entity target){
@@ -784,7 +780,10 @@ public class  Entity {
 //            }
         }
     }
-
     public void setLoot(Entity loot) {
+    }
+    public int getParticalLife(){
+        int life = 0;
+        return life;
     }
 }

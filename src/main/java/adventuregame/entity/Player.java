@@ -274,6 +274,7 @@ public class Player extends Entity {
 
             // CHECK NPC INTERACTION
             int ncpIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+
             interactNPC(ncpIndex);
             // TRIGGER ATTACK IF NOT TALKING
             if (ncpIndex == 999) {
@@ -562,9 +563,13 @@ public class Player extends Entity {
         }
     }
     public void interactNPC(int i) {
-        if (gp.keyH.enterPressed && i != 999) {
-            attackCanceled = true; // CANCEL ATTACK IF INTERACTING
-            gp.npc[gp.currentMap][i].speak(); // CALL NPC SPEAK METHOD
+        if (i != 999){
+            if (gp.keyH.enterPressed) {
+                attackCanceled = true; // CANCEL ATTACK IF INTERACTING
+                gp.npc[gp.currentMap][i].speak(); // CALL NPC SPEAK METHOD
+
+            }
+            gp.npc[gp.currentMap][i].move(direction); // CALL NPC SPEAK METHOD
         }
     }
     public void contactMonster(int i) {

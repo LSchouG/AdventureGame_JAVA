@@ -61,7 +61,7 @@ public class Sound {
         //baseVolumeOffset[20] = -1f;
         soundURL[21] = getClass().getResource("/sound/door-open-lock.wav");
         //baseVolumeOffset[21] = -1f;
-        soundURL[21] = getClass().getResource("/sound/pickaxe.wav");
+        soundURL[22] = getClass().getResource("/sound/pickaxe.wav");
         //baseVolumeOffset[21] = -1f;
     }
     public void setFile(int i) {
