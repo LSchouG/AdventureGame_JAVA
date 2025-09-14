@@ -15,6 +15,7 @@ import adventuregame.entity.NPC_BigRock;
 import adventuregame.entity.NPC_Seller;
 import adventuregame.monster.*;
 import adventuregame.objects.*;
+import adventuregame.data.Progress;
 import adventuregame.tile_interactive.IT_DestructibleWall;
 import adventuregame.tile_interactive.IT_DryTree;
 import adventuregame.tile_interactive.IT_MetalPlate;
@@ -136,6 +137,15 @@ public class AssetSetter {
         gp.npc[mapNum][i] = new NPC_Seller(gp);
         gp.npc[mapNum][i].worldX = gp.tileSize * 16;
         gp.npc[mapNum][i].worldY = gp.tileSize * 20;
+
+
+        if(Progress.bossDeleated == true){
+
+        } else {
+
+        }
+
+
 
         // PLACE OBJECTS ON MAP 5                             DUNGEON
         mapNum = 5;   i = 0;
