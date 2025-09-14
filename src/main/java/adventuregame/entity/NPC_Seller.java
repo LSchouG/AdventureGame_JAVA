@@ -4,10 +4,8 @@ import adventuregame.GamePanel;
 import adventuregame.objects.*;
 
 public class NPC_Seller extends Entity{
-    /**************************************************************************
-     * Constructor: NPC_OldMan(GamePanel gp)
-     * Purpose: Initializes the old man NPC with a default direction and speed.
-     ***************************************************************************/
+
+
     public NPC_Seller(GamePanel gp) {
         super(gp);
         type = type_npc;
