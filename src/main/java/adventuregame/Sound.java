@@ -59,9 +59,13 @@ public class Sound {
         //baseVolumeOffset[19] = 0f;
         soundURL[20] = getClass().getResource("/sound/background-loop-dungeon.wav");
         //baseVolumeOffset[20] = -1f;
-        soundURL[21] = getClass().getResource("/sound/door-open-lock.wav");
+        soundURL[21] = getClass().getResource("/sound/door-open-lock.wav");    // open Iron door
         //baseVolumeOffset[21] = -1f;
         soundURL[22] = getClass().getResource("/sound/pickaxe.wav");
+        //baseVolumeOffset[21] = -1f;
+        soundURL[23] = getClass().getResource("/sound/bossfight.wav");
+        //baseVolumeOffset[21] = -1f;
+        soundURL[24] = getClass().getResource("/sound/boss-music.wav");
         //baseVolumeOffset[21] = -1f;
     }
     public void setFile(int i) {

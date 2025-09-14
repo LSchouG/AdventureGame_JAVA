@@ -9,6 +9,7 @@ import java.util.Random;
 public class MON_Ghost extends Entity {
     public MON_Ghost(GamePanel gp) {
         super(gp);
+        this.gp = gp;
         type = type_monster;
         name = "Ghost";
         defaultSpeed = 1;
@@ -23,7 +24,7 @@ public class MON_Ghost extends Entity {
         distanceToChase = 6;     // Distance before chasing
         rate = 2; // 1 = 100% 3 = 33%  5 = 20% 10 = 10%
 
-        //projectile = new OBJ_Plasma_Projectile(gp);
+        projectile = new OBJ_Plasma_Projectile(gp);
         solidArea.x = 3; // goes 3 pixel in from the side
         solidArea.y = 18;// goes 3 pixel down from the top
         solidArea.width = 42; // the space left, (3 + 3) - 48 = 42
@@ -33,19 +34,19 @@ public class MON_Ghost extends Entity {
         getImage();
     }
     public void getImage(){
-        up1 = setup("/images/monster/red-slime-up1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/images/monster/red-slime-up2.png", gp.tileSize, gp.tileSize);
-        upStill = setup("/images/monster/red-slime-still.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/images/monster/red-slime-down1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/monster/red-slime-down2.png", gp.tileSize, gp.tileSize);
-        downStill = setup("/images/monster/red-slime-still.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/images/monster/red-slime-left1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/images/monster/red-slime-left2.png", gp.tileSize, gp.tileSize);
-        leftStill = setup("/images/monster/red-slime-still.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/images/monster/red-slime-right1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/images/monster/red-slime-right2.png", gp.tileSize, gp.tileSize);
-        rightStill = setup("/images/monster/red-slime-still.png", gp.tileSize, gp.tileSize);
-        dead = setup("/images/monster/red-slime-dead.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/images/monster/ghost-up1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/images/monster/ghost-up2.png", gp.tileSize, gp.tileSize);
+        upStill = setup("/images/monster/ghost-up2.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/monster/ghost-down1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/monster/ghost-down2.png", gp.tileSize, gp.tileSize);
+        downStill = setup("/images/monster/ghost-down2.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/images/monster/ghost-left1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/images/monster/ghost-left2.png", gp.tileSize, gp.tileSize);
+        leftStill = setup("/images/monster/ghost-left2.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/images/monster/ghost-right1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/images/monster/ghost-right2.png", gp.tileSize, gp.tileSize);
+        rightStill = setup("/images/monster/ghost-right2.png", gp.tileSize, gp.tileSize);
+        dead = setup("/images/monster/ghost-dead.png", gp.tileSize, gp.tileSize);
     }
     public void setAction(){
         if (onPath == true){
@@ -64,7 +65,7 @@ public class MON_Ghost extends Entity {
             checkStartChasingOrNot(gp.player, distanceToChase, rate);
 
             // GET random direction if not chasing
-            getRandomDirection();
+            getRandomDirection(directionInterval);
         }
     }
     public void damageReaction() {

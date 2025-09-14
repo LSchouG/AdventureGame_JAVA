@@ -22,6 +22,7 @@ public class MON_Spider extends Entity {
         collision = true;
         exp = 6;
         shotInterval = 0;
+        directionInterval = 10;
         distanceToChase = 5; // Distance before chasing
         rate = 2; // 1 = 100% 3 = 33%  5 = 20% 10 = 10%
 
@@ -57,7 +58,7 @@ public class MON_Spider extends Entity {
             // if player a within distance to monster start chasing
             checkStartChasingOrNot(gp.player, distanceToChase, rate);
             // GET a random direction if not chasing
-            getRandomDirection();
+            getRandomDirection(directionInterval);
         }
     }
     public void damageReaction() {

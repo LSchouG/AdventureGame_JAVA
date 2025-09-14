@@ -55,6 +55,8 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
+    public CutSceneManager csManager = new CutSceneManager(this);
+
     /************************* ENTITY AND OBJECTS *****************************/
     public Player player = new Player(this, keyH);
     public Entity obj[][] = new Entity[maxMap][50];
@@ -64,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
     public InteractiveTile iTile[][] = new InteractiveTile[maxMap][50];
     //public ArrayList<Entity> projectileList = new ArrayList<>();
     public ArrayList<Entity> particleList = new ArrayList<>();
+
     /**************************** GAME STATE **********************************/
     public int gameState;
     public int previousState;
@@ -78,6 +81,11 @@ public class GamePanel extends JPanel implements Runnable {
     public final int shopState = 8;
     public final int sleepState = 9;
     public final int mapState = 10;
+    public final int cutSceneState = 11;
+
+    //OTHER
+    public boolean bossBattleOn = false;
+
     // AREA
     public final int outSide = 50;
     public final int indoor = 51;
@@ -284,6 +292,7 @@ public class GamePanel extends JPanel implements Runnable {
             for (int i = 0; i < entityList.size(); i++) {
                 entityList.get(i).draw(g2);
             }
+
             // EMPTY LIST
             entityList.clear();
 
@@ -292,6 +301,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             // MINI MAP
             map.drawMiniMap(g2);
+
+            // CUTSCENE
+            csManager.draw(g2);
 
             // 5. Draw UI
             ui.draw(g2);
@@ -314,17 +326,13 @@ public class GamePanel extends JPanel implements Runnable {
 
             String colLabel = convertToColumnLabel(col + 1); // +1 because Excel-style labels start at 1
 
-            g2.drawString("WorldX: " + player.worldX, x, y);
-            y += lineHeight;
-            g2.drawString("WorldY: " + player.worldY, x, y);
-            y += lineHeight;
-            g2.drawString("Col: " + colLabel, x, y); // Column shown as letters
-            y += lineHeight;
-            g2.drawString("World MAP Number: " + currentMap , x, y);
-            y += lineHeight;
-            g2.drawString("WorldX - Col: " + (col), x, y);
-            y += lineHeight;
-            g2.drawString("WorldY - Row: " + (row ), x, y);
+            g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
+            g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
+            g2.drawString("Col: " + colLabel, x, y);  y += lineHeight;
+            g2.drawString("World MAP Number: " + currentMap , x, y);  y += lineHeight;
+            g2.drawString("WorldX - Col: " + (col), x, y); y += lineHeight;
+            g2.drawString("WorldY - Row: " + (row ), x, y); y += lineHeight;
+            g2.drawString("God Mode: " + keyH.godModeOn, x, y);
         }
         }
     }
@@ -356,36 +364,25 @@ public class GamePanel extends JPanel implements Runnable {
         System.out.println("Fullscreen dimensions: " + screenWidth2 + "x" + screenHeight2);
     }
     public void resetGame(boolean restart){
-        if (restart) {
-            // Switch to Home map 1
-            currentMap = 1;
 
-            player.resetCounter();
-            aSetter.setObject();
-            aSetter.setInteractiveTiles();
-            aSetter.setNPC();
-            aSetter.setMonster();
-            eManager.lighting.resetDay();
-            player.setDefaultValues();
-            player.setItems();
-            player.setDefaultPositions();
-        } else {
-            player.setDefaultPositions();
-            player.restoreStatus();
-            aSetter.setNPC();
-            aSetter.setMonster();
-        }
-        /*player.setDefaultPositions();
+        removeTempEntity();
+        bossBattleOn = false;
+        player.setDefaultPositions();
         player.restoreStatus();
         aSetter.setNPC();
         aSetter.setMonster();
-        if (restart == true){
-            player.setDefaultValues();
+        player.resetCounter();
+
+
+        if (restart) {
+            // Switch to Home map 1
+            currentMap = 1;
             player.setItems();
+            player.setDefaultValues();
+            eManager.lighting.resetDay();
             aSetter.setObject();
             aSetter.setInteractiveTiles();
-            eManager.lighting.resetDay();;
-        }*/
+        }
     }
     public String convertToColumnLabel(int colNumber) {
         StringBuilder colName = new StringBuilder();
@@ -420,5 +417,17 @@ public class GamePanel extends JPanel implements Runnable {
         }
         currentArea = nextArea;
         aSetter.setMonster();
+    }
+    public void removeTempEntity(){
+
+        for(int mapNum = 0; mapNum < maxMap; mapNum++){
+
+            for(int i = 0; i < obj[1].length; i++){
+
+                if(obj[mapNum][i] != null && obj[mapNum][i].temp == true){
+                    obj[mapNum][i] = null;
+                }
+            }
+        }
     }
 }

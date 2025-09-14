@@ -26,7 +26,8 @@ public class Player extends Entity {
     public boolean alreadyHitTile = false;  // PREVENT MULTIPLE HITS ON SAME TILE IN ONE ATTACK
     public boolean lightUpdated = false;
     KeyHandler keyH;
-    int standCounter = 0;                   // COUNTER FOR IDLE ANIMATION WHEN STANDING STILL
+    int standCounter = 0;
+    public static final String playerName = "Player";         // COUNTER FOR IDLE ANIMATION WHEN STANDING STILL
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -37,6 +38,7 @@ public class Player extends Entity {
         // PLACE PLAYER IN CENTER OF SCREEN
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+        name = playerName;
 
         // DEFINE THE PLAYER'S COLLISION BOX
         solidArea = new Rectangle();
@@ -110,21 +112,21 @@ public class Player extends Entity {
         //worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
       //  worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
        worldX = gp.tileSize * 28;  // manually set the start position, remove when the game is finished
-        worldY = gp.tileSize * 42;  // manually set the start position, remove when the game is finished
-        gp.currentMap = 5;             //  Bed 1 manually set the start map, remove when the game is finished
+        worldY = gp.tileSize * 46;  // manually set the start position, remove when the game is finished
+        gp.currentMap = 4;             //  Bed 1 manually set the start map, remove when the game is finished
         defaultSpeed = 10;
         speed = defaultSpeed;
         direction = "down";
 
         // PLAYER STATUS
-        maxLife = 600000;
+        maxLife = 6;
         life = maxLife;
         maxMana = 6;
         mana = maxMana;
         maxAmmo = 20;
         ammo = 5;
         level = 1;
-        strength = 100;
+        strength = 6;
         dexterity = 5;
         magic = 1;
         exp = 0;
@@ -133,7 +135,7 @@ public class Player extends Entity {
         knockBackPower = 1;
 
         // SET DEFAULT EQUIPMENT
-        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentWeapon = new OBJ_Sword_Wood(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         currentLight = null;
         projectile = new OBJ_FireBall(gp); // projectile = new OBJ_Rock_Projectile(gp);
@@ -159,24 +161,27 @@ public class Player extends Entity {
                 worldY = gp.tileSize * 20;
                 break;
             case 2:  // interiorSeller
-                worldX = gp.tileSize * 16;
-                worldY = gp.tileSize * 27;
+                gp.currentMap = 1;
+                worldX = gp.tileSize * 17;
+                worldY = gp.tileSize * 20;
                 break;
             case 3:  // cityMap
-                worldX = gp.tileSize * 21;
-                worldY = gp.tileSize * 39;
+                gp.currentMap = 1;
+                worldX = gp.tileSize * 17;
+                worldY = gp.tileSize * 20;
                 break;
             case 4:  // bossMap
-                worldX = gp.tileSize * 15;
-                worldY = gp.tileSize * 45;
+                worldX = gp.tileSize * 27;
+                worldY = gp.tileSize * 46;
                 break;
             case 5:  // dungeon
-                worldX = gp.tileSize * 46;
-                worldY = gp.tileSize * 66;
+                worldX = gp.tileSize * 42;
+                worldY = gp.tileSize * 60;
                 break;
             default:
-                worldX = gp.tileSize * 23;
-                worldY = gp.tileSize * 22;
+                gp.currentMap = 1;
+                worldX = gp.tileSize * 17;
+                worldY = gp.tileSize * 20;
                 break;
         }
         direction = "down";
@@ -203,6 +208,8 @@ public class Player extends Entity {
         inventory.add(new OBJ_Lantern(gp));
         inventory.add(new OBJ_Pickaxe(gp));
         inventory.add(new OBJ_BossKey(gp));
+        inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Key(gp));
         inventory.add(new OBJ_Axe(gp));
     }
     public void update() {
@@ -382,13 +389,14 @@ public class Player extends Entity {
             mana = maxMana;
         }
 
-        if (life <= 0) {
-            gp.gameState = gp.gameOverState;
-            gp.ui.commandNumber = -1;
-            gp.stopMusic();
-            gp.playSE(14);
+        if(keyH.godModeOn == false){
+            if (life <= 0) {
+                gp.gameState = gp.gameOverState;
+                gp.ui.commandNumber = -1;
+                gp.stopMusic();
+                gp.playSE(14);
+            }
         }
-
     }
     public void draw(Graphics2D g2) {
 
@@ -480,8 +488,9 @@ public class Player extends Entity {
         if (transparent == true) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
-
-        g2.drawImage(image, tempScreenX, tempScreenY, null); // DRAW PLAYER SPRITE
+        if(drawing == true){
+            g2.drawImage(image, tempScreenX, tempScreenY, null); // DRAW PLAYER SPRITE
+        }
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // RESET TRANSPARENCY
     }
     public int getAttack() {

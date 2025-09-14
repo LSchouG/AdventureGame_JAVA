@@ -15,7 +15,6 @@ import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
 public class OBJ_Key extends Entity {
-
     public static final String objName = "Common Key";
 
     public OBJ_Key(GamePanel gp) {

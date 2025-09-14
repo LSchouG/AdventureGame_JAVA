@@ -11,6 +11,7 @@
 
 package adventuregame;
 
+import adventuregame.data.Progress;
 import adventuregame.entity.Entity;
 
 public class EventHandler {
@@ -115,13 +116,17 @@ public class EventHandler {
             else if (hit(5,81, 40 ,"any")) {teleport( 4,gp.dungeon, 27, 46);} // from dungeon to bossMap
             else if (hit(4,27, 46, "any")) {teleport( 5,gp.dungeon, 81, 40);} // from bossMap to dungeon
 
+            // SPeak to Seller
             else if (hit(2,16, 22, "any")) {speak(gp.npc[2][0]);} // from map to City
 
 
             // TILE EVENTS LIKE BED OR PIT
-
             else if (hit(0,23, 28, "any")) {damagePit( gp.dialogueState);}
             else if (hit(1,17, 20, "any")) {healingBed(gp.dialogueState);}
+
+            // CUTSCENES
+            else if (hit(4,28  ,42, "any")) {boss();}
+
         }
     }
     public boolean hit(int map, int col, int row, String reqDirection) {
@@ -216,6 +221,13 @@ public class EventHandler {
            gp.gameState = gp.dialogueState;
            entity.speak();
 
+        }
+    }
+    public void boss(){
+        // COl 28  ROW 42
+        if (gp.bossBattleOn == false && Progress.bossDeleated == false){
+            gp.gameState = gp.cutSceneState;
+            gp.csManager.sceneNum = gp.csManager.boss;
         }
     }
 }

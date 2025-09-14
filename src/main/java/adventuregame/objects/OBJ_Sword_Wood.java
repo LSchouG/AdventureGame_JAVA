@@ -3,11 +3,11 @@ package adventuregame.objects;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
-public class OBJ_Sword_Normal extends Entity {
+public class OBJ_Sword_Wood extends Entity {
 
     public static final String objName =  "Iron Sword";
 
-   public OBJ_Sword_Normal(GamePanel gp) {
+   public OBJ_Sword_Wood(GamePanel gp) {
        super(gp);
 
        name = objName;

@@ -96,6 +96,13 @@ public class CollisionChecker {
                 gp.obj[gp.currentMap][i].solidArea.x = gp.obj[gp.currentMap][i].worldX + gp.obj[gp.currentMap][i].solidArea.x;
                 gp.obj[gp.currentMap][i].solidArea.y = gp.obj[gp.currentMap][i].worldY + gp.obj[gp.currentMap][i].solidArea.y;
 
+                // Use a temporal direction when it is being knockback
+                String direction = entity.direction;
+                if(entity.knockback == true){
+                    direction = entity.knockbackDirection;
+                }
+
+
                 // Simulate future position based on movement direction
                 switch (entity.direction) {
                     case "up":  entity.solidArea.y -= entity.speed; break;

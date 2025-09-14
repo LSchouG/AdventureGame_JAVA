@@ -9,10 +9,15 @@ import adventuregame.objects.OBJ_Heart;
 import java.util.Random;
 
 public class MON_Skeleton extends Entity {
+    GamePanel gp;
+    public static final String objName = "MON_Skeleton";
+
     public MON_Skeleton(GamePanel gp) {
         super(gp);
+        this.gp = gp;
+
         type = type_monster;
-        name = "MON_Skeleton";
+        name = objName;
         defaultSpeed = 1;
         speed = defaultSpeed;
         maxLife = 20;
@@ -77,7 +82,7 @@ public class MON_Skeleton extends Entity {
             // if player a within distance to monster start chasing
             checkStartChasingOrNot(gp.player, distanceToChase, rate);
             // GET a random direction if not chasing
-            getRandomDirection();
+            getRandomDirection(directionInterval);
         }
         if (attacking == false) {
             checkAttackOrNot(rate, (gp.tileSize*2)-(gp.tileSize/2)-10, gp.tileSize);

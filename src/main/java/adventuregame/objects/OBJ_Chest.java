@@ -28,6 +28,7 @@ public class OBJ_Chest extends Entity {
         image1 = setup("/images/objects_interactive/chest-closed.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_interactive/chest-open.png", gp.tileSize, gp.tileSize);
         down1 = image1;
+        gold = 10000;
         collision = true;
         solidArea.x = 4;
         solidArea.y = 16;
@@ -35,6 +36,9 @@ public class OBJ_Chest extends Entity {
         solidArea.height = 32;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+        itemTitle = "[" + name + "]";
+        itemDescription = "The Towns Treasure Chest. \nValue: " + gold ;
     }
     public void setDialogue() {
         dialogues[0][0] = "you open the chest and find a " + loot.name + "!";

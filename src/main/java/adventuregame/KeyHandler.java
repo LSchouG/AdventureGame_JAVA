@@ -18,13 +18,16 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
+    GamePanel gp;
     // Movement keys
     public boolean upPressed = false, downPressed = false, leftPressed = false,
             rightPressed = false, enterPressed = false, shotKeyPressed = false,
             qPress = false;
     // Debugging
     public boolean showDebugText = false;
-    GamePanel gp;
+    public boolean godModeOn;
+
+
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
@@ -49,7 +52,7 @@ public class KeyHandler implements KeyListener {
             pauseState(code);
         }
         // DIALOGUE STATE
-        else if (gp.gameState == gp.dialogueState) {
+        else if (gp.gameState == gp.dialogueState || gp.gameState == gp.cutSceneState) {
             dialogueState(code);
         }
         // CHARACTER STATE
@@ -233,6 +236,7 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.mapState;
         }
 
+
         // DEBUG AND TESTING
         // SHOW MAP DATA ON SCREEN WITH T KEY
         if (code == KeyEvent.VK_T) {
@@ -246,9 +250,20 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_R) {
             switch (gp.currentMap) {
                 case 0: gp.tileM.loadMap("/images/maps/worldMapNew.csv", 0); break;
-                case 1: gp.tileM.loadMap("/images/maps/interior1.csv", 1); break;
+                case 1: gp.tileM.loadMap("/images/maps/interiorHome.csv", 1); break;
+                case 2: gp.tileM.loadMap("/images/maps/interiorSeller.csv", 2); break;
+                case 3: gp.tileM.loadMap("/images/maps/cityMap.csv", 3); break;
+                case 4: gp.tileM.loadMap("/images/maps/bossMap.csv", 4); break;
+                case 5: gp.tileM.loadMap("/images/maps/dungeon.csv", 5); break;
             }
             gp.repaint(); // Force immediate repaint
+        }
+        if(code == KeyEvent.VK_G){
+            if (godModeOn == false) {
+                godModeOn = true;
+            } else if (godModeOn == true) {
+                godModeOn = false;
+            }
         }
 
     }
@@ -462,6 +477,4 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
-
-
 }

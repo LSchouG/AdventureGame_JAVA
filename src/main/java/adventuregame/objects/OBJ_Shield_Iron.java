@@ -2,11 +2,11 @@ package adventuregame.objects;
 
 import adventuregame.entity.Entity;
 
-public class OBJ_Iron_Shield extends Entity{
+public class OBJ_Shield_Iron extends Entity{
 
     public static final String objName =  "Iron Shield";
 
-    public OBJ_Iron_Shield(adventuregame.GamePanel gp){
+    public OBJ_Shield_Iron(adventuregame.GamePanel gp){
          super(gp);
 
          name = objName;

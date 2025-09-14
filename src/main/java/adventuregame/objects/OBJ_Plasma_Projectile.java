@@ -2,10 +2,11 @@ package adventuregame.objects;
 
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
+import adventuregame.entity.Projectile;
 
 import java.awt.*;
 
-public class OBJ_Plasma_Projectile extends Entity{
+public class OBJ_Plasma_Projectile extends Projectile {
     GamePanel gp;
 
     public static final String objName = "Plasma";
