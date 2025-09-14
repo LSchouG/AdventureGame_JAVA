@@ -49,7 +49,7 @@ public class NPC_GirlRed  extends Entity{
 
         dialogues[1][0] = "The village lights welcome us like old friends, hero—my soul sings with joy unspeakable.";
         dialogues[1][1] = "Tears of celebration flow from every face; the terror that gripped us has vanished.";
-        dialogues[1][2] = "In rescuing me, you've mended the fractures in our community's heart."
+        dialogues[1][2] = "In rescuing me, you've mended the fractures in our community's heart.";
         dialogues[1][3] = "Go forth, noble protector of the lost.\nLet your deeds echo through the ages like thunder.";
     }
     public void setAction() {
