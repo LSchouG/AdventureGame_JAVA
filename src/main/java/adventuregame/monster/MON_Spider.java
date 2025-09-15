@@ -46,6 +46,9 @@ public class MON_Spider extends Entity {
         right2 = setup("/images/monster/spider-right2.png", gp.tileSize, gp.tileSize);
         dead = setup("/images/monster/spider-dead.png", gp.tileSize, gp.tileSize);
     }
+    public void getDyingImages() {
+        dead = setup("/images/player/spider-dead.png", gp.tileSize, gp.tileSize);
+    }
     public void setAction(){
         if (onPath == true){
             // CHECK IF STOP CHASING. Distance to play

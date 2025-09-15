@@ -3,11 +3,11 @@ package adventuregame.objects;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
-public class OBJ_BossKey extends Entity {
+public class OBJ_KeyGold extends Entity {
 
-    public static final String objName = "Boss Key";
+    public static final String objName = "Gold Key";
 
-    public OBJ_BossKey(GamePanel gp) {
+    public OBJ_KeyGold(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
@@ -15,8 +15,8 @@ public class OBJ_BossKey extends Entity {
         type = type_consumable;
         lockKeyType = "Boss Key";
         stackable = true;
-        down1 = setup("/images/objects_pickup/key.png", gp.tileSize, gp.tileSize);
-        itemDescription = "A Boss Key";
+        down1 = setup("/images/objects_pickup/key-gold.png", gp.tileSize, gp.tileSize);
+        itemDescription = "A Gold Key";
         setDialogue();
     }
     public void setDialogue() {

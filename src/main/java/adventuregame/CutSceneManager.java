@@ -95,13 +95,15 @@ public class CutSceneManager {
 
             // Search for the dummy
             for (int i = 0; i < gp.npc[1].length; i++) {
-                if (gp.npc[gp.currentMap][i] != null && gp.npc[gp.currentMap][i].name.equals(PlayerDummy.npcName)) {
-                    // RESTOR Player porition
-                    gp.player.worldX = gp.npc[gp.currentMap][i].worldX;
-                    gp.player.worldY = gp.npc[gp.currentMap][i].worldY;
-                    // Delete the dummy
-                    gp.npc[gp.currentMap][i] = null;
-                    break;
+                if (gp.npc[gp.currentMap][i] != null){
+                    if(gp.npc[gp.currentMap][i].name.equals(PlayerDummy.npcName)) {
+                        // RESTOR Player porition
+                        gp.player.worldX = gp.npc[gp.currentMap][i].worldX;
+                        gp.player.worldY = gp.npc[gp.currentMap][i].worldY;
+                        // Delete the dummy
+                        gp.npc[gp.currentMap][i] = null;
+                        break;
+                    }
                 }
             }
 

@@ -505,21 +505,25 @@ public class  Entity {
 
             switch (direction) {
                 case "down":
-                    if (!attacking) {
+                    if (dying) {image = dead;}
+                    else if (!attacking) {
                         if (spriteNumber == 0) image = downStill;
                         if (spriteNumber == 1) image = down1;
                         if (spriteNumber == 2) image = down2;
-                    } else {
+                    }
+                    else {
                         if (spriteNumber == 1) image = attackDown1;
                         if (spriteNumber == 2) image = attackDown2;
                     }
                     break;
                 case "up":
-                    if (!attacking) {
+                    if (dying) {image = dead;}
+                    else if (!attacking) {
                         if (spriteNumber == 0) image = upStill;
                         if (spriteNumber == 1) image = up1;
                         if (spriteNumber == 2) image = up2;
-                    } else {
+                    }
+                    else {
                         tempScreenY = getScreenY() - up2.getHeight();
                         if (spriteNumber == 1) image = attackUp1;
                         if (spriteNumber == 2)  image = attackUp2;
@@ -527,21 +531,25 @@ public class  Entity {
                     }
                     break;
                 case "right":
-                    if (!attacking) {
+                    if (dying) {image = dead;}
+                    else if (!attacking) {
                         if (spriteNumber == 0) image = rightStill;
                         if (spriteNumber == 1) image = right1;
                         if (spriteNumber == 2) image = right2;
-                    } else {
+                    }
+                    else {
                         if (spriteNumber == 1) image = attackRight1;
                         if (spriteNumber == 2) image = attackRight2;
                     }
                     break;
                 case "left":
-                    if (!attacking) {
+                    if (dying) {image = dead;}
+                    else if (!attacking) {
                         if (spriteNumber == 0) image = leftStill;
                         if (spriteNumber == 1) image = left1;
                         if (spriteNumber == 2) image = left2;
-                    } else {
+                    }
+                    else {
                         tempScreenX = getScreenX() - left2.getWidth();
                         if (spriteNumber == 1) image = attackLeft1;
                         if (spriteNumber == 2) image = attackLeft2;
@@ -575,14 +583,12 @@ public class  Entity {
             if (gp.player.guarding == true && gp.player.direction.equals(getOppositeDirection(direction))){
                 // parry
                 if (gp.player.guardCounter < 15){
-                    System.out.println("parry");
                     damage = 0;
                     setKnockback(this, gp.player, gp.player.currentShield.knockBackPower);
                     offBalance = true;
                     spriteCounter =- 60;
                     gp.playSE(17);
                 } else {
-                    System.out.println("normal Guard");
                     // normal Guard
                     damage /= 3;
                     if (damage < 0) {damage = 0;}
@@ -635,6 +641,7 @@ public class  Entity {
             }
         }
     }
+    public void getDyingImages(){}
     public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;

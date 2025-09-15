@@ -11,7 +11,7 @@ public class OBJ_Shield_Iridium extends Entity {
 
         name = objName;
         type = type_shield;
-        down1 = setup("/images/objects_pickup/shield-iron.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_pickup/shield-iridium.png", gp.tileSize, gp.tileSize);
         defenseValue = 2;
         attackArea.width = 36;
         attackArea.height = 36;

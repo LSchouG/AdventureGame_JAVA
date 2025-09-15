@@ -12,7 +12,7 @@ public class OBJ_Sword_Iron extends Entity {
 
         name = objName;
         type = type_sword;
-        down1 = setup("/images/objects_pickup/sword-old.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_pickup/sword-iron.png", gp.tileSize, gp.tileSize);
         attackValue = 10;
         attackArea.width = 36;
         attackArea.height = 36;

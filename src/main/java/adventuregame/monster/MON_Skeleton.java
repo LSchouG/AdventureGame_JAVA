@@ -63,10 +63,17 @@ public class MON_Skeleton extends Entity {
     }
     public void getAttackImages() {
          // IF USING attack-SPECIFIC IMAGES
-        attackUp2 = setup("/images/monster/skeleton-up-attack.png", gp.tileSize, gp.tileSize *2);
-        attackDown2 = setup("/images//monster/skeleton-down-attack.png", gp.tileSize, gp.tileSize *2);
-        attackRight2 = setup("/images/monster/skeleton-right-attack.png", gp.tileSize *2, gp.tileSize);
-        attackLeft2 = setup("/images/monster/skeleton-left-attack.png", gp.tileSize *2, gp.tileSize);
+        attackUp1 = setup("/images/monster/skeleton-up-attack1.png", gp.tileSize, gp.tileSize *2);
+        attackUp2 = setup("/images/monster/skeleton-up-attack2.png", gp.tileSize, gp.tileSize *2);
+        attackDown1 = setup("/images//monster/skeleton-down-attack1.png", gp.tileSize, gp.tileSize *2);
+        attackDown2 = setup("/images//monster/skeleton-down-attack2.png", gp.tileSize, gp.tileSize *2);
+        attackRight1 = setup("/images/monster/skeleton-right-attack1.png", gp.tileSize *2, gp.tileSize);
+        attackRight2 = setup("/images/monster/skeleton-right-attack2.png", gp.tileSize *2, gp.tileSize);
+        attackLeft1 = setup("/images/monster/skeleton-left-attack1.png", gp.tileSize *2, gp.tileSize);
+        attackLeft2 = setup("/images/monster/skeleton-left-attack2.png", gp.tileSize *2, gp.tileSize);
+    }
+    public void getDyingImages() {
+        dead = setup("/images/player/skeleton-dead.png", gp.tileSize, gp.tileSize);
     }
     public void setAction(){
         if (onPath == true){

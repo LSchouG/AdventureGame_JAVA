@@ -5,10 +5,12 @@ import adventuregame.objects.*;
 
 public class NPC_Seller extends Entity{
 
+    public static final  String  npcName = "Seller";
 
     public NPC_Seller(GamePanel gp) {
         super(gp);
         type = type_npc;
+        name = npcName;
         direction = "down"; // default facing direction
         solidArea.x = 0;// goes 0 pixel in from the side
         solidArea.y = 16;// goes 16 pixel down from the top
@@ -48,7 +50,6 @@ public class NPC_Seller extends Entity{
         inventory.add(new OBJ_Potion_Red(gp));
         inventory.add(new OBJ_Sword_Wood(gp));
         inventory.add(new OBJ_Shield_Wood(gp));
-        inventory.add(new OBJ_Boots(gp));
         inventory.add(new OBJ_Shield_Iron(gp));
         inventory.add(new OBJ_Axe(gp));
     }

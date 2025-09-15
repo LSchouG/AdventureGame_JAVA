@@ -308,6 +308,7 @@ public class GamePanel extends JPanel implements Runnable {
             // 5. Draw UI
             ui.draw(g2);
 
+
         // DEBUG - End draw time measurement
         if (keyH.showDebugText) {
             long drawStart = 0;
@@ -361,7 +362,6 @@ public class GamePanel extends JPanel implements Runnable {
         // GET FULL WIDTH AND HEIGHT
         screenWidth2 = AdventureGame.window.getWidth();
         screenHeight2 = AdventureGame.window.getHeight();
-        System.out.println("Fullscreen dimensions: " + screenWidth2 + "x" + screenHeight2);
     }
     public void resetGame(boolean restart){
 
@@ -375,6 +375,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 
         if (restart) {
+            stopMusic();
             // Switch to Home map 1
             currentMap = 1;
             player.setItems();
@@ -382,6 +383,7 @@ public class GamePanel extends JPanel implements Runnable {
             eManager.lighting.resetDay();
             aSetter.setObject();
             aSetter.setInteractiveTiles();
+            gameState = titleState;
         }
     }
     public String convertToColumnLabel(int colNumber) {

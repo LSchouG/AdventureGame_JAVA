@@ -15,7 +15,7 @@ import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
 public class OBJ_Key extends Entity {
-    public static final String objName = "Common Key";
+    public static final String objName = "Iron Key";
 
     public OBJ_Key(GamePanel gp) {
         super(gp);
@@ -25,8 +25,8 @@ public class OBJ_Key extends Entity {
         type = type_consumable;
         lockKeyType = "common";
         stackable = true;
-        down1 = setup("/images/objects_pickup/key.png", gp.tileSize, gp.tileSize);
-        itemDescription = "A common key.";
+        down1 = setup("/images/objects_pickup/key-iron.png", gp.tileSize, gp.tileSize);
+        itemDescription = "A Iron Key.";
         setDialogue();
     }
     public void setDialogue() {

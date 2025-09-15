@@ -8,9 +8,12 @@ public class NPC_GirlBlue extends Entity{
 
     GamePanel gp;
 
+    public static final  String  npcName = "Blue Girl";
+
     public NPC_GirlBlue(GamePanel gp) {
         super(gp);
         this.gp = gp;
+        name = npcName;
         type = type_npc;
         direction = "down"; // default facing direction
         speed = 1;           // slower than player

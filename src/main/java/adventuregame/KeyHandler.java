@@ -303,13 +303,13 @@ public class KeyHandler implements KeyListener {
                 gp.ui.commandNumber--;
                 gp.playSE(12);
                 if (gp.ui.commandNumber < 0) {
-                    gp.ui.commandNumber = 5;
+                    gp.ui.commandNumber = 6;
                 }
             }
             if (code == KeyEvent.VK_S) {
                 gp.ui.commandNumber++;
                 gp.playSE(12);
-                if (gp.ui.commandNumber > 5) {
+                if (gp.ui.commandNumber > 6) {
                     gp.ui.commandNumber = 0;
                 }
             }
@@ -359,6 +359,25 @@ public class KeyHandler implements KeyListener {
 
         // KEYHANDLER FOR SUBSTATE 3 = end game confirmation
         if (gp.ui.subState == 3) {
+            // Press up
+            if (code == KeyEvent.VK_W) {
+                gp.ui.commandNumber--;
+                gp.playSE(12);
+                if (gp.ui.commandNumber < 0) {
+                    gp.ui.commandNumber = 1; // wrap to bottom
+                }
+            }
+            // Press down
+            if (code == KeyEvent.VK_S) {
+                gp.ui.commandNumber++;
+                gp.playSE(12);
+                if (gp.ui.commandNumber > 1) {
+                    gp.ui.commandNumber = 0; // wrap to top
+                }
+            }
+        }
+        // KEYHANDLER FOR SUBSTATE 3 = end game confirmation
+        if (gp.ui.subState == 4) {
             // Press up
             if (code == KeyEvent.VK_W) {
                 gp.ui.commandNumber--;

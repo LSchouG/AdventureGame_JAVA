@@ -36,6 +36,7 @@ public class MON_Bat extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         getImage();
+        getDyingImages();
     }
     public void getImage(){
         up1 = setup("/images/monster/bat-up1.png", gp.tileSize, gp.tileSize);

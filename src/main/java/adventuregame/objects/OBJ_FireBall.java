@@ -27,9 +27,8 @@ public class OBJ_FireBall extends Projectile {
     }
 
     public void getImage(){
-
         down1 = setup("/images/attack/fireball-down-1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/images/attack/fireball-down-1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/images/attack/fireball-down-2.png", gp.tileSize, gp.tileSize);
         up1 = setup("/images/attack/fireball-up-1.png", gp.tileSize, gp.tileSize);
         up2 = setup("/images/attack/fireball-up-2.png", gp.tileSize, gp.tileSize);
         left1 = setup("/images/attack/fireball-left-1.png", gp.tileSize, gp.tileSize);
@@ -47,9 +46,16 @@ public class OBJ_FireBall extends Projectile {
         }
         return haveResource;
     }
-
     public void subtractResource(Entity user){
+        if (user == gp.player) {
+            System.out.println("gp.player Before subtractResource, mana: " + gp.player.mana);
             gp.player.mana -= useCost;
+            System.out.println("gp.player After subtractResource, mana: " + gp.player.mana);
+        } else {
+            System.out.println("else Before subtractResource, user mana: " + user.mana);
+            user.mana -= useCost;
+            System.out.println(" else After subtractResource, user mana: " + user.mana);
+        }
     }
     public Color getParticalColor(){
         Color color = new Color(0xea481b);

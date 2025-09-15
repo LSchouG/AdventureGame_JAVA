@@ -330,70 +330,91 @@ public class UI {
     public void drawPlayerLifeAndMana() {
         //DRAW LIFE
         // DRAW BLANK HEARTS FIRST
-        int x = gp.tileSize / 2;
-        int y = (gp.tileSize / 2) - 10;
+        final int xDefault = gp.tileSize / 2;
+        final int yDefault = (gp.tileSize / 2) - 10;
+        int x = xDefault;
+        int y = yDefault;
         int i = 0;
         int iconSize = 32;
-        int manaStartX = (gp.tileSize/2)-5;
+        int maxCrystals = gp.player.maxMana / 2;
+        int currentMana = gp.player.mana;
+        int manaStartX = (gp.tileSize / 2) - 5;
         int manaStartY = 0;
 
+
+        // Draw blank hearts
         while (i < gp.player.maxLife / 2) {
-            g2.drawImage(blankHeart, x, y,iconSize,iconSize, null);
+            g2.drawImage(blankHeart, x, y, iconSize, iconSize, null);
             i++;
             x += iconSize;
             manaStartY = y + iconSize;
-            if(i % 8 == 0){
-                x = gp.tileSize/2;
+            if (i % 8 == 0) {
+                x = gp.tileSize / 2;
                 y += iconSize;
             }
         }
 
-        //RESET
-        x = gp.tileSize/2;
-        y = gp.tileSize/2;
+       // RESET
+        x = xDefault;
+        y = yDefault;
         i = 0;
+        int lifeRemaining = gp.player.life;
 
-        // DRAW HALF-HEARTS
-        while (i < gp.player.life) {
-            g2.drawImage(halfHeart, x, y, null);
-            i++;
-            // DRAW FULL HEARTS
-            if (i < gp.player.life) {
-                g2.drawImage(fullHeart, x, y, null);
+        // Draw full and half hearts on top
+        while (i < gp.player.maxLife / 2) {
+            if (lifeRemaining >= 2) {
+                g2.drawImage(fullHeart, x, y, iconSize, iconSize, null);
+                lifeRemaining -= 2;
+            } else if (lifeRemaining == 1) {
+                g2.drawImage(halfHeart, x, y, iconSize, iconSize, null);
+                lifeRemaining -= 1;
             }
             i++;
-            x += gp.tileSize;
+            x += iconSize;
+            if (i % 8 == 0) {
+                x = gp.tileSize / 2;
+                y += iconSize;
+            }
         }
-
 
         //DRAW MANA
         // DRAW BLANK CRYSTALS FIRST
-        x = gp.tileSize / 2;
-        y = (gp.tileSize * 2) - 25;
+        x = xDefault +1;
+        int tempy = y + iconSize +4;
         i = 0;
 
-        while (i < gp.player.maxMana / 2) {
-            g2.drawImage(blankCrystal, x, y, null);
+        // Draw blank crystals
+        while (i < maxCrystals) {
+            g2.drawImage(blankCrystal, x, tempy, iconSize, iconSize, null);
             i++;
-            x += 35;
+            x += iconSize;
+            if (i % 8 == 0) {
+                x = xDefault;
+                y += iconSize;
+            }
         }
 
-        //RESET
-        x = gp.tileSize / 2;
-        y = (gp.tileSize * 2) - 25;
+        // RESET
+        x = xDefault +1;
+        y = tempy;
         i = 0;
 
-        while (i < gp.player.mana) {
-            g2.drawImage(halfCrystal, x, y, null);
-            i++;
-            // DRAW FULL HEARTS
-            if (i < gp.player.mana) {
-                g2.drawImage(fullCrystal, x, y, null);
+        // Draw full and half crystals on top
+        while (i < maxCrystals) {
+            if (currentMana >= 2) {
+                g2.drawImage(fullCrystal, x, y, iconSize, iconSize, null);
+                currentMana -= 2;
+            } else if (currentMana == 1) {
+                g2.drawImage(halfCrystal, x, y, iconSize, iconSize, null);
+                currentMana -= 1;
             }
             i++;
-            x += 35;
+            x += iconSize;
+            if (i % 8 == 0) {
+                x = xDefault;
+                y += iconSize;
+            }
         }
-
     }
     public void drawMessage() {
 
@@ -402,7 +423,6 @@ public class UI {
         g2.setFont(onScreenPopUpFont);
 
         //DEBUG
-        // System.out.println("message.size(): " + message.size());
 
         for (int i = 0; i < message.size(); i++) {
             if (message.get(i) != null) {
@@ -551,7 +571,6 @@ public class UI {
         x += gp.tileSize;
         y += gp.tileSize;
 
-        System.out.println(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] );
 
         if(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null){
 
@@ -587,25 +606,14 @@ public class UI {
             }
         }
 
-        System.out.println(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] );
         for (String line : currentDialogue.split("\n")) {
             g2.drawString(line, x, y);
             y += 30;
-
-            System.out.println(currentDialogue.split("\n") );
-            System.out.println(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] );
-            System.out.println(line);
         }
-
     }
     public void drawOptionMenuScreen() {
         g2.setColor(menuAndDialogFontColor);
         g2.setFont(menuFontP);
-
-        // Full SCREEN OPTION MENU
-        //g2.setColor(new Color(0, 0, 0));
-        //g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-
         // SUBWINDOW
         int frameX = gp.tileSize * 6;
         int frameY = gp.tileSize;
@@ -625,6 +633,9 @@ public class UI {
                 break;
             case 3:
                 options_endGameConfirmation(frameX, frameY);
+                break;
+            case 4:
+                options_saveGame(frameX, frameY);
                 break;
         }
 
@@ -830,7 +841,6 @@ public class UI {
                 if(npc.inventory.get(itemIndex).Price > gp.player.gold){
                     npc.startDialogue(npc,2);
                     subState = 1;
-                    System.out.println("  inside  npc.startDialogue(npc,2); " + gp.gameState);
                 } else
                 {
                     if(gp.player.canObtainItem(npc.inventory.get(itemIndex)) == true){
@@ -838,7 +848,6 @@ public class UI {
                     } else {
                         npc.startDialogue(npc,3);
                         subState = 1;
-                        System.out.println(" inside  npc.startDialogue(npc,3, gp.gameState);" + gp.gameState);
                     }
                 }
             }
@@ -963,7 +972,7 @@ public class UI {
         // FULL SCREEN ON/OFF
         text = "Full Screen";
         textX = frameX + gp.tileSize;
-        textY += gp.tileSize * 2;
+        textY += (gp.tileSize*2)-(gp.tileSize/2);
         g2.drawString(text, textX, textY);
         if (commandNumber == 0) {
             g2.drawString(">", textX - (gp.tileSize / 2), textY);
@@ -1008,6 +1017,7 @@ public class UI {
             }
         }
 
+
         // END GAME
         text = "End game";
         textX = frameX + gp.tileSize;
@@ -1020,13 +1030,25 @@ public class UI {
                 commandNumber = 0;
             }
         }
+        // END GAME
+        text = "Save game";
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize;
+        g2.drawString(text, textX, textY);
+        if (commandNumber == 5) {
+            g2.drawString(">", textX - (gp.tileSize / 2), textY);
+            if (gp.keyH.enterPressed == true) {
+                subState = 4;
+                commandNumber = 0;
+            }
+        }
 
         // BACK
         text = "Back";
         textX = frameX + gp.tileSize;
-        textY += gp.tileSize * 2;
+        textY += (gp.tileSize*2)-(gp.tileSize/2);
         g2.drawString(text, textX, textY);
-        if (commandNumber == 5) {
+        if (commandNumber == 6) {
             g2.drawString(">", textX - (gp.tileSize / 2), textY);
             if (gp.keyH.enterPressed == true) {
                 gp.gameState = gp.playState;
@@ -1036,7 +1058,7 @@ public class UI {
 
         // FULL SCREEN CHECK BOX
         textX = frameX + (int) (gp.tileSize * 4.8);
-        textY = frameY + gp.tileSize * 3 - 22;
+        textY = frameY +(gp.tileSize*2) + 4;
         g2.setStroke(new BasicStroke(3));
         g2.drawRect(textX, textY, 24, 24);
         if (gp.fullScreen == true) {
@@ -1120,10 +1142,11 @@ public class UI {
             g2.drawString(line, textX, textY);
             textY += 40;
         }
+
         // Yes
         String text = "Yes";
         textX = getXForCenter(text);
-        textY = frameY + (gp.tileSize * 6);
+        textY = frameY + (gp.tileSize * 7);
         g2.drawString(text, textX, textY);
         if (commandNumber == 0) {
             g2.drawString(">", textX - gp.tileSize / 2, textY);
@@ -1138,7 +1161,7 @@ public class UI {
         // NO
         String text2 = "No";
         textX = getXForCenter(text2);
-        textY = frameY + (gp.tileSize * 8);
+        textY = textY + (gp.tileSize);
         g2.drawString(text2, textX, textY);
         if (commandNumber == 1) {
             g2.drawString(">", textX - gp.tileSize / 2, textY);
@@ -1147,7 +1170,43 @@ public class UI {
                 commandNumber = 4;
             }
         }
-        System.out.println(gp.ui.commandNumber);
+    }
+    public void options_saveGame(int frameX, int frameY) {
+        int textX = frameX + gp.tileSize;
+        int textY = frameY + gp.tileSize * 3;
+
+        currentDialogue = "Do you want to \nsave the game?";
+
+        for (String line : currentDialogue.split("\n")) {
+            g2.drawString(line, textX, textY);
+            textY += 40;
+        }
+
+        // Yes
+        String text = "Yes";
+        textX = getXForCenter(text);
+        textY = frameY + (gp.tileSize * 7);
+        g2.drawString(text, textX, textY);
+        if (commandNumber == 0) {
+            g2.drawString(">", textX - gp.tileSize / 2, textY);
+            if (gp.keyH.enterPressed == true) {
+                subState = 0;
+                gp.saveLoad.save();
+            }
+        }
+
+        // NO
+        String text2 = "No";
+        textX = getXForCenter(text2);
+        textY = textY + (gp.tileSize);
+        g2.drawString(text2, textX, textY);
+        if (commandNumber == 1) {
+            g2.drawString(">", textX - gp.tileSize / 2, textY);
+            if (gp.keyH.enterPressed == true) {
+                subState = 0;
+                commandNumber = 5;
+            }
+        }
     }
     public void options_fullScreenNotification(int frameX, int frameY) {
 

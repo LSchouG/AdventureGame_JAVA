@@ -31,7 +31,10 @@ public class SaveLoad {
             for (int i = 0; i < gp.player.inventory.size() ; i++){
                 ds.itemName.add(gp.player.inventory.get(i).name);
                 ds.itemAmount.add(gp.player.inventory.get(i).amount);
+                System.out.println("(gp.player.inventory.get(i).amount   " + gp.player.inventory.get(i).amount);
             }
+
+
             // PLAYER EQUIPMENT SLOT NUMBER
             ds.currentWeaponSlot = gp.player.getCurrentWeaponSlot();
             ds.getCurrentShieldSlot = gp.player.getCurrentShieldSlot();
@@ -60,6 +63,8 @@ public class SaveLoad {
 
             // WRITE TO DATASTORAGE OBJECT
             oos.writeObject(ds);
+            oos.close();
+            System.out.println("Save completed successfully");
         } catch (Exception e) {
             System.out.println("Save Error: " + e.getMessage());
             e.printStackTrace();

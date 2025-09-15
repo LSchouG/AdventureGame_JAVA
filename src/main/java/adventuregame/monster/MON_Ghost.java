@@ -32,6 +32,7 @@ public class MON_Ghost extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         getImage();
+        getDyingImages();
     }
     public void getImage(){
         up1 = setup("/images/monster/ghost-up1.png", gp.tileSize, gp.tileSize);

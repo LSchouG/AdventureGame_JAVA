@@ -32,6 +32,9 @@ public class TileManager {
         loadMap("/maps/cityMap.csv", 3);
         loadMap("/maps/bossMap.csv", 4);
         loadMap("/maps/dungeon.csv", 5);
+        loadMap("/maps/interiorOldWoman.csv", 6);
+        loadMap("/maps/interiorOldMan.csv", 7);
+        loadMap("/maps/interiorOldWomanAndMan.csv", 8);
 
     }
     public void getTileImage() {
@@ -51,15 +54,13 @@ public class TileManager {
         setup(6, "tree", true);
         setup(7, "rock", true);
         setup(8, "house", false);
-        setup(9, "grass-pit", false);
-        setup(10, "grass-teleport", false);
         setup(11, "grass", false);
 
         //WATER
         setup(11, "water", true);
         //SAND
         setup(12, "sand", false);
-        setup(14, "sand", false);
+        setup(19, "sand", true);
         // Black
         setup(13, "black", true);
         // dungeon

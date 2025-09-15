@@ -11,8 +11,7 @@
 
 package adventuregame;
 
-import adventuregame.entity.NPC_BigRock;
-import adventuregame.entity.NPC_Seller;
+import adventuregame.entity.*;
 import adventuregame.monster.*;
 import adventuregame.objects.*;
 import adventuregame.data.Progress;
@@ -36,8 +35,7 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldX = gp.tileSize * 59;
         gp.obj[mapNum][i].worldY = gp.tileSize * 16;
         i++;*/
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);          // BOOTS
-        gp.obj[mapNum][i].setLoot(new OBJ_Boots(gp));
+        gp.obj[mapNum][i] = new OBJ_Chest(gp);
         gp.obj[mapNum][i].worldX = gp.tileSize * 68;
         gp.obj[mapNum][i].worldY = gp.tileSize * 59;
         i++;
@@ -51,31 +49,20 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldX = gp.tileSize * 72;
         gp.obj[mapNum][i].worldY = gp.tileSize * 46;
 
+        // PLACE OBJECTS ON MAP 1                       Home
+        i = 0;    mapNum = 1;
+        gp.obj[mapNum][i] = new OBJ_Chest(gp); // Starter items
+        gp.obj[mapNum][i].setLoot(new OBJ_Shield_Wood(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 15;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Chest(gp); // Starter items
+        gp.obj[mapNum][i].setLoot(new OBJ_Sword_Wood(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 16;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
 
 
         // PLACE OBJECTS ON MAP 3                            TOWN
-        mapNum = 3;   i = 0;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        OBJ_Potion_Red potionRed = new OBJ_Potion_Red(gp);
-        potionRed.amount = 5;
-        gp.obj[mapNum][i].setLoot(potionRed);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 20;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 31;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Axe(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 36;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 63;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Boots(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 68;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 59;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Key(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 19;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 31;
 
 
         // PLACE OBJECTS ON MAP 4                                BOSS
@@ -139,14 +126,55 @@ public class AssetSetter {
         gp.npc[mapNum][i].worldY = gp.tileSize * 20;
 
 
+
+
+        // PLACE NPC ON MAP 3                             Villages
+        mapNum = 3;
+        i = 0;
+
+        gp.npc[mapNum][i] = new NPC_OldManStill(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 18;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 30;
+
         if(Progress.bossDeleated == true){
-
-        } else {
-
+            gp.npc[mapNum][i] = new NPC_GirlBlue(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 18;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 35;
+            i++;
+            gp.npc[mapNum][i] = new NPC_GirlRed(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 25;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 35;
+            i++;
+            gp.npc[mapNum][i] = new NPC_GirlYellow(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 21;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 25;
+            i++;
+            gp.npc[mapNum][i] = new NPC_GirlGreen(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 24;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 20;
         }
 
 
+        // PLACE OBJECTS ON MAP 4                            BOSS ROOM
+        mapNum = 4;   i = 0;
 
+        if(Progress.bossDeleated == false) {
+            gp.npc[mapNum][i] = new NPC_GirlBlue(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 25;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 12;
+            i++;
+            gp.npc[mapNum][i] = new NPC_GirlRed(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 26;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 12;
+            i++;
+            gp.npc[mapNum][i] = new NPC_GirlYellow(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 27;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 12;
+            i++;
+            gp.npc[mapNum][i] = new NPC_GirlGreen(gp);
+            gp.npc[mapNum][i].worldX = gp.tileSize * 28;
+            gp.npc[mapNum][i].worldY = gp.tileSize * 12;
+        }
         // PLACE OBJECTS ON MAP 5                             DUNGEON
         mapNum = 5;   i = 0;
 
@@ -161,6 +189,29 @@ public class AssetSetter {
         gp.npc[mapNum][i] = new NPC_BigRock(gp);
         gp.npc[mapNum][i].worldX = gp.tileSize * 16;
         gp.npc[mapNum][i].worldY = gp.tileSize * 58;
+
+
+        // PLACE OBJECTS ON MAP OldWoman.csv", 6                            DUNGEON
+        mapNum = 6;   i = 0;
+        gp.npc[mapNum][i] = new NPC_OldWoman(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 17;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 22;
+
+        // PLACE OBJECTS ON MAP OldMan.csv", 7                          DUNGEON
+        mapNum = 7;   i = 0;
+        gp.npc[mapNum][i] = new NPC_OldMan(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 15;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 22;
+
+        // PLACE OBJECTS ON MAP OldWomanAndMan.csv", 8                            DUNGEON
+        mapNum = 8;   i = 0;
+        gp.npc[mapNum][i] = new NPC_OldMan(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 15;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 22;
+        i++;
+        gp.npc[mapNum][i] = new NPC_OldWoman(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 17;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 22;
     }
     public void setMonster(){
 
@@ -243,10 +294,11 @@ public class AssetSetter {
 
         // PLACE MONSTER ON MAP 4                             Boss
         mapNum = 4;   i = 0;
-        gp.monster[mapNum][i] = new MON_BOSS(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 28;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 21;
-        i++;
+        if(Progress.bossDeleated == false){
+            gp.monster[mapNum][i] = new MON_BOSS(gp);
+            gp.monster[mapNum][i].worldX = gp.tileSize * 28;
+            gp.monster[mapNum][i].worldY = gp.tileSize * 21;
+        }
 
         // PLACE MONSTER ON MAP 5                             DUNGEON
         mapNum = 5;   i = 0;

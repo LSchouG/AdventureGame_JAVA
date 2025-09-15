@@ -103,18 +103,31 @@ public class EventHandler {
         // create event for intaeractiv
         if (canTouchEvent){
 
-            // TELEPORT
+            // TELEPORT village
+            if (hit(1,16, 27, "any")) {teleport( 3,gp.outSide, 15, 31);} // from home to village
+            else if (hit(3,15, 31, "any")) {teleport( 1,gp.indoor,16, 27);} // from village to home
 
-            if (hit(1,16, 27, "any")) {teleport( 3,gp.outSide, 15, 31);} // from home to City
-            else if (hit(3,15, 31, "any")) {teleport( 1,gp.indoor,16, 27);} // from City to home
-            else if (hit(2, 16, 27, "any")) {teleport( 3,gp.outSide,19, 28);} // from Seller to City
-            else if (hit(3,19, 28, "any")) {teleport( 2,gp.indoor, 16, 27);} // from city to seller
-            else if (hit(3,21, 40, "any")) {teleport( 0,gp.outSide, 12, 36);} // from City to map
-            else if (hit(0,12, 36, "any")) {teleport( 3,gp.outSide, 21, 40);} // from map to City
+            else if (hit(2, 16, 27, "any")) {teleport( 3,gp.outSide,19, 28);} // from Seller to village
+            else if (hit(3,19, 28, "any")) {teleport( 2,gp.indoor, 16, 27);} // from village to seller
+
+            else if (hit(6, 16, 27,"any")) {teleport( 3,gp.outSide,22, 18);} // from OldWoman to village
+            else if (hit(3,22, 18, "any")) {teleport( 6,gp.indoor, 16, 27);} // from village to OldWoman
+
+            else if (hit(7, 16, 27, "any")) {teleport( 3,gp.outSide,18, 24);} // from OldMan to village
+            else if (hit(3,18, 24, "any")) {teleport( 7,gp.indoor, 16, 27);} // from village to OldMan
+
+            else if (hit(8, 16, 27, "any")) {teleport( 3,gp.outSide,26, 30);} // from OldManAndWoman to village
+            else if (hit(3,26, 30, "any")) {teleport( 8,gp.indoor, 16, 27);} // from village to OldManAndWoman
+
+            // TELEPORT outside the village
+            else if (hit(3,21, 39, "any")) {teleport( 0,gp.outSide, 13, 36);} // from village to map
+            else if (hit(0,12, 36, "any")) {teleport( 3,gp.outSide, 21, 40);} // from map to village
+
             else if (hit(0,67, 18, "any")) {teleport( 5,gp.dungeon, 41, 60);} // from map to dungeon
             else if (hit(5,41, 60, "any")) {teleport( 0,gp.outSide, 67, 18);} // from dungeon to map
-            else if (hit(5,81, 40 ,"any")) {teleport( 4,gp.dungeon, 27, 46);} // from dungeon to bossMap
-            else if (hit(4,27, 46, "any")) {teleport( 5,gp.dungeon, 81, 40);} // from bossMap to dungeon
+
+            else if (hit(5,81, 41 ,"any")) {teleport( 4,gp.dungeon, 27, 46);} // from dungeon to bossMap
+            else if (hit(4,27, 46, "any")) {teleport( 5,gp.dungeon, 81, 41);} // from bossMap to dungeon
 
             // SPeak to Seller
             else if (hit(2,16, 22, "any")) {speak(gp.npc[2][0]);} // from map to City
@@ -174,7 +187,6 @@ public class EventHandler {
                     interact = true;
                     previousEventX = gp.player.worldX;
                     previousEventY = gp.player.worldY;
-                    // Optional: System.out.println("Interaction triggered at col " + col + ", row " + row);
                 }
             }
 

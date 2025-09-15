@@ -12,7 +12,6 @@ public class EntityGenerator {
         Entity obj = null;
         switch (itemName){
             case OBJ_Axe.objName: obj = new OBJ_Axe(gp); break;
-            case OBJ_Boots.objName: obj = new OBJ_Axe(gp); break;
             case OBJ_Chest.objName: obj = new OBJ_Chest(gp); break;
             case OBJ_Coin_Bronze.objName: obj = new OBJ_Coin_Bronze(gp); break;
             case OBJ_Crystal.objName: obj = new OBJ_Crystal(gp); break;
@@ -29,7 +28,7 @@ public class EntityGenerator {
             case OBJ_Sword_Wood.objName: obj = new OBJ_Sword_Wood(gp); break;
             case OBJ_Tent.objName: obj = new OBJ_Tent(gp); break;
             case OBJ_Pickaxe.objName: obj = new OBJ_Pickaxe(gp); break;
-            case OBJ_BossKey.objName: obj = new OBJ_BossKey(gp); break;
+            case OBJ_KeyGold.objName: obj = new OBJ_KeyGold(gp); break;
             case OBJ_Sword_Iridium.objName: obj = new OBJ_Sword_Iridium(gp); break;
             case OBJ_IronDoor.objName: obj = new OBJ_IronDoor(gp); break;
             case OBJ_Shield_Iridium.objName: obj = new OBJ_Shield_Iridium(gp); break;

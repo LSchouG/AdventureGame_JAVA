@@ -5,14 +5,14 @@ import adventuregame.entity.Entity;
 
 public class OBJ_Sword_Wood extends Entity {
 
-    public static final String objName =  "Iron Sword";
+    public static final String objName =  "Wooden Sword";
 
    public OBJ_Sword_Wood(GamePanel gp) {
        super(gp);
 
        name = objName;
        type = type_sword;
-       down1 = setup("/images/objects_pickup/sword-old.png", gp.tileSize, gp.tileSize);
+       down1 = setup("/images/objects_pickup/sword-wood.png", gp.tileSize, gp.tileSize);
        attackValue = 1;
        attackArea.width = 36;
        attackArea.height = 36;
@@ -21,7 +21,7 @@ public class OBJ_Sword_Wood extends Entity {
        motion1_duration = 5;
        motion2_duration = 20;
        itemTitle = "[" + name + "]";
-       itemDescription = "An old sword." +
+       itemDescription = "An Wooden sword." +
                "\nAttack Value: " + attackValue + "\nAttack range: " + attackArea.width;
 
    }

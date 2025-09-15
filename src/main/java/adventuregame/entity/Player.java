@@ -101,6 +101,9 @@ public class Player extends Entity {
             attackRight2 = setup("/images/player/pickaxe-right2.png", gp.tileSize * 2, gp.tileSize);
         }
     }
+    public void getDyingImages() {
+        dead = setup("/images/player/player-dead.png", gp.tileSize, gp.tileSize);
+    }
     public void getGuardImages() {
         guardUp = setup("/images/player/guard-up.png", gp.tileSize, gp.tileSize);
         guardDown = setup("/images/player/guard-down.png", gp.tileSize, gp.tileSize);
@@ -111,9 +114,9 @@ public class Player extends Entity {
         //setDefaultPositions() Change to this when the game is finished
         //worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
       //  worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
-       worldX = gp.tileSize * 28;  // manually set the start position, remove when the game is finished
-        worldY = gp.tileSize * 46;  // manually set the start position, remove when the game is finished
-        gp.currentMap = 4;             //  Bed 1 manually set the start map, remove when the game is finished
+       worldX = gp.tileSize * 17;  // manually set the start position, remove when the game is finished
+        worldY = gp.tileSize * 21;  // manually set the start position, remove when the game is finished
+        gp.currentMap = 1;             //  Bed 1 manually set the start map, remove when the game is finished
         defaultSpeed = 10;
         speed = defaultSpeed;
         direction = "down";
@@ -126,7 +129,7 @@ public class Player extends Entity {
         maxAmmo = 20;
         ammo = 5;
         level = 1;
-        strength = 6;
+        strength = 60;
         dexterity = 5;
         magic = 1;
         exp = 0;
@@ -207,7 +210,7 @@ public class Player extends Entity {
         inventory.add(currentShield); // ADD STARTING SHIELD
         inventory.add(new OBJ_Lantern(gp));
         inventory.add(new OBJ_Pickaxe(gp));
-        inventory.add(new OBJ_BossKey(gp));
+        inventory.add(new OBJ_KeyGold(gp));
         inventory.add(new OBJ_Key(gp));
         inventory.add(new OBJ_Key(gp));
         inventory.add(new OBJ_Axe(gp));
@@ -385,7 +388,7 @@ public class Player extends Entity {
         }
 
         // CLAMP MANA TO MAX
-        if (maxMana > mana) {
+        if (mana > maxMana) {
             mana = maxMana;
         }
 
