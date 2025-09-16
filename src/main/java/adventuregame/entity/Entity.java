@@ -18,7 +18,6 @@ import adventuregame.UtilityTool;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -92,7 +91,8 @@ public class  Entity {
     public int attack;
     public int  defense;
     public int  magic;
-    public  int exp;
+    public int exp;
+    public int baseXP;
     public int nextLevelExp;
     public int  gold;
     public int Price;
@@ -126,7 +126,7 @@ public class  Entity {
     public int knockBackPower = 0;
     public boolean stackable = false;
     public int amount = 1;
-    public int lightRadius;
+    public int lightRadius = 0;
 
     // TYPE
     public int type;// 0 = player, 1 = npc, 2 = monster
@@ -231,40 +231,48 @@ public class  Entity {
         Color color = null;
         return color;
     }
-    public int getParticalSize(){
+    public int getParticleSize(){
         int size = 0;
         return size;
     }
-    public int getParticalSpeed(){
+    public int getParticleSpeed(){
         int speed = 0;
         return speed;
     }
-    public int getParticalMaxLife(){
+    public int getParticleMaxLife(){
         int maxLife = 0;
         return maxLife;
     }
-    public int getDetected(Entity user,Entity target[][], String targetName ){
-
-        int index = 999;
-
-        // check the sureounding object
+    public int getDetected(Entity user, Entity target[][], String targetName) {
+        // Project the user's position forward based on direction
         int nextWorldX = user.getLeftX();
         int nextWorldY = user.getTopY();
+        int index = 999;
 
-        switch(user.direction){
-            case "up": nextWorldY = user.getTopY()-gp.player.speed;break;
-            case "down": nextWorldY = user.getRBottomY()+gp.player.speed;break;
-            case "left": nextWorldX = user.getLeftX()-gp.player.speed;break;
-            case "right": nextWorldX = user.getRightX()+gp.player.speed;break;
+        switch (user.direction) {
+            case "up": nextWorldY = user.getTopY() - gp.player.speed; break;
+            case "down": nextWorldY = user.getRBottomY() + gp.player.speed; break;
+            case "left": nextWorldX = user.getLeftX() - gp.player.speed; break;
+            case "right": nextWorldX = user.getRightX() + gp.player.speed; break;
         }
-        int col = nextWorldX/gp.tileSize;
-        int row = (nextWorldY/gp.tileSize)-1;
 
-        for (int i = 0; i < target[1].length; i++){
-            if(target[gp.currentMap][i] != null){
-                if(target[gp.currentMap][i].getCol() == col &&
-                        target[gp.currentMap][i].getRow() == row &&
-                        target[gp.currentMap][i].name.equals(targetName)){
+        // Calculate the exact adjacent tile (clamped to map bounds)
+        int col = Math.max(0, Math.min(gp.maxWorldCol - 1, nextWorldX / gp.tileSize));
+        int row = Math.max(0, Math.min(gp.maxWorldRow - 1, nextWorldY / gp.tileSize));  // No -1 offset
+
+        // Log all potential targets in the current map for comparison
+        for (int i = 0; i < target[gp.currentMap].length; i++) {
+            if (target[gp.currentMap][i] != null) {
+            }
+        }
+
+        // Search only in the projected single tile
+        for (int i = 0; i < target[gp.currentMap].length; i++) {
+            if (target[gp.currentMap][i] != null) {
+                int targetCol = target[gp.currentMap][i].getCol();
+                int targetRow = target[gp.currentMap][i].getRow();
+
+                if (targetCol == col && targetRow == row && target[gp.currentMap][i].name.equals(targetName)) {
                     index = i;
                     break;
                 }
@@ -632,12 +640,12 @@ public class  Entity {
     public void checkDrop() {}
     public void dropItem(Entity droppedItem) {
 
-        for (int i = 0; i < gp.player.inventory.size(); i++) {
+        for (int i = 0; i < gp.obj[gp.currentMap].length; i++) {
             if (gp.obj[gp.currentMap][i] == null) {
-               gp.obj[gp.currentMap][i] = droppedItem;
-               gp.obj[gp.currentMap][i].worldX = worldX; // dead monsters WorldX
-               gp.obj[gp.currentMap][i].worldY = worldY;
-               break;
+                gp.obj[gp.currentMap][i] = droppedItem;
+                gp.obj[gp.currentMap][i].worldX = worldX; // monster's position
+                gp.obj[gp.currentMap][i].worldY = worldY;
+                break;
             }
         }
     }
@@ -733,9 +741,9 @@ public class  Entity {
     public void generatePartical(Entity generator, Entity target){
 
         Color color = generator.getParticalColor();
-        int size = generator.getParticalSize();
-        int speed = generator.getParticalSpeed();
-        int maxLife = generator.getParticalMaxLife();
+        int size = generator.getParticleSize();
+        int speed = generator.getParticleSpeed();
+        int maxLife = generator.getParticleMaxLife();
 
         Particle p1 = new Particle(gp,target,color,size,speed,maxLife, -2, -1); // TOP LEFT
         Particle p2 = new Particle(gp,target,color,size,speed,maxLife, 2, -1); // TOP RIGTH
@@ -805,12 +813,6 @@ public class  Entity {
                     direction = "right";
                 }
             }
-            // if reached the goal, stop the pathfinder
-//            int nextCol = gp.pfinder.pathList.get(0).col;
-//            int nextRow = gp.pfinder.pathList.get(0).row;
-//            if (nextCol == goalCol && nextRow == goalRow){
-//                onPath = false;
-//            }
         }
     }
     public void setLoot(Entity loot) {
@@ -818,5 +820,7 @@ public class  Entity {
     public int getParticalLife(){
         int life = 0;
         return life;
+    }
+    public void setItems() {
     }
 }

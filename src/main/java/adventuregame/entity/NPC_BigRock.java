@@ -1,13 +1,12 @@
 package adventuregame.entity;
 
 import adventuregame.GamePanel;
-import adventuregame.objects.OBJ_IronDoor;
+import adventuregame.objects.OBJ_DoorIron;
 import adventuregame.tile_interactive.IT_MetalPlate;
 import adventuregame.tile_interactive.InteractiveTile;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class NPC_BigRock extends Entity{
 
@@ -102,17 +101,15 @@ public class NPC_BigRock extends Entity{
             int yDistance = Math.abs(worldY - plateList.get(i).worldY);
             int distance = Math.max(xDistance, yDistance);
 
-            System.out.println("distance for " + distance + "  I  " + i);
+
             if (distance < 8){
                 if(linkedEntity == null){
                     linkedEntity = plateList.get(i);
                     gp.playSE(3);
-                    System.out.println("they a Linked!!");
                 }
             } else {
                 if(linkedEntity == plateList.get(i)){
                     linkedEntity = null;
-                    System.out.println("they a notw Linked!!");
                 }
             }
         }
@@ -127,7 +124,7 @@ public class NPC_BigRock extends Entity{
         if (count == rockList.size()) {
 
             for(int i = 0; i < gp.obj[1].length; i++){
-                if(gp.obj[gp.currentMap][i] != null && gp.obj[gp.currentMap][i].name.equals((OBJ_IronDoor.objName))){
+                if(gp.obj[gp.currentMap][i] != null && gp.obj[gp.currentMap][i].name.equals((OBJ_DoorIron.objName))){
                     gp.obj[gp.currentMap][i] = null;
                     gp.playSE(21);
                 }

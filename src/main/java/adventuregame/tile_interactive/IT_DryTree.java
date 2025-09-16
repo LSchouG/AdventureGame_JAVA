@@ -41,15 +41,15 @@ public class IT_DryTree extends InteractiveTile{
         Color color = new Color(65,50,30);
         return color;
     }
-    public int getParticalSize(){
+    public int getParticleSize(){
         int size = 6;
         return size;
     }
-    public int getParticalSpeed(){
+    public int getParticleSpeed(){
         int speed = 1;
         return speed;
     }
-    public int getParticalMaxLife(){
+    public int getParticleMaxLife(){
         int maxLife = 15;
         return maxLife;
     }

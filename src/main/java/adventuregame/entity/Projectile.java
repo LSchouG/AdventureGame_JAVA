@@ -15,7 +15,8 @@ public class Projectile extends Entity{
         this.alive = alive;
         this.user = user;
         this.life = this.maxLife;
-        System.out.println("Projectile set, direction: " + direction);
+    }
+    public void setAttack(){
     }
     public void update(){
 
@@ -68,13 +69,9 @@ public class Projectile extends Entity{
     }
     public void subtractResource(Entity user){
         if (user == gp.player) {
-            System.out.println("gp.player Before subtractResource, mana: " + gp.player.mana);
             gp.player.mana -= useCost;
-            System.out.println("gp.player After subtractResource, mana: " + gp.player.mana);
         } else {
-            System.out.println("else Before subtractResource, user mana: " + user.mana);
             user.mana -= useCost;
-            System.out.println(" else After subtractResource, user mana: " + user.mana);
         }
     }
 }

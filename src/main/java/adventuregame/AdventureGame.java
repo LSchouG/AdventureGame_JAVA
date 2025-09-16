@@ -12,19 +12,18 @@
  *******************************************************************************/
 package adventuregame;
 
-import javax.swing.JFrame;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 
 public class AdventureGame {
 
     public static JFrame window;
 
-    /**************************************************************************
-     * Method: main(String[] args)
-     * Purpose: Program entry point. Creates and displays the game window.
-     * Inputs:  args[] - command line arguments (unused)
-     * Outputs: Initializes and displays the game GUI
-     ***************************************************************************/
     public static void main(String[] args) {
 
         window = new JFrame();  // use lowercase "window" as the variable name
@@ -32,6 +31,7 @@ public class AdventureGame {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close app on exit
         window.setResizable(false);             // Disable resizing for consistent layout
         window.setTitle("Adventure Game");      // Set the window title
+        new AdventureGame().setIcon();
 
         GamePanel gamePanel = new GamePanel();  // 2. Create and add the main game panel to the window
         window.add(gamePanel);
@@ -50,5 +50,37 @@ public class AdventureGame {
 
         gamePanel.setupGame();                // 7. Set up game configurations and resources (e.g., tiles, player)
         gamePanel.startGameThread();          // 8. Start the main game thread (runs the game loop)
+    }
+    public void setIcon() {
+        URL resourceUrl = getClass().getClassLoader().getResource("images/player/player-down-still.png");
+        BufferedImage image = null;
+
+        if (resourceUrl != null) {
+            // Try classpath loading first (for packaged builds)
+            try {
+                image = ImageIO.read(resourceUrl);
+            } catch (IOException e) {
+                System.err.println("Failed to load icon from classpath: " + e.getMessage());
+            }
+        } else {
+            // Fallback to file system loading (for development/debugging)
+            String filePath = "/Users/lars.s.g/Documents/GitHub/AdventureGame_JAVA1 using Ai to improve Lets see??/src/main/resources/images/player/player-down-still.png";
+            File iconFile = new File(filePath);
+            if (iconFile.exists()) {
+                try {
+                    image = ImageIO.read(iconFile);
+                } catch (IOException e) {
+                    System.err.println("Failed to load icon from file: " + e.getMessage());
+                }
+            } else {
+                System.err.println("Icon file not found at: " + filePath);
+            }
+        }
+
+        if (image != null) {
+            window.setIconImage(image);
+        } else {
+            System.err.println("Could not load game icon; window will use default.");
+        }
     }
 }

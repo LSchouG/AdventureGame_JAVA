@@ -15,11 +15,24 @@ public class OBJ_TownChest extends Entity{
         this.gp = gp;
 
         name = objName;
-        type = type_NonUse;
+        type = type_pickUpOnly;
         Price = 10000;
-        down1 = setup("/images/objects_interactive/chest-closed.png", gp.tileSize, gp.tileSize);
-        image2 = setup("/images/objects_interactive/chest-closed.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_interactive/chest-village.png", gp.tileSize, gp.tileSize);
+        image2 = setup("/images/objects_interactive/chest-village.png", gp.tileSize, gp.tileSize);
         itemTitle = "[" + name + "]";
-        itemDescription = "Value: " + Price;
+        itemDescription = "The Value: " + Price;
+        setDialouges();
+    }
+    public void setDialouges(){
+        dialogues[0][0] = "you have picked up the Treasure Chest!";
+    }
+    public boolean use(Entity entity){
+
+        gp.csManager.sceneNum = gp.csManager.ending;
+        gp.gameState = gp.cutSceneState;
+
+
+
+        return true;
     }
 }

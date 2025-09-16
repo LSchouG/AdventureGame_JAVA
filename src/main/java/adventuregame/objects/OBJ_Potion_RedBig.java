@@ -5,24 +5,24 @@ import adventuregame.entity.Entity;
 
 import java.util.Random;
 
-public class OBJ_Potion_Red extends Entity{
+public class OBJ_Potion_RedBig extends Entity {
     GamePanel gp;
 
-    public static final String objName = "Red Potion";
+    public static final String objName = "Big Red Potion";
 
-    public OBJ_Potion_Red(GamePanel gp){
+    public OBJ_Potion_RedBig(GamePanel gp){
         super(gp);
         this.gp = gp;
 
         name = objName;
         type = type_consumable;
-        restoreValue = 4;
-        Price = 15;
+        restoreValue = 16;
+        Price = 40;
         stackable = true;
         down1 = setup("/images/objects_pickup/small-red-potion.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_pickup/big-red-potion.png", gp.tileSize, gp.tileSize);
         itemTitle = "[" + name + "]";
-        itemDescription = "A healing potion. \nRestores " + restoreValue + " HP.";
+        itemDescription = "A Big healing potion. \nRestores " + restoreValue + " HP.";
         setDialogue();
     }
     public void setDialogue() {

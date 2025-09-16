@@ -3,16 +3,15 @@ package adventuregame.objects;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
-public class OBJ_IronDoor extends Entity {
+public class OBJ_DoorIron extends Entity {
     public static final String objName = "Iron Door";
 
-    public  OBJ_IronDoor (GamePanel gp) {
+    public OBJ_DoorIron(GamePanel gp) {
         super(gp);
         this.gp = gp;
         name = objName;
         down1 = setup("/images/objects_interactive/iron-door.png", gp.tileSize, gp.tileSize);
         collision = true;
-        lockKeyType = "Boss Key";
         type = type_obstacle;
 
 
@@ -28,7 +27,8 @@ public class OBJ_IronDoor extends Entity {
         startDialogue(this,0);
     }
     public void setDialogue() {
-        dialogues[0][0] = "you need a Boss key to open this!";
+        dialogues[0][0] = "Oi, this door’s locked tight! Some mechanism holds it shut";
+        dialogues[0][1] = "Three big rock, place ‘em wise!";
     }
 }
 

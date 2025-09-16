@@ -46,15 +46,15 @@ public class IT_DestructibleWall extends InteractiveTile{
         Color color = new Color(65,65,65);
         return color;
     }
-    public int getParticalSize(){
+    public int getParticleSize(){
         int size = 6;
         return size;
     }
-    public int getParticalSpeed(){
+    public int getParticleSpeed(){
         int speed = 1;
         return speed;
     }
-    public int getParticalMaxLife(){
+    public int getParticleMaxLife(){
         int maxLife = 15;
         return maxLife;
     }

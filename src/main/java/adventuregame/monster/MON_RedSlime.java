@@ -18,10 +18,10 @@ public class MON_RedSlime extends Entity {
         speed = defaultSpeed;
         maxLife = 10;
         life = maxLife;
-        attack = 5;
-        defense = 0;
+        attack = 8;
+        defense = 2;
         collision = true;
-        exp = 4;
+        exp = 7;
         shotInterval = 30;
         distanceToChase = 5;     // Distance before chasing
         rate = 2; // 1 = 100% 3 = 33%  5 = 20% 10 = 10%
@@ -94,9 +94,17 @@ public class MON_RedSlime extends Entity {
         if (i < 50){
             dropItem(new OBJ_Coin_Bronze(gp));
         } else if (i >= 50 && i < 75){
-            dropItem(new OBJ_Heart(gp));
+            if (gp.player.maxLife < 10){
+                dropItem(new OBJ_Heart(gp));
+            } else {
+                dropItem(new OBJ_Coin_Bronze(gp));
+            }
         } else if (i >= 75){
-            dropItem(new OBJ_Crystal(gp));
+            if(gp.player.maxMana < 10){
+                dropItem(new OBJ_Crystal(gp));
+            } else {
+                dropItem(new OBJ_Coin_Bronze(gp));
+            }
         }
     }
 

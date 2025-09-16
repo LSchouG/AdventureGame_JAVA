@@ -21,7 +21,7 @@ public class DataStorage implements Serializable {
     ArrayList<String> itemName = new ArrayList<>();
     ArrayList<Integer> itemAmount = new ArrayList<>();
     int currentWeaponSlot;
-    int getCurrentShieldSlot;
+    int currentShieldSlot;
 
     // OBJECT ON MAP
     String mapObjectNames[][];
@@ -29,5 +29,10 @@ public class DataStorage implements Serializable {
     int mapObjectWorldY[][];
     String mapObjectLootName[][];
     boolean mapObjectOpened[][];
+
+    // In DataStorage.java (add these fields)
+    public boolean grassDefeated;
+    public boolean dungeonDefeated;
+    public boolean bossDefeated;
 
 }

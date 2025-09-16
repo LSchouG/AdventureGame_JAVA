@@ -12,14 +12,14 @@ public class MON_Ghost extends Entity {
         this.gp = gp;
         type = type_monster;
         name = "Ghost";
-        defaultSpeed = 1;
+        defaultSpeed = 2;
         speed = defaultSpeed;
-        maxLife = 20;
+        maxLife = 12;
         life = maxLife;
-        attack = 10;
-        defense = 10;
+        attack = 7;
+        defense = 1;
         collision = true;
-        exp = 10;
+        exp = 6;
         shotInterval = 30;
         distanceToChase = 6;     // Distance before chasing
         rate = 2; // 1 = 100% 3 = 33%  5 = 20% 10 = 10%
@@ -88,16 +88,24 @@ public class MON_Ghost extends Entity {
     public void checkDrop(){
         // CAST A DIE
         int i = new Random().nextInt(100)+1;
-
         // SET THE MONSTER DROP
         if (i < 50){
-            dropItem(new OBJ_Coin_Bronze(gp));
+            dropItem(new OBJ_Coin_Gold(gp));
         } else if (i >= 50 && i < 75){
-            dropItem(new OBJ_Heart(gp));
+            if (gp.player.maxLife < 16){
+                dropItem(new OBJ_Heart(gp));
+            } else {
+                dropItem(new OBJ_Coin_Gold(gp));
+            }
         } else if (i >= 75){
-            dropItem(new OBJ_Crystal(gp));
+            if(gp.player.maxMana < 16){
+                dropItem(new OBJ_Crystal(gp));
+            } else {
+                dropItem(new OBJ_Coin_Gold(gp));
+            }
         }
     }
+
 
 }
 

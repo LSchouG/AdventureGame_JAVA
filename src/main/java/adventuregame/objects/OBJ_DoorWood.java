@@ -1,5 +1,5 @@
 /** ******************************************************************************
- * FileName: OBJ_Door.java
+ * FileName: OBJ_DoorWood.java
  * Purpose: Represents a door object in the game world.
  * Author: Lars S Gregersen
  * Date: 21-5-2025
@@ -13,11 +13,11 @@ package adventuregame.objects;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 
-public class OBJ_Door extends Entity {
+public class OBJ_DoorWood extends Entity {
 
     public static final String objName = "Door";
 
-    public OBJ_Door(GamePanel gp) {
+    public OBJ_DoorWood(GamePanel gp) {
         super(gp);
         this.gp = gp;
         name = objName;

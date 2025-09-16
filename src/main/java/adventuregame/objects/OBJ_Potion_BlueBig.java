@@ -5,24 +5,24 @@ import adventuregame.entity.Entity;
 
 import java.util.Random;
 
-public class OBJ_Potion_Blue extends Entity {
+public class OBJ_Potion_BlueBig extends Entity {
     GamePanel gp;
 
-    public static final String objName =  "Blue Potion";
+    public static final String objName =  "Big Blue Potion";
 
-    public OBJ_Potion_Blue(GamePanel gp){
-    super(gp);
-    this.gp = gp;
+    public OBJ_Potion_BlueBig(GamePanel gp){
+        super(gp);
+        this.gp = gp;
 
         name = objName;
         type = type_consumable;
-        restoreValue = 4;
-        Price = 15;
+        restoreValue = 10;
+        Price = 40;
         stackable = true;
         down1 = setup("/images/objects_pickup/small-blue-potion.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_pickup/big-blue-potion.png", gp.tileSize, gp.tileSize);
         itemTitle = "[" + name + "]";
-        itemDescription = "A mana restoring potion. \nRestores " + restoreValue + " HP.";
+        itemDescription = "A Big mana restoring potion. \nRestores " + restoreValue + " HP.";
         setDialogue();
     }
     public void setDialogue() {

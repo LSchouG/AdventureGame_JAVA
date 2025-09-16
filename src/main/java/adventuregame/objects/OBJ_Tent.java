@@ -14,7 +14,7 @@ public class OBJ_Tent extends Entity {
         name = objName;
         type = type_consumable;
         down1 = setup("/images/objects_pickup/tent.png", gp.tileSize, gp.tileSize);
-        Price = 300;
+        Price = 20;
         stackable = true;
         itemTitle = "[" + name + "]";
         itemDescription = "An old tent\nSleep anywhere" ;

@@ -13,11 +13,11 @@ public class OBJ_Sword_Iridium extends Entity {
         name = objName;
         type = type_sword;
         down1 = setup("/images/objects_pickup/sword-iridium.png", gp.tileSize, gp.tileSize);
-        attackValue = 10;
-        attackArea.width = 36;
-        attackArea.height = 36;
-        Price = 100;
-        knockBackPower = 10;
+        attackValue = 5;
+        attackArea.width = 44;
+        attackArea.height = 44;
+        Price = 200;
+        knockBackPower = 15;
         motion1_duration = 5;
         motion2_duration = 20;
         itemTitle = "[" + name + "]";

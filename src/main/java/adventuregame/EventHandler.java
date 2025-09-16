@@ -31,20 +31,19 @@ public class EventHandler {
 
         eventMaster = new Entity(gp);
 
-        // Define a small collision area (tight trigger)
+        // Define a larger collision area for hit triggers (aligned with eventRect2 for consistency)
         eventRect1 = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         int map = 0;
         int col = 0;
         int row = 0;
 
-        while(map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
-
+        while (map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
             eventRect1[map][col][row] = new EventRect();
             eventRect1[map][col][row].x = 23;
             eventRect1[map][col][row].y = 23;
-            eventRect1[map][col][row].width = 2;
-            eventRect1[map][col][row].height = 2;
+            eventRect1[map][col][row].width = 23;  // Increased from 2 to match eventRect2
+            eventRect1[map][col][row].height = 23; // Increased from 2 to match eventRect2
             eventRect1[map][col][row].eventRectDefaultX = eventRect1[map][col][row].x;
             eventRect1[map][col][row].eventRectDefaultY = eventRect1[map][col][row].y;
 
@@ -58,15 +57,15 @@ public class EventHandler {
                 }
             }
         }
-        // Define a small collision area (tight trigger)
+
+        // Define a larger collision area for interact triggers
         eventRect2 = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         map = 0;
         col = 0;
         row = 0;
 
-        while(map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
-
+        while (map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
             eventRect2[map][col][row] = new EventRect();
             eventRect2[map][col][row].x = 23;
             eventRect2[map][col][row].y = 23;
@@ -74,6 +73,7 @@ public class EventHandler {
             eventRect2[map][col][row].height = 23;
             eventRect2[map][col][row].eventRectDefaultX = eventRect2[map][col][row].x;
             eventRect2[map][col][row].eventRectDefaultY = eventRect2[map][col][row].y;
+
             col++;
             if (col == gp.maxWorldCol) {
                 col = 0;
@@ -84,12 +84,8 @@ public class EventHandler {
                 }
             }
         }
-        setDialogue();
-    }
-    public void setDialogue() {
-        eventMaster.dialogues[0][0] = "You are falling into a pit!";
 
-        eventMaster.dialogues[1][0] = "You took a nap and feel better! \n\n(The Game have been saved)";
+        setDialogue();
     }
     public void checkEvent() {
         // check if player is more than one tile away from last event
@@ -119,28 +115,53 @@ public class EventHandler {
             else if (hit(8, 16, 27, "any")) {teleport( 3,gp.outSide,26, 30);} // from OldManAndWoman to village
             else if (hit(3,26, 30, "any")) {teleport( 8,gp.indoor, 16, 27);} // from village to OldManAndWoman
 
+
             // TELEPORT outside the village
             else if (hit(3,21, 39, "any")) {teleport( 0,gp.outSide, 13, 36);} // from village to map
-            else if (hit(0,12, 36, "any")) {teleport( 3,gp.outSide, 21, 40);} // from map to village
+            else if (hit(0,13, 36, "any")) {teleport( 3,gp.outSide, 21, 39);} // from map to village
 
-            else if (hit(0,67, 18, "any")) {teleport( 5,gp.dungeon, 41, 60);} // from map to dungeon
+            else if (hit(0,67, 18, "any")) {    // from map to dungeon
+                Progress.grassDefeated = true;
+                // Clear and update seller's inventory based on new progress
+                Entity seller = getSeller();
+                if (seller != null) {
+                    seller.inventory.clear();
+                    seller.setItems();
+                }
+                teleport( 5,gp.dungeon, 41, 60);
+            }
             else if (hit(5,41, 60, "any")) {teleport( 0,gp.outSide, 67, 18);} // from dungeon to map
 
-            else if (hit(5,81, 41 ,"any")) {teleport( 4,gp.dungeon, 27, 46);} // from dungeon to bossMap
+            else if (hit(5, 81, 41, "any")) {  // from dungeon to bossMap
+                Progress.dungeonDefeated = true;
+                // Clear and update seller's inventory based on new progress
+                Entity seller = getSeller();
+                if (seller != null) {
+                    seller.inventory.clear();
+                    seller.setItems();
+                }
+                teleport(4, gp.dungeon, 27, 46);
+            }
             else if (hit(4,27, 46, "any")) {teleport( 5,gp.dungeon, 81, 41);} // from bossMap to dungeon
 
             // SPeak to Seller
             else if (hit(2,16, 22, "any")) {speak(gp.npc[2][0]);} // from map to City
 
 
+
             // TILE EVENTS LIKE BED OR PIT
-            else if (hit(0,23, 28, "any")) {damagePit( gp.dialogueState);}
+            // else if (hit(0,23, 28, "any")) {damagePit( gp.dialogueState);}
             else if (hit(1,17, 20, "any")) {healingBed(gp.dialogueState);}
 
             // CUTSCENES
             else if (hit(4,28  ,42, "any")) {boss();}
 
         }
+    }
+    public void setDialogue() {
+        eventMaster.dialogues[0][0] = "You are falling into a pit!";
+
+        eventMaster.dialogues[1][0] = "You took a nap and feel better! \n\n(The Game have been saved)";
     }
     public boolean hit(int map, int col, int row, String reqDirection) {
         boolean hit = false;
@@ -237,9 +258,26 @@ public class EventHandler {
     }
     public void boss(){
         // COl 28  ROW 42
-        if (gp.bossBattleOn == false && Progress.bossDeleated == false){
+        if (gp.bossBattleOn == false && Progress.bossDefeated == false){
+            gp.stopMusic();
             gp.gameState = gp.cutSceneState;
             gp.csManager.sceneNum = gp.csManager.boss;
         }
     }
+
+public Entity getSeller() {
+    if (gp.npc == null) {
+        return null;
+    }
+    for (int i = 0; i < gp.npc.length; i++) {
+        if (gp.npc[i] != null) {
+            for (int j = 0; j < gp.npc[i].length; j++) {
+                if (gp.npc[i][j] != null && gp.npc[i][j].name.equals("Seller")) {
+                    return gp.npc[i][j];
+                }
+            }
+        }
+    }
+    return null;  // Fallback if not found
+}
 }

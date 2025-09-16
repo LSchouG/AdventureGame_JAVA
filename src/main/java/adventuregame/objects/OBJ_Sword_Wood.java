@@ -17,7 +17,7 @@ public class OBJ_Sword_Wood extends Entity {
        attackArea.width = 36;
        attackArea.height = 36;
        Price = 10;
-       knockBackPower = 10;
+       knockBackPower = 5;
        motion1_duration = 5;
        motion2_duration = 20;
        itemTitle = "[" + name + "]";

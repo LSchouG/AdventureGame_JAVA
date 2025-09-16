@@ -59,11 +59,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     /************************* ENTITY AND OBJECTS *****************************/
     public Player player = new Player(this, keyH);
-    public Entity obj[][] = new Entity[maxMap][50];
-    public Entity npc[][] = new Entity[maxMap][15];
-    public Entity monster[][] = new Entity[maxMap][50];
-    public Entity projectile[][] = new Entity[maxMap][20];
-    public InteractiveTile iTile[][] = new InteractiveTile[maxMap][50];
+    public Entity obj[][] = new Entity[maxMap][55];
+    public Entity npc[][] = new Entity[maxMap][10];
+    public Entity monster[][] = new Entity[maxMap][23];
+    public Entity projectile[][] = new Entity[maxMap][10];
+    public InteractiveTile iTile[][] = new InteractiveTile[maxMap][20];
     //public ArrayList<Entity> projectileList = new ArrayList<>();
     public ArrayList<Entity> particleList = new ArrayList<>();
 
@@ -140,12 +140,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
     @Override
     public void run() {
-        double drawInterval = 1_000_000_000 / FPS; // 60 FPS in nanoseconds
+        final double drawInterval = 1_000_000_000.0 / FPS; // 60 FPS in nanoseconds
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
         int drawCount = 0;
+        final int MAX_UPDATES_PER_FRAME = 5; // Cap to prevent lag spirals
 
         while (gameThread != null) {
             currentTime = System.nanoTime();
@@ -153,19 +154,36 @@ public class GamePanel extends JPanel implements Runnable {
             timer += (currentTime - lastTime);
             lastTime = currentTime;
 
-            while (delta >= 1) {
-                update(); // update game logic
-                drawToTempScreen(); // draw everything to the buffered image
-                drawToScreen(); // draw the buffered image to the screen
-                delta--;
+            // Fixed updates (capped)
+            int updateLoops = 0;
+            boolean updated = false;
+            while (delta >= 1 && updateLoops < MAX_UPDATES_PER_FRAME) {
+                update();
+                delta -= 1;
+                updateLoops++;
+                updated = true;
+            }
+
+            // Draw only if updated (reduces unnecessary repaints during idle)
+            if (updated) {
+                drawToTempScreen();
+                drawToScreen();
                 drawCount++;
+            }
+
+            // Optional: FPS logging every second
+            if (timer >= 1_000_000_000) {
+                timer = 0;
+                drawCount = 0;
             }
         }
     }
+    @Override
+    public void update(Graphics g) {
+        paint(g);  // Bypass default clear; directly invoke paint for manual buffering
+    }
     public void update() {
-
         if (gameState == playState) {
-
             // Player updates only if game is running
             player.update();
 
@@ -187,13 +205,14 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
-            // Particale updates only if game is running
-            for (int i = 0; i < particleList.size(); i++) {
-                if (particleList.get(i) != null) {
-                    if (particleList.get(i).alive == true) {
-                        particleList.get(i).update();
-                    }
-                    if (particleList.get(i).alive == false) {
+
+            // Particle updates only if game is running (reverse loop for safe removal)
+            for (int i = particleList.size() - 1; i >= 0; i--) {
+                Entity particle = particleList.get(i);
+                if (particle != null) {
+                    if (particle.alive == true) {
+                        particle.update();
+                    } else {
                         particleList.remove(i);
                     }
                 }
@@ -212,7 +231,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-            // Interactiv tiles updates only if game is running
+            // Interactive tiles updates only if game is running
             for (int i = 0; i < iTile[1].length; i++) {
                 if (iTile[currentMap][i] != null) {
                     iTile[currentMap][i].update();
@@ -224,7 +243,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void drawToTempScreen() {
-        // ... (debug start unchanged)
+        // Clear the tempScreen to prevent residual pixels
+        g2.setColor(new Color(0, 0, 0, 0)); // Transparent black
+        g2.fillRect(0, 0, screenWidth, screenHeight);
 
         // TITLE SCREEN
         if (gameState == titleState) {
@@ -253,7 +274,6 @@ public class GamePanel extends JPanel implements Runnable {
 
             // ADD PLAYER TO LIST
             entityList.add(player);
-
 
             // ADD OBJ TO LIST
             for (int i = 0; i < obj[currentMap].length; i++) {  // Fixed: Use currentMap
@@ -296,6 +316,9 @@ public class GamePanel extends JPanel implements Runnable {
             // EMPTY LIST
             entityList.clear();
 
+            // Time overlay draw measurement
+            long drawStart = System.nanoTime();  // Start before overlays
+
             // Environment
             eManager.draw(g2);
 
@@ -308,33 +331,30 @@ public class GamePanel extends JPanel implements Runnable {
             // 5. Draw UI
             ui.draw(g2);
 
-
-        // DEBUG - End draw time measurement
-        if (keyH.showDebugText) {
-            long drawStart = 0;
-            drawStart = System.nanoTime();
             long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
+            long passed = (drawEnd - drawStart) / 1_000_000;  // ms
 
+            // DEBUG - End draw time measurement
+            if (keyH.showDebugText) {
+                g2.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 20));
+                g2.setColor(Color.WHITE);
+                int x = 10;
+                int y = 400;
+                int lineHeight = 20;
+                int row = (player.worldY + player.solidArea.y) / tileSize;
+                int col = (player.worldX + player.solidArea.x) / tileSize;
 
-            g2.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 20));
-            g2.setColor(Color.WHITE);
-            int x = 10;
-            int y = 400;
-            int lineHeight = 20;
-            int row = (player.worldY + player.solidArea.y) / tileSize;
-            int col = (player.worldX + player.solidArea.x) / tileSize;
+                String colLabel = convertToColumnLabel(col + 1); // +1 because Excel-style labels start at 1
 
-            String colLabel = convertToColumnLabel(col + 1); // +1 because Excel-style labels start at 1
-
-            g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
-            g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
-            g2.drawString("Col: " + colLabel, x, y);  y += lineHeight;
-            g2.drawString("World MAP Number: " + currentMap , x, y);  y += lineHeight;
-            g2.drawString("WorldX - Col: " + (col), x, y); y += lineHeight;
-            g2.drawString("WorldY - Row: " + (row ), x, y); y += lineHeight;
-            g2.drawString("God Mode: " + keyH.godModeOn, x, y);
-        }
+                g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
+                g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
+                g2.drawString("Col: " + colLabel, x, y);  y += lineHeight;
+                g2.drawString("World MAP Number: " + currentMap , x, y);  y += lineHeight;
+                g2.drawString("WorldX - Col: " + (col), x, y); y += lineHeight;
+                g2.drawString("WorldY - Row: " + (row ), x, y); y += lineHeight;
+                g2.drawString("Draw Time (ms): " + passed, x, y); y += lineHeight;
+                g2.drawString("God Mode: " + keyH.godModeOn, x, y);
+            }
         }
     }
     public void drawToScreen() {

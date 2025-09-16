@@ -54,19 +54,26 @@ public class OBJ_Chest extends Entity {
         this.loot = loot;
         setDialogue();
     }
-    public void interact(){
-        if(opened == false){
+
+    public void interact() {
+        if (!opened) {
             gp.playSE(3);
-            if (gp.player.canObtainItem(loot) == false){
-                startDialogue(this,0);
+
+            if (loot == null) {
+                System.out.println("Warning: Chest has no loot assigned.");
+                startDialogue(this, 0); // Optional: show "empty" message
+                return;
             }
-            else {
-                startDialogue(this,1);
+
+            if (!gp.player.canObtainItem(loot)) {
+                startDialogue(this, 0); // Inventory full or item not stackable
+            } else {
+                startDialogue(this, 1);     // Success message
                 down1 = image2;
                 opened = true;
             }
-        } else{
-            startDialogue(this,2);
+        } else {
+            startDialogue(this, 2); // Already opened
         }
     }
 }

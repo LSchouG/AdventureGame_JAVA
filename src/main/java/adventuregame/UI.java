@@ -332,87 +332,82 @@ public class UI {
         // DRAW BLANK HEARTS FIRST
         final int xDefault = gp.tileSize / 2;
         final int yDefault = (gp.tileSize / 2) - 10;
-        int x = xDefault;
-        int y = yDefault;
         int i = 0;
         int iconSize = 32;
         int maxCrystals = gp.player.maxMana / 2;
         int currentMana = gp.player.mana;
-        int manaStartX = (gp.tileSize / 2) - 5;
-        int manaStartY = 0;
-
 
         // Draw blank hearts
+        int heartX = xDefault;
+        int heartY = yDefault;
+        i = 0;
         while (i < gp.player.maxLife / 2) {
-            g2.drawImage(blankHeart, x, y, iconSize, iconSize, null);
+            g2.drawImage(blankHeart, heartX, heartY, iconSize, iconSize, null);
             i++;
-            x += iconSize;
-            manaStartY = y + iconSize;
+            heartX += iconSize;
             if (i % 8 == 0) {
-                x = gp.tileSize / 2;
-                y += iconSize;
+                heartX = xDefault;
+                heartY += iconSize;
             }
         }
 
-       // RESET
-        x = xDefault;
-        y = yDefault;
+        // Draw full/half hearts (reuse positions)
+        heartX = xDefault;
+        heartY = yDefault;
         i = 0;
         int lifeRemaining = gp.player.life;
-
-        // Draw full and half hearts on top
         while (i < gp.player.maxLife / 2) {
             if (lifeRemaining >= 2) {
-                g2.drawImage(fullHeart, x, y, iconSize, iconSize, null);
+                g2.drawImage(fullHeart, heartX, heartY, iconSize, iconSize, null);
                 lifeRemaining -= 2;
             } else if (lifeRemaining == 1) {
-                g2.drawImage(halfHeart, x, y, iconSize, iconSize, null);
+                g2.drawImage(halfHeart, heartX, heartY, iconSize, iconSize, null);
                 lifeRemaining -= 1;
             }
             i++;
-            x += iconSize;
+            heartX += iconSize;
             if (i % 8 == 0) {
-                x = gp.tileSize / 2;
-                y += iconSize;
+                heartX = xDefault;
+                heartY += iconSize;
             }
         }
 
         //DRAW MANA
         // DRAW BLANK CRYSTALS FIRST
-        x = xDefault +1;
-        int tempy = y + iconSize +4;
+        int manaX = xDefault + 1;
+        int manaY = heartY + iconSize + 4; // Consistent offset from final heart row
         i = 0;
 
         // Draw blank crystals
         while (i < maxCrystals) {
-            g2.drawImage(blankCrystal, x, tempy, iconSize, iconSize, null);
+            g2.drawImage(blankCrystal, manaX, manaY, iconSize, iconSize, null);
             i++;
-            x += iconSize;
+            manaX += iconSize;
             if (i % 8 == 0) {
-                x = xDefault;
-                y += iconSize;
+                manaX = xDefault + 1;
+                manaY += iconSize;
             }
         }
 
         // RESET
-        x = xDefault +1;
-        y = tempy;
+        manaX = xDefault + 1;
+        manaY = heartY + iconSize + 4; // Reuse starting position
         i = 0;
 
         // Draw full and half crystals on top
         while (i < maxCrystals) {
             if (currentMana >= 2) {
-                g2.drawImage(fullCrystal, x, y, iconSize, iconSize, null);
+                g2.drawImage(fullCrystal, manaX, manaY, iconSize, iconSize, null);
                 currentMana -= 2;
             } else if (currentMana == 1) {
-                g2.drawImage(halfCrystal, x, y, iconSize, iconSize, null);
+                g2.drawImage(halfCrystal, manaX, manaY, iconSize, iconSize, null);
                 currentMana -= 1;
             }
             i++;
-            x += iconSize;
+            manaX += iconSize;
             if (i % 8 == 0) {
-                x = xDefault;
-                y += iconSize;
+                manaX = xDefault + 1;
+                manaY += iconSize;
             }
         }
     }
@@ -507,57 +502,6 @@ public class UI {
                 g2.drawString(">", x - (gp.tileSize / 2), y);
             }
         }
-        /*else if (titleScreenState == 1) {
-            g2.setColor(menuAndDialogFontColor);
-            g2.setFont(titelFont);
-
-            String text = "Select your class!";
-            int x = getXForCenter(text);
-            int y = gp.tileSize * 3;
-            g2.drawString(text, x, y);
-
-
-            g2.setFont(menuFontP);
-            text = "fighter";
-            x = getXForCenter(text);
-            y += gp.tileSize * 3;
-            g2.drawString(text, x, y);
-            if (commandNumber == 0) {
-                g2.setFont(menuFontB);
-                g2.drawString(">", x - (gp.tileSize / 2), y);
-            }
-
-            g2.setFont(menuFontP);
-            text = "Theif";
-            x = getXForCenter(text);
-            y += gp.tileSize * 1;
-            g2.drawString(text, x, y);
-            if (commandNumber == 1) {
-                g2.setFont(menuFontB);
-                g2.drawString(">", x - (gp.tileSize / 2), y);
-            }
-
-            g2.setFont(menuFontP);
-            text = "Sorcerer";
-            x = getXForCenter(text);
-            y += gp.tileSize * 1;
-            g2.drawString(text, x, y);
-            if (commandNumber == 2) {
-                g2.setFont(menuFontB);
-                g2.drawString(">", x - (gp.tileSize / 2), y);
-            }
-
-            g2.setFont(menuFontP);
-            text = "Back";
-            x = getXForCenter(text);
-            y += gp.tileSize * 2;
-            g2.drawString(text, x, y);
-            if (commandNumber == 3) {
-                g2.setFont(menuFontB);
-                g2.drawString(">", x - (gp.tileSize / 2), y);
-            }
-        }*/
-
     }
     public void drawDialogueScreen() {
         // window
@@ -732,10 +676,13 @@ public class UI {
         textY += 5;
 
         // weapon images
+        if (gp.player.currentWeapon != null) {
         g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY, null);
+        }
         textY += gp.tileSize - 5;
-        g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY, null);
-
+        if (gp.player.currentShield != null) {
+            g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY, null);
+        }
 
     }
     public void drawSubWindow(int x, int y, int width, int height) {

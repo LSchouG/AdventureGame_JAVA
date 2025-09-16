@@ -15,12 +15,12 @@ public class MON_Spider extends Entity {
         type = type_monster;
         name = "Bat";
         speed = 3;
-        maxLife = 15;
+        maxLife = 8;
         life = maxLife;
-        attack = 12;
-        defense = 5;
+        attack = 6;
+        defense = 1;
         collision = true;
-        exp = 6;
+        exp = 5;
         shotInterval = 0;
         directionInterval = 10;
         distanceToChase = 5; // Distance before chasing
@@ -77,10 +77,19 @@ public class MON_Spider extends Entity {
         if (i < 50){
             dropItem(new OBJ_Coin_Bronze(gp));
         } else if (i >= 50 && i < 75){
-            dropItem(new OBJ_Heart(gp));
+            if (gp.player.maxLife < 10){
+                dropItem(new OBJ_Heart(gp));
+            } else {
+                dropItem(new OBJ_Coin_Bronze(gp));
+            }
         } else if (i >= 75){
-            dropItem(new OBJ_Crystal(gp));
+            if(gp.player.maxMana <10){
+                dropItem(new OBJ_Crystal(gp));
+            } else {
+                dropItem(new OBJ_Coin_Bronze(gp));
+            }
         }
     }
+
 }
 

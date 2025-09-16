@@ -3,6 +3,7 @@ package adventuregame.monster;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 import adventuregame.objects.OBJ_Coin_Bronze;
+import adventuregame.objects.OBJ_Coin_Gold;
 import adventuregame.objects.OBJ_Crystal;
 import adventuregame.objects.OBJ_Heart;
 
@@ -20,10 +21,10 @@ public class MON_Skeleton extends Entity {
         name = objName;
         defaultSpeed = 1;
         speed = defaultSpeed;
-        maxLife = 20;
+        maxLife = 15;
         life = maxLife;
         attack = 10;
-        defense = 2;
+        defense = 3;
         knockBackPower = 5;
         collision = true;
         exp = 10;
@@ -114,15 +115,23 @@ public class MON_Skeleton extends Entity {
     public void checkDrop(){
         // CAST A DIE
         int i = new Random().nextInt(100)+1;
-
         // SET THE MONSTER DROP
         if (i < 50){
-            dropItem(new OBJ_Coin_Bronze(gp));
+            dropItem(new OBJ_Coin_Gold(gp));
         } else if (i >= 50 && i < 75){
-            dropItem(new OBJ_Heart(gp));
+            if (gp.player.maxLife < 16){
+                dropItem(new OBJ_Heart(gp));
+            } else {
+                dropItem(new OBJ_Coin_Gold(gp));
+            }
         } else if (i >= 75){
-            dropItem(new OBJ_Crystal(gp));
+            if(gp.player.maxMana < 16){
+                dropItem(new OBJ_Crystal(gp));
+            } else {
+                dropItem(new OBJ_Coin_Gold(gp));
+            }
         }
     }
+
 
 }

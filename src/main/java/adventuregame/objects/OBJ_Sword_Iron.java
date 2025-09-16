@@ -13,10 +13,10 @@ public class OBJ_Sword_Iron extends Entity {
         name = objName;
         type = type_sword;
         down1 = setup("/images/objects_pickup/sword-iron.png", gp.tileSize, gp.tileSize);
-        attackValue = 10;
-        attackArea.width = 36;
-        attackArea.height = 36;
-        Price = 100;
+        attackValue = 3;
+        attackArea.width = 40;
+        attackArea.height = 40;
+        Price = 50;
         knockBackPower = 10;
         motion1_duration = 5;
         motion2_duration = 20;

@@ -3,10 +3,7 @@ package adventuregame.monster;
 import adventuregame.GamePanel;
 import adventuregame.data.Progress;
 import adventuregame.entity.Entity;
-import adventuregame.entity.PlayerDummy;
 import adventuregame.objects.*;
-
-import java.util.Random;
 
 public class MON_BOSS extends Entity {
     GamePanel gp;
@@ -21,13 +18,13 @@ public class MON_BOSS extends Entity {
         name = monName;
         defaultSpeed = 1;
         speed = defaultSpeed;
-        maxLife = 50;
+        maxLife = 100;
         life = maxLife;
-        attack = 15;
-        defense = 4;
+        attack = 20;
+        defense = 5;
         sleep = true;
         knockBackPower = 5;
-        exp = 50;
+        exp = 100;
         distanceToChase = 5;  // Distance before chasing
         rate = 2; // 1 = 100% 3 = 33%  5 = 20% 10 = 10%
 
@@ -145,7 +142,7 @@ public class MON_BOSS extends Entity {
     public void checkDrop(){
 
         gp.bossBattleOn = false;
-        Progress.bossDeleated = true;
+        Progress.bossDefeated = true;
 
         // Restore the dungeon music
         gp.stopMusic();
@@ -153,15 +150,11 @@ public class MON_BOSS extends Entity {
 
         // Search for the doors and delete
         for (int i = 0; i < gp.obj[1].length; i++) {
-            if (gp.obj[gp.currentMap][i] != null && gp.obj[gp.currentMap][i].name.equals(OBJ_IronDoor.objName)) {
+            if (gp.obj[gp.currentMap][i] != null && gp.obj[gp.currentMap][i].name.equals(OBJ_DoorIron.objName)) {
                gp.playSE(21);
                gp.obj[gp.currentMap][i] = null;
             }
         }
-
-        // CAST A DIE
-
-            dropItem(new OBJ_TownChest(gp));
 
     }
 }

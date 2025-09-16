@@ -14,7 +14,7 @@ public class MON_GreenSlime extends Entity {
         type = type_monster;
         name = "Green Slime";
         speed = 1;
-        maxLife = 5;
+        maxLife = 3;
         life = maxLife;
         attack = 4;
         defense = 0;
@@ -93,9 +93,17 @@ public class MON_GreenSlime extends Entity {
         if (i < 50){
             dropItem(new OBJ_Coin_Bronze(gp));
         } else if (i >= 50 && i < 75){
-            dropItem(new OBJ_Heart(gp));
+           if (gp.player.maxLife < 8){
+               dropItem(new OBJ_Heart(gp));
+           } else {
+               dropItem(new OBJ_Coin_Bronze(gp));
+           }
         } else if (i >= 75){
-            dropItem(new OBJ_Crystal(gp));
+            if(gp.player.maxMana <8){
+                dropItem(new OBJ_Crystal(gp));
+            } else {
+                dropItem(new OBJ_Coin_Bronze(gp));
+            }
         }
     }
 

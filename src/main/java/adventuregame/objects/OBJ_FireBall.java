@@ -36,7 +36,9 @@ public class OBJ_FireBall extends Projectile {
         right1 = setup("/images/attack/fireball-right-1.png", gp.tileSize, gp.tileSize);
         right2 = setup("/images/attack/fireball-right-2.png", gp.tileSize, gp.tileSize);
     }
-
+    public void setAttack(){
+        this.attack = gp.player.magic * this.attack + gp.player.level;
+    }
     public boolean haveResource(Entity user){
 
         boolean haveResource = false;
@@ -48,28 +50,24 @@ public class OBJ_FireBall extends Projectile {
     }
     public void subtractResource(Entity user){
         if (user == gp.player) {
-            System.out.println("gp.player Before subtractResource, mana: " + gp.player.mana);
             gp.player.mana -= useCost;
-            System.out.println("gp.player After subtractResource, mana: " + gp.player.mana);
         } else {
-            System.out.println("else Before subtractResource, user mana: " + user.mana);
             user.mana -= useCost;
-            System.out.println(" else After subtractResource, user mana: " + user.mana);
         }
     }
     public Color getParticalColor(){
         Color color = new Color(0xea481b);
         return color;
     }
-    public int getParticalSize(){
+    public int getParticleSize(){
         int size = 8;
         return size;
     }
-    public int getParticalSpeed(){
+    public int getParticleSpeed(){
         int speed = 1;
         return speed;
     }
-    public int getParticalMaxLife(){
+    public int getParticleMaxLife(){
         int maxLife = 15;
         return maxLife;
     }

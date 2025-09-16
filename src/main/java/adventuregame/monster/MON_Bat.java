@@ -3,6 +3,7 @@ package adventuregame.monster;
 import adventuregame.GamePanel;
 import adventuregame.entity.Entity;
 import adventuregame.objects.OBJ_Coin_Bronze;
+import adventuregame.objects.OBJ_Coin_Gold;
 import adventuregame.objects.OBJ_Crystal;
 import adventuregame.objects.OBJ_Heart;
 
@@ -16,12 +17,12 @@ public class MON_Bat extends Entity {
         this.gp = gp;
         type = type_monster;
         name = "Bat";
-        defaultSpeed = 4;
+        defaultSpeed = 3;
         speed = defaultSpeed;
-        maxLife = 10;
+        maxLife = 8;
         life = maxLife;
-        attack = 10;
-        defense = 4;
+        attack = 5;
+        defense = 2;
         collision = true;
         exp = 5;
         shotInterval = 0;
@@ -67,15 +68,25 @@ public class MON_Bat extends Entity {
         onPath = true;
     }
     public void checkDrop(){
-        int i = new Random().nextInt(100)+1; // CAST A DIE
+        // CAST A DIE
+        int i = new Random().nextInt(100)+1;
         // SET THE MONSTER DROP
         if (i < 50){
-            dropItem(new OBJ_Coin_Bronze(gp));
+            dropItem(new OBJ_Coin_Gold(gp));
         } else if (i >= 50 && i < 75){
-            dropItem(new OBJ_Heart(gp));
+            if (gp.player.maxLife < 14){
+                dropItem(new OBJ_Heart(gp));
+            } else {
+                dropItem(new OBJ_Coin_Gold(gp));
+            }
         } else if (i >= 75){
-            dropItem(new OBJ_Crystal(gp));
+            if(gp.player.maxMana < 14){
+                dropItem(new OBJ_Crystal(gp));
+            } else {
+                dropItem(new OBJ_Coin_Gold(gp));
+            }
         }
     }
+
 }
 

@@ -111,13 +111,13 @@ public class Player extends Entity {
         guardLeft = setup("/images/player/guard-left.png", gp.tileSize, gp.tileSize);
     }
     public void setDefaultValues() {
-        //setDefaultPositions() Change to this when the game is finished
-        //worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
-      //  worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
-       worldX = gp.tileSize * 17;  // manually set the start position, remove when the game is finished
-        worldY = gp.tileSize * 21;  // manually set the start position, remove when the game is finished
+        setDefaultPositions();
+        worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
+        worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
+        //worldX = gp.tileSize * 66;  // manually set the start position, remove when the game is finished
+        //worldY = gp.tileSize * 17;  // manually set the start position, remove when the game is finished
         gp.currentMap = 1;             //  Bed 1 manually set the start map, remove when the game is finished
-        defaultSpeed = 10;
+        defaultSpeed = 7;
         speed = defaultSpeed;
         direction = "down";
 
@@ -129,23 +129,24 @@ public class Player extends Entity {
         maxAmmo = 20;
         ammo = 5;
         level = 1;
-        strength = 60;
-        dexterity = 5;
+        strength = 1; // normal 1
+        dexterity = 1;
         magic = 1;
         exp = 0;
-        nextLevelExp = 5;
-        gold = 500;
+        nextLevelExp = 10;
+        gold = 0;
         knockBackPower = 1;
 
         // SET DEFAULT EQUIPMENT
         currentWeapon = new OBJ_Sword_Wood(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         currentLight = null;
-        projectile = new OBJ_FireBall(gp); // projectile = new OBJ_Rock_Projectile(gp);
+        projectile = new OBJ_FireBall(gp);
 
         attack = getAttack();   // CALCULATE INITIAL ATTACK VALUE
         defense = getDefense(); // CALCULATE INITIAL DEFENSE VALUE
         coolDownMagicCounter = 100; // TIME BETWEEN PROJECTILE USE
+        projectile.setAction();
 
         getImages();        // LOAD PLAYER SPRITE IMAGES
         getAttackImages();  // LOAD ATTACK SPRITE IMAGES
@@ -207,13 +208,7 @@ public class Player extends Entity {
     public void setItems() {
         inventory.clear();
         inventory.add(currentWeapon); // ADD STARTING WEAPON
-        inventory.add(currentShield); // ADD STARTING SHIELD
-        inventory.add(new OBJ_Lantern(gp));
-        inventory.add(new OBJ_Pickaxe(gp));
-        inventory.add(new OBJ_KeyGold(gp));
-        inventory.add(new OBJ_Key(gp));
-        inventory.add(new OBJ_Key(gp));
-        inventory.add(new OBJ_Axe(gp));
+        inventory.add(currentShield); // ADD STARTING WEAPON
     }
     public void update() {
 
@@ -497,14 +492,26 @@ public class Player extends Entity {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // RESET TRANSPARENCY
     }
     public int getAttack() {
-        attackArea = currentWeapon.attackArea; // SET ATTACK AREA BASED ON WEAPON
-        motion1_duration = currentWeapon.motion1_duration;
-        motion2_duration = currentWeapon.motion2_duration;
-        knockBackPower = currentWeapon.knockBackPower;
-        return attack = strength * currentWeapon.attackValue; // RETURN CALCULATED ATTACK VALUE
+        int tempAttack = attack;
+        if (currentWeapon != null) {
+            attackArea      = currentWeapon.attackArea;
+            motion1_duration= currentWeapon.motion1_duration;
+            motion2_duration= currentWeapon.motion2_duration;
+            knockBackPower  = currentWeapon.knockBackPower;
+            tempAttack = strength * currentWeapon.attackValue;
+            return tempAttack;
+        }
+        // bare fists fallback
+        return tempAttack;
     }
     public int getDefense() {
-        return defense = dexterity * currentShield.defenseValue; // CALCULATE TOTAL DEFENSE
+        int tempDefense = attack;
+        if (currentShield != null) {
+            tempDefense = dexterity * currentShield.defenseValue;
+            return tempDefense;
+        }
+        // no shield fallback
+        return tempDefense;
     }
     public void getSleepingImages(BufferedImage image) {
         downStill = image;
@@ -665,19 +672,33 @@ public class Player extends Entity {
         }
     }
     public void checkLevelUp() {
-        if (gp.player.exp >= gp.player.nextLevelExp) {
-            gp.player.level++;
-            gp.player.nextLevelExp += gp.player.nextLevelExp * 2;
-            gp.player.maxLife += 2;
-            strength++;
-            dexterity++;
-            attack = getAttack(); // UPDATE ATTACK BASED ON NEW STATS
-            defense = getDefense(); // UPDATE DEFENSE BASED ON NEW STATS
-            gp.playSE(11); // PLAY LEVEL-UP SOUND
-            gp.gameState = gp.dialogueState;
-            setDialogue();
-            startDialogue(this,0);
+        baseXP = nextLevelExp;
+        // handle big XP gains in one go
+        while (exp >= nextLevelExp) {
+            exp         -= nextLevelExp;
+            levelUp(baseXP);
         }
+    }
+    private void levelUp(int baseXP) {
+        level++;
+        // exponential XP curve: baseExp=100, growth=1.2
+        nextLevelExp = baseXP * level;
+
+        // bump stats
+        strength++;
+        dexterity++;
+        magic++;
+        life = maxLife;
+
+        // recalc derived stats
+        attack   = getAttack();
+        defense  = getDefense();
+
+        // feedback
+        gp.playSE(11);
+        gp.gameState = gp.dialogueState;
+        setDialogue();             // builds the lines
+        startDialogue(this, 0);
     }
     public void setDialogue() {
         dialogues[0][0] = "You are level " + level + " now! \nYou feel stronger!";
@@ -689,12 +710,12 @@ public class Player extends Entity {
             Entity selectedItem = inventory.get(itemIndex);
             if (selectedItem.type == type_sword || selectedItem.type == type_axe || selectedItem.type == type_spell || selectedItem.type == type_pickaxe) {
                 currentWeapon = selectedItem; // EQUIP NEW WEAPON
-                getAttack(); // UPDATE ATTACK
+                attack = getAttack(); // UPDATE ATTACK
                 getAttackImages(); // UPDATE ATTACK ANIMATION
             }
             if (selectedItem.type == type_shield) {
                 currentShield = selectedItem; // EQUIP NEW SHIELD
-                getDefense(); // UPDATE DEFENSE
+                defense = getDefense(); // UPDATE DEFENSE
                 getAttackImages(); // UPDATE BLOCK ANIMATION
             }
             if (selectedItem.type == type_consumable) {
@@ -728,28 +749,34 @@ public class Player extends Entity {
         return itemIndex;
     }
     public boolean canObtainItem(Entity item) {
-
         boolean canObtain = false;
+
         Entity newItem = gp.eGenerator.getObject(item.name);
 
+        if (newItem == null) {
+            return false;
+        }
+
         // CHECK IF STACKABLE
-        if (newItem.stackable == true) {
+        if (newItem.stackable) {
             int index = searchItemInInventory(newItem.name);
-            if (index != 999) { // the item can be stack on another item
+            if (index != 999) {
                 inventory.get(index).amount++;
                 canObtain = true;
-            } else {// there is no other item in the inventory to stack on so a new slot is used
-                if (inventory.size() != maxInventorySize) {
+            } else {
+                if (inventory.size() < maxInventorySize) {
                     inventory.add(newItem);
                     canObtain = true;
                 }
             }
-        } else { // item is not stackable
-            if (inventory.size() != maxInventorySize) {
+        } else {
+            if (inventory.size() < maxInventorySize) {
                 inventory.add(newItem);
                 canObtain = true;
             }
         }
+
         return canObtain;
     }
+
 }

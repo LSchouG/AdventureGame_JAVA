@@ -14,7 +14,7 @@ public class OBJ_Shield_Wood extends Entity {
         type = type_shield;
         down1 = setup("/images/objects_pickup/shield-wood.png", gp.tileSize, gp.tileSize);
         defenseValue = 1;
-        Price = 10;
+        Price = 8;
         itemTitle = "[" + name + "]";
         itemDescription = "An old wooden shield. \nDefense Value: " + defenseValue ;
     }
