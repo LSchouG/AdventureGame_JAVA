@@ -19,7 +19,7 @@ public class OBJ_Potion_BlueBig extends Entity {
         restoreValue = 10;
         Price = 40;
         stackable = true;
-        down1 = setup("/images/objects_pickup/small-blue-potion.png", gp.tileSize, gp.tileSize);
+        down1 =setup("/images/objects_pickup/big-blue-potion.png", gp.tileSize, gp.tileSize);
         image2 = setup("/images/objects_pickup/big-blue-potion.png", gp.tileSize, gp.tileSize);
         itemTitle = "[" + name + "]";
         itemDescription = "A Big mana restoring potion. \nRestores " + restoreValue + " HP.";
@@ -41,35 +41,37 @@ public class OBJ_Potion_BlueBig extends Entity {
         dialogues[6][0] = "You're already at full Mana.\nSave the juice for a real magical emergency.";
     }
     public boolean use(Entity entity) {
-
-        if (gp.player.mana < gp.player.maxMana) {
+        if (gp.player.life < gp.player.maxLife) {
             Random random = new Random();
-            int i = random.nextInt(100) + 1;  // 1–100
+            int i = random.nextInt(100) + 1;
+            int dialogueSet;
 
             if (i <= 20) {
-                startDialogue(this,0);
+                dialogueSet = 0;
             } else if (i <= 40) {
-                startDialogue(this,1);
+                dialogueSet = 1;
             } else if (i <= 60) {
-                startDialogue(this,2);
+                dialogueSet = 2;
             } else if (i <= 80) {
-                startDialogue(this,3);
-            } else if (i < 100)  {
-                startDialogue(this,4);
+                dialogueSet = 3;
+            } else if (i <= 99) {
+                dialogueSet = 4;
+            } else {  // i == 100
+                dialogueSet = 5;
             }
 
-            if (i == 100) {
-                startDialogue(this,5);
-            }
+            startDialogue(this, dialogueSet);
 
             entity.mana += restoreValue;
             if (gp.player.mana > gp.player.maxMana) {
                 gp.player.mana = gp.player.maxMana;
             }
+
             gp.playSE(1);
             return true;
         } else {
-            startDialogue(this,6);
-            return false; }
+            startDialogue(this, 6);  // Refusal dialogue
+            return false;
+        }
     }
 }

@@ -36,26 +36,27 @@ public class AssetSetter {
             gp.obj[mapNum][i].worldX = gp.tileSize * 59;
             gp.obj[mapNum][i].worldY = gp.tileSize * 16;
             i++;
+            gp.obj[mapNum][i] = new OBJ_Chest(gp);               // AXE
+            gp.obj[mapNum][i].setLoot(new OBJ_Axe(gp));
+            gp.obj[mapNum][i].worldX = gp.tileSize * 36;
+            gp.obj[mapNum][i].worldY = gp.tileSize * 63;
+            i++;
+            gp.obj[mapNum][i] = new OBJ_Chest(gp);              // IRON SWORD
+            gp.obj[mapNum][i].setLoot(new OBJ_Sword_Iron(gp));
+            gp.obj[mapNum][i].worldX = gp.tileSize * 60;
+            gp.obj[mapNum][i].worldY = gp.tileSize * 34;
+            i++;
+            gp.obj[mapNum][i] = new OBJ_Chest(gp);              // IRON Shield
+            gp.obj[mapNum][i].setLoot(new OBJ_Shield_Iron(gp));
+            gp.obj[mapNum][i].worldX = gp.tileSize * 15;
+            gp.obj[mapNum][i].worldY = gp.tileSize * 59;
+            i++;
         }
         gp.obj[mapNum][i] = new OBJ_Chest(gp);
         gp.obj[mapNum][i].setLoot(new OBJ_Key(gp));         // KEY
         gp.obj[mapNum][i].worldX = gp.tileSize * 68;
         gp.obj[mapNum][i].worldY = gp.tileSize * 59;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);               // AXE
-        gp.obj[mapNum][i].setLoot(new OBJ_Axe(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 36;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 63;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);              // IRON SWORD
-        gp.obj[mapNum][i].setLoot(new OBJ_Sword_Iron(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 60;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 34;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);              // IRON Shield
-        gp.obj[mapNum][i].setLoot(new OBJ_Shield_Iron(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 15;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 59;
+
 
         // PLACE OBJECTS ON MAP 1
 
@@ -73,31 +74,35 @@ public class AssetSetter {
             i++;
             gp.obj[mapNum][i] = new OBJ_TownChest(gp);             // Towns Treasure Chest
             gp.obj[mapNum][i].worldX = gp.tileSize * 27;
-            gp.obj[mapNum][i].worldY = gp.tileSize * 13;
+            gp.obj[mapNum][i].worldY = gp.tileSize * 10;
         }
 
         // PLACE OBJECTS ON MAP 5                             DUNGEON
         mapNum = 5;   i = 0;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);                       // IRIDIUM SHIELD
-        gp.obj[mapNum][i].setLoot(new OBJ_Shield_Iridium(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 29;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 54;
+        gp.obj[mapNum][i] = new OBJ_Torch(gp);// Torch  map 5
+        gp.obj[mapNum][i].worldX = gp.tileSize * 41;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 62;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);                       // PICKAXE
-        gp.obj[mapNum][i].setLoot(new OBJ_Pickaxe(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 76;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 59;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);                       // IRIDIUM SHIELD
-        gp.obj[mapNum][i].setLoot(new OBJ_Sword_Iridium(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 20;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 46;
-        i++;
+
         if(Progress.dungeonDefeated == false) {
             gp.obj[mapNum][i] = new OBJ_DoorIron(gp);                   // BOSS DOOR
             gp.obj[mapNum][i].worldX = gp.tileSize * 79;
             gp.obj[mapNum][i].worldY = gp.tileSize * 36;
             i++;
+            gp.obj[mapNum][i] = new OBJ_Chest(gp);                       // IRIDIUM SHIELD
+            gp.obj[mapNum][i].setLoot(new OBJ_Shield_Iridium(gp));
+            gp.obj[mapNum][i].worldX = gp.tileSize * 29;
+            gp.obj[mapNum][i].worldY = gp.tileSize * 54;
+            i++;
+            gp.obj[mapNum][i] = new OBJ_Chest(gp);                       // PICKAXE
+            gp.obj[mapNum][i].setLoot(new OBJ_Pickaxe(gp));
+            gp.obj[mapNum][i].worldX = gp.tileSize * 76;
+            gp.obj[mapNum][i].worldY = gp.tileSize * 59;
+            i++;
+            gp.obj[mapNum][i] = new OBJ_Chest(gp);                       // IRIDIUM SHIELD
+            gp.obj[mapNum][i].setLoot(new OBJ_Sword_Iridium(gp));
+            gp.obj[mapNum][i].worldX = gp.tileSize * 20;
+            gp.obj[mapNum][i].worldY = gp.tileSize * 46;
         }
 
     }
@@ -127,7 +132,7 @@ public class AssetSetter {
         gp.npc[mapNum][i] = new NPC_OldManStill(gp);
         gp.npc[mapNum][i].worldX = gp.tileSize * 18;
         gp.npc[mapNum][i].worldY = gp.tileSize * 30;
-
+        i++;
         if(Progress.bossDefeated == true){
             gp.npc[mapNum][i] = new NPC_GirlBlue(gp);
             gp.npc[mapNum][i].worldX = gp.tileSize * 18;

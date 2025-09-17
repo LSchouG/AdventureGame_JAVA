@@ -76,7 +76,7 @@ public class CutSceneManager {
         if(scenePhase == 1){
 
             gp.player.worldY -= 2;
-            if (gp.player.worldY == gp.tileSize*22){
+            if (gp.player.worldY < 1010){
                 scenePhase++;
             }
         }
@@ -241,18 +241,19 @@ public class CutSceneManager {
             y--;
             drawString(1f, 38f, y, endCredit, 40);
             if (y == -850) {
+                gp.currentMap = 1;
+                gp.player.setDefaultPositions();
+                gp.saveLoad.save();
                 y = 0;
                 gp.resetGame(true);
                 gp.gameState = gp.titleState;
                 gp.currentMap = 1;
-                gp.player.setDefaultPositions();
 
                 // Reset cutscene state to prevent resumption on load
                 sceneNum = NA;
                 scenePhase = 0;
                 counter = 0;  // Optional: Reset counter if it is also persisted
 
-                gp.saveLoad.save();
             }
         }
     }

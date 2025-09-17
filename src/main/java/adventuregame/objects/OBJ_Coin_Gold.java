@@ -15,7 +15,7 @@ public class OBJ_Coin_Gold extends Entity {
         name = objName;
         type = type_pickUpOnly;
         value = 15;
-        down1 = setup("/images/objects_pickup/coin-bronze.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/images/objects_pickup/coin-gold.png", gp.tileSize, gp.tileSize);
     }
 
     public boolean use(Entity entity) {

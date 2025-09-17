@@ -60,7 +60,6 @@ public class OBJ_Chest extends Entity {
             gp.playSE(3);
 
             if (loot == null) {
-                System.out.println("Warning: Chest has no loot assigned.");
                 startDialogue(this, 0); // Optional: show "empty" message
                 return;
             }

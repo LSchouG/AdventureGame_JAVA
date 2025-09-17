@@ -103,6 +103,7 @@ public class  Entity {
     public Entity currentShield;
     public Entity currentLight;
     public Projectile projectile;
+    protected long regenTimer = System.currentTimeMillis();
 
     // MONSTER ATTRIBUTES
     public int distanceToChase = 0; // Distance before chasing
@@ -140,7 +141,7 @@ public class  Entity {
     public final int type_consumable = 7;
     public final int type_pickUpOnly = 8;
     public final int type_obstacle = 9;
-    public final int  type_light = 10;
+    public static final int type_light = 10;
     public final int type_pickaxe = 11;
     public final int type_NonUse = 12;
 
@@ -630,11 +631,15 @@ public class  Entity {
             case "right": direction = "left";
         }
     }
-    public void startDialogue(Entity entity, int setNum){
+    public void startDialogue(Entity entity, int setNum) {
         gp.previousState = gp.gameState;
         gp.gameState = gp.dialogueState;
         gp.ui.npc = entity;
-        dialogueSet = setNum;
+        entity.dialogueSet = setNum;
+        entity.dialogueIndex = 0;
+        gp.ui.charIndex = 0;
+        gp.ui.combinedText = "";
+        gp.ui.currentDialogue = "";  // Ensure clean start for rendering
     }
     public boolean use(Entity entity) { return false;}
     public void checkDrop() {}

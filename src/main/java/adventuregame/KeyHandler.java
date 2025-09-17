@@ -13,8 +13,11 @@
 
 package adventuregame;
 
+import adventuregame.data.Progress;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
 
 public class KeyHandler implements KeyListener {
 
@@ -178,14 +181,24 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(12);
             }
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                if (gp.ui.commandNumber == 0) {
 
+                if (gp.ui.commandNumber == 0) {
                     gp.gameState = gp.playState;
                     gp.playMusic(0);
 
                 } else if (gp.ui.commandNumber == 1) {
-                    // ADD LATER Load GAME save
+
+                    // Clear everything first Load saved data
+                    clearWorld();
                     gp.saveLoad.load();
+
+                    // Rebuild world based on Progress flags
+                    gp.aSetter.setObject();
+                    gp.aSetter.setNPC();
+                    gp.aSetter.setMonster();
+                    gp.aSetter.setInteractiveTiles();
+                    gp.player.restoreStatus();
+
                     gp.gameState = gp.playState;
                     gp.playMusic(0);
 
@@ -194,8 +207,14 @@ public class KeyHandler implements KeyListener {
                 }
             }
         }
-
-
+    }
+    public void clearWorld() {
+        for (int m = 0; m < gp.maxMap; m++) {
+            Arrays.fill(gp.obj[m], null);
+            Arrays.fill(gp.npc[m], null);
+            Arrays.fill(gp.monster[m], null);
+            Arrays.fill(gp.iTile[m], null);
+        }
     }
     public void playState(int code) {
         // Movement Controls (WASD)

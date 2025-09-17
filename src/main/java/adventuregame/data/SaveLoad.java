@@ -26,12 +26,15 @@ public class SaveLoad {
             ds.exp = gp.player.exp;
             ds.nextLevelExp = gp.player.nextLevelExp;
             ds.gold = gp.player.gold;
+
+
+
             // PLAYER INVENTORY
             for (int i = 0; i < gp.player.inventory.size(); i++) {
                 ds.itemName.add(gp.player.inventory.get(i).name);
                 ds.itemAmount.add(gp.player.inventory.get(i).amount);
-
             }
+
 
             // Progress milestones
             ds.grassDefeated = Progress.grassDefeated;
@@ -41,6 +44,8 @@ public class SaveLoad {
             // PLAYER EQUIPMENT SLOT NUMBER
             ds.currentWeaponSlot = gp.player.getCurrentWeaponSlot();
             ds.currentShieldSlot = gp.player.getCurrentShieldSlot();
+            // Equipment slots
+
             // OBJECT ON MAP
             ds.mapObjectNames = new String[gp.maxMap][gp.obj[1].length];
             ds.mapObjectWorldX = new int[gp.maxMap][gp.obj[1].length];
@@ -103,12 +108,15 @@ public class SaveLoad {
             Progress.dungeonDefeated = ds.dungeonDefeated;
             Progress.bossDefeated = ds.bossDefeated;
 
+
+
             // PLAYER EQUIPMENT SLOT NUMBER
             gp.player.currentWeapon = gp.player.inventory.get(ds.currentWeaponSlot);
             gp.player.currentShield = gp.player.inventory.get(ds.currentShieldSlot);
             gp.player.getAttack();
             gp.player.getDefense();
             gp.player.getAttackImages();
+
             // OBJECT ON MAP
             for (int mapNum = 0; mapNum < gp.maxMap; mapNum++) {
                 for (int i = 0; i < gp.obj[1].length; i++) {

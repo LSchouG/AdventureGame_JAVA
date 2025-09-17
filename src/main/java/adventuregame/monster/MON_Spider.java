@@ -14,7 +14,7 @@ public class MON_Spider extends Entity {
         super(gp);
         type = type_monster;
         name = "Bat";
-        speed = 3;
+        speed = 2;
         maxLife = 8;
         life = maxLife;
         attack = 6;

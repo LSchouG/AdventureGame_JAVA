@@ -37,8 +37,8 @@ public class UI {
     int subState = 0; // subState 0 = option menu, 1 = full screen notification 2 = control 3 = end game confirmation
     int counter = 0;
     public Entity npc;
-    int charIndex = 0;
-    String combinedText = "";
+    public int charIndex = 0;
+    public String combinedText = "";
 
 
     // UI States
@@ -345,10 +345,6 @@ public class UI {
             g2.drawImage(blankHeart, heartX, heartY, iconSize, iconSize, null);
             i++;
             heartX += iconSize;
-            if (i % 8 == 0) {
-                heartX = xDefault;
-                heartY += iconSize;
-            }
         }
 
         // Draw full/half hearts (reuse positions)
@@ -366,10 +362,6 @@ public class UI {
             }
             i++;
             heartX += iconSize;
-            if (i % 8 == 0) {
-                heartX = xDefault;
-                heartY += iconSize;
-            }
         }
 
         //DRAW MANA
@@ -383,10 +375,7 @@ public class UI {
             g2.drawImage(blankCrystal, manaX, manaY, iconSize, iconSize, null);
             i++;
             manaX += iconSize;
-            if (i % 8 == 0) {
-                manaX = xDefault + 1;
-                manaY += iconSize;
-            }
+
         }
 
         // RESET
@@ -405,10 +394,6 @@ public class UI {
             }
             i++;
             manaX += iconSize;
-            if (i % 8 == 0) {
-                manaX = xDefault + 1;
-                manaY += iconSize;
-            }
         }
     }
     public void drawMessage() {
@@ -515,44 +500,54 @@ public class UI {
         x += gp.tileSize;
         y += gp.tileSize;
 
+        if (npc != null) {  // Safeguard against unexpected null
+            if (npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null) {
+                // show text letter by letter
+                char characters[] = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
+                if (charIndex < characters.length) {
+                    gp.playSE(19);
+                    String s = String.valueOf(characters[charIndex]);
+                    combinedText = combinedText + s;
+                    currentDialogue = combinedText;
+                    charIndex++;
+                }
 
-        if(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null){
+                if (gp.keyH.enterPressed == true) {
+                    charIndex = 0;
+                    combinedText = "";
+                    currentDialogue = "";  // Clear for next potential dialogue
 
-            // show text medially
-            //currentDialogue = npc.dialogues[npc.dialogueSet][npc.dialogueIndex];
-
-            // show text letter by letter
-            char characters[] = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
-            if (charIndex < characters.length){
-                gp.playSE(19);
-                String s = String.valueOf(characters[charIndex]);
-                combinedText = combinedText + s;
-                currentDialogue = combinedText;
-                charIndex++;
-            }
-
-            if(gp.keyH.enterPressed == true){
-                charIndex = 0;
-                combinedText = "";
-
-                if(gp.gameState == gp.dialogueState || gp.gameState == gp.cutSceneState){
-                    npc.dialogueIndex++;
-                    gp.keyH.enterPressed = false;
+                    if (gp.gameState == gp.dialogueState || gp.gameState == gp.cutSceneState) {
+                        npc.dialogueIndex++;
+                        gp.keyH.enterPressed = false;
+                    }
+                }
+            } else {
+                npc.dialogueIndex = 0;
+                if (gp.gameState == gp.dialogueState) {
+                    gp.gameState = gp.previousState;
+                }
+                if (gp.gameState == gp.cutSceneState) {
+                    gp.csManager.scenePhase++;
                 }
             }
         } else {
-            npc.dialogueIndex = 0;
-            if(gp.gameState == gp.dialogueState){
+            // Fallback: Exit state if npc is unexpectedly null
+            if (gp.gameState == gp.dialogueState) {
                 gp.gameState = gp.previousState;
             }
-            if(gp.gameState == gp.cutSceneState){
+            if (gp.gameState == gp.cutSceneState) {
                 gp.csManager.scenePhase++;
             }
+            currentDialogue = "";  // Clear any lingering text
         }
 
-        for (String line : currentDialogue.split("\n")) {
-            g2.drawString(line, x, y);
-            y += 30;
+        // Render currentDialogue if available
+        if (!currentDialogue.isEmpty()) {
+            for (String line : currentDialogue.split("\n")) {
+                g2.drawString(line, x, y);
+                y += 30;
+            }
         }
     }
     public void drawOptionMenuScreen() {

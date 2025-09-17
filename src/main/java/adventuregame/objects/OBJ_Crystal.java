@@ -55,7 +55,10 @@ public class OBJ_Crystal extends Entity {
             startDialogue(this,5);
         }
 
-        entity.maxMana += value;
+        if(entity.maxMana < 16){
+            entity.maxMana += value;
+        }
+        mana = maxMana;
         gp.playSE(1);
         return true;
     }

@@ -114,12 +114,11 @@ public class Player extends Entity {
         setDefaultPositions();
         worldX = gp.tileSize * 17;    // Save bed: manually set the start position, remove when the game is finished
         worldY = gp.tileSize * 20;    // Save bed: manually set the start position, remove when the game is finished
-        //worldX = gp.tileSize * 66;  // manually set the start position, remove when the game is finished
-        //worldY = gp.tileSize * 17;  // manually set the start position, remove when the game is finished
         gp.currentMap = 1;             //  Bed 1 manually set the start map, remove when the game is finished
         defaultSpeed = 7;
         speed = defaultSpeed;
         direction = "down";
+
 
         // PLAYER STATUS
         maxLife = 6;
@@ -157,7 +156,7 @@ public class Player extends Entity {
     public void setDefaultPositions() {
         switch (gp.currentMap) {
             case 0:  // worldMapNew
-                worldX = gp.tileSize * 13;
+                worldX = gp.tileSize * 14;
                 worldY = gp.tileSize * 36;
                 break;
             case 1:  // interiorHome
@@ -175,7 +174,7 @@ public class Player extends Entity {
                 worldY = gp.tileSize * 20;
                 break;
             case 4:  // bossMap
-                worldX = gp.tileSize * 27;
+                worldX = gp.tileSize * 28;
                 worldY = gp.tileSize * 46;
                 break;
             case 5:  // dungeon
@@ -209,6 +208,9 @@ public class Player extends Entity {
         inventory.clear();
         inventory.add(currentWeapon); // ADD STARTING WEAPON
         inventory.add(currentShield); // ADD STARTING WEAPON
+        inventory.add(new OBJ_Tent(gp));
+        inventory.add(new OBJ_Potion_Red(gp)); // ADD STARTING WEAPON
+        inventory.add(new OBJ_Potion_Blue(gp)); // ADD STARTING WEAPON
     }
     public void update() {
 
@@ -387,6 +389,23 @@ public class Player extends Entity {
             mana = maxMana;
         }
 
+        // Slow regeneration logic
+        if (gp.gameState == gp.playState) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - regenTimer >= 8000) {
+                // Heal life if below max
+                if (life < maxLife) {
+                    life += 1;
+                }
+
+                // Heal mana if below max
+                if (mana < maxMana) {
+                    mana += 1;
+                }
+
+                regenTimer = currentTime;
+            }
+        }
         if(keyH.godModeOn == false){
             if (life <= 0) {
                 gp.gameState = gp.gameOverState;
@@ -560,6 +579,9 @@ public class Player extends Entity {
                     attackCanceled = true;
                     gp.obj[gp.currentMap][i].interact();
                 }
+            }          // OBSTCLE
+            else if (gp.obj[gp.currentMap][i].type == type_light) {
+
             }
             // PICKUP ITEMS THAT GO TO INVENTORY
             else {
@@ -676,13 +698,29 @@ public class Player extends Entity {
         // handle big XP gains in one go
         while (exp >= nextLevelExp) {
             exp         -= nextLevelExp;
-            levelUp(baseXP);
+            levelUp();
         }
     }
-    private void levelUp(int baseXP) {
+    private void levelUp() {
         level++;
-        // exponential XP curve: baseExp=100, growth=1.2
-        nextLevelExp = baseXP * level;
+
+        // --- XP requirement for next level ---
+        switch (level) {
+            case 1:  nextLevelExp = 20;  break;   // XP needed to reach level 2
+            case 2:  nextLevelExp = 50;  break;   // XP needed to reach level 3
+            case 3:  nextLevelExp = 90;  break;   // XP needed to reach level 4
+            case 4:  nextLevelExp = 120; break;   // XP needed to reach level 5
+            case 5:  nextLevelExp = 150; break;   // XP needed to reach level 6
+            case 6:  nextLevelExp = 200; break;   // XP needed to reach level 7
+            case 7:  nextLevelExp = 250; break;   // XP needed to reach level 8
+            case 8:  nextLevelExp = 325; break;   // XP needed to reach level 9
+            case 9:  nextLevelExp = 400; break;   // XP needed to reach level 10
+            case 10: nextLevelExp = 500; break;   // XP needed to reach level 11
+            default:
+                // After level 10, scale linearly (+100 per level)
+                nextLevelExp = 500 + (level - 10) * 100;
+                break;
+        }
 
         // bump stats
         strength++;
@@ -724,6 +762,7 @@ public class Player extends Entity {
                         selectedItem.amount--;
                     } else {
                         inventory.remove(itemIndex);
+                        // todo
                     }
                 }
             }

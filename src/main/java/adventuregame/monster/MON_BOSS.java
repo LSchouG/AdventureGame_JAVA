@@ -25,7 +25,7 @@ public class MON_BOSS extends Entity {
         sleep = true;
         knockBackPower = 5;
         exp = 100;
-        distanceToChase = 5;  // Distance before chasing
+        distanceToChase = 10;  // Distance before chasing
         rate = 2; // 1 = 100% 3 = 33%  5 = 20% 10 = 10%
 
 
@@ -120,7 +120,7 @@ public class MON_BOSS extends Entity {
             getAttackImages();
             defaultSpeed += 2;
             speed = defaultSpeed;
-            attack *= 2;
+            attack += 2;
             motion1_duration = motion1_duration - motion1_duration/2;
             motion2_duration = motion2_duration - motion2_duration/2;
         }

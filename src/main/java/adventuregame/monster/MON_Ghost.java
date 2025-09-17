@@ -12,7 +12,7 @@ public class MON_Ghost extends Entity {
         this.gp = gp;
         type = type_monster;
         name = "Ghost";
-        defaultSpeed = 2;
+        defaultSpeed = 1;
         speed = defaultSpeed;
         maxLife = 12;
         life = maxLife;
